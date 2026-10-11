@@ -354,6 +354,84 @@
     </div>
   </div>
 
+  <!-- MODAL: Edit Game Details (Rename / Change Date / Max Field) -->
+  <div id="editGameModal"
+    class="fixed inset-0 bg-black/85 z-[70] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('editGameModal')">
+    <div
+      class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl flex flex-col overflow-hidden shadow-2xl sheet-animate">
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0 sm:hidden">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
+
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-black">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+              <path d="m15 5 4 4"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-black text-sm text-white">Edit Game Details</h2>
+            <div class="text-[10px] text-slate-400">Rename, change date, or update field size</div>
+          </div>
+        </div>
+        <button onclick="closeModal('editGameModal')"
+          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+          title="Close">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-4 space-y-3.5">
+        <input type="hidden" id="editGameIdInput">
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Name</label>
+          <input type="text" id="editGameNameInput"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-base text-white font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+            placeholder="e.g. vs Tigers">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Date</label>
+            <input type="date" id="editGameDateInput"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Max on Field</label>
+            <input type="number" id="editGameMaxFieldInput" min="1" max="20"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-center">
+          </div>
+        </div>
+
+        <div class="pt-2.5 border-t border-slate-800 flex justify-between items-center">
+          <button type="button" onclick="deleteGameFromEdit()"
+            class="min-h-[36px] text-xs text-rose-400 hover:text-rose-300 font-bold flex items-center gap-1.5 tap-pop">
+            <span>🗑️</span> <span>Delete Game</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-3.5 border-t border-slate-800 bg-slate-900/90 flex gap-2.5"
+        style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
+        <button onclick="closeModal('editGameModal')"
+          class="min-h-[48px] bg-slate-800 text-slate-300 font-bold text-xs px-5 rounded-2xl border border-slate-700 tap-pop">
+          Cancel
+        </button>
+        <button onclick="saveGameEdits()"
+          class="flex-1 min-h-[48px] bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 font-black rounded-2xl text-xs sm:text-sm tap-pop">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: Start New Game -->
   <div id="newGameModal"
     class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
@@ -1534,15 +1612,69 @@
         return;
       }
       list.innerHTML = appData.games.map(g => `
-        <button onclick="switchGame('${g.id}')"
-          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl tap-pop transition ${g.id === appData.activeGameId ? 'bg-amber-500/15 border-2 border-amber-500/50' : 'bg-slate-800 border border-slate-700'}">
-          <div class="text-left">
-            <div class="font-black text-sm ${g.id === appData.activeGameId ? 'text-amber-400' : 'text-white'}">${g.name}</div>
-            <div class="text-[10px] text-slate-400 font-mono-numbers">${g.date || ''} · ${g.maxFieldPlayers || 6}v${g.maxFieldPlayers || 6}</div>
-          </div>
-          ${g.id === appData.activeGameId ? '<svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : ''}
-        </button>
+        <div class="flex items-center gap-2 p-2.5 rounded-2xl transition ${g.id === appData.activeGameId ? 'bg-amber-500/15 border-2 border-amber-500/50' : 'bg-slate-800 border border-slate-700'}">
+          <button onclick="switchGame('${g.id}')" class="flex-1 flex items-center justify-between text-left min-w-0 tap-pop">
+            <div class="min-w-0 mr-2">
+              <div class="font-black text-sm truncate ${g.id === appData.activeGameId ? 'text-amber-400' : 'text-white'}">${g.name}</div>
+              <div class="text-[10px] text-slate-400 font-mono-numbers">${g.date || ''} · ${g.maxFieldPlayers || 6}v${g.maxFieldPlayers || 6}</div>
+            </div>
+            ${g.id === appData.activeGameId ? '<svg class="w-4 h-4 text-amber-400 shrink-0 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : ''}
+          </button>
+          <button onclick="openEditGameModal('${g.id}')"
+            class="min-h-[38px] px-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold rounded-xl tap-pop flex items-center gap-1 shrink-0"
+            title="Edit Game">
+            <span>✏️</span> <span>Edit</span>
+          </button>
+        </div>
       `).join('');
+    }
+
+    function openEditGameModal(gameId) {
+      const game = appData.games.find(g => g.id === gameId);
+      if (!game) return;
+
+      document.getElementById('editGameIdInput').value = game.id;
+      document.getElementById('editGameNameInput').value = game.name;
+      document.getElementById('editGameDateInput').value = game.date || '';
+      document.getElementById('editGameMaxFieldInput').value = game.maxFieldPlayers || 6;
+
+      openModal('editGameModal');
+    }
+
+    function saveGameEdits() {
+      const gameId = document.getElementById('editGameIdInput').value;
+      const game = appData.games.find(g => g.id === gameId);
+      if (!game) return;
+
+      const newName = document.getElementById('editGameNameInput').value.trim();
+      const newDate = document.getElementById('editGameDateInput').value;
+      const newMax = parseInt(document.getElementById('editGameMaxFieldInput').value) || 6;
+
+      if (newName) game.name = newName;
+      if (newDate) game.date = newDate;
+      game.maxFieldPlayers = newMax;
+
+      saveState();
+      closeModal('editGameModal');
+      renderGameSwitcherList();
+      renderAll();
+    }
+
+    function deleteGameFromEdit() {
+      const gameId = document.getElementById('editGameIdInput').value;
+      if (!gameId) return;
+
+      appData.games = appData.games.filter(g => g.id !== gameId);
+
+      if (appData.activeGameId === gameId) {
+        appData.activeGameId = appData.games.length > 0 ? appData.games[0].id : null;
+        queuedSubOutIds.clear();
+      }
+
+      saveState();
+      closeModal('editGameModal');
+      renderGameSwitcherList();
+      renderAll();
     }
 
     function switchGame(gameId) {
