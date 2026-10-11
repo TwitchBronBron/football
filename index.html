@@ -128,50 +128,29 @@
   <header
     class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/90 px-3 sm:px-4 py-2.5 sticky top-0 z-30 shadow-lg">
     <div class="max-w-4xl mx-auto w-full flex items-center justify-between gap-2 sm:gap-3">
-      <!-- Left: Game Switcher & Quick New Game -->
-      <div class="flex items-center gap-2 flex-1 min-w-0">
-        <!-- Game Selector Pill -->
-        <div
-          class="relative flex items-center bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 rounded-2xl px-3 py-1.5 min-h-[52px] shadow-sm focus-within:ring-2 focus-within:ring-amber-400/50 min-w-0 flex-1">
-          <svg class="w-5 h-5 text-amber-400 shrink-0 mr-2" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(-45 12 12)" />
-            <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
-            <line x1="10.5" y1="10.5" x2="11.5" y2="9.5" />
-            <line x1="12.5" y1="12.5" x2="13.5" y2="11.5" />
-            <line x1="12.5" y1="14.5" x2="13.5" y2="13.5" />
-          </svg>
-          <div class="flex flex-col min-w-0 justify-center flex-1">
-            <select id="gameSelector" onchange="switchGame(this.value)"
-              class="bg-transparent text-amber-400 font-extrabold text-sm appearance-none pr-5 focus:outline-none cursor-pointer truncate leading-tight"
-              title="Select Active Game">
-              <!-- Dynamically populated -->
-            </select>
-            <span id="headerGameDate"
-              class="text-[10px] text-slate-400 font-mono-numbers leading-none pt-0.5 truncate">--/--/--</span>
-          </div>
-          <svg class="w-4 h-4 text-slate-400 absolute right-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
+      <!-- Left: Tappable game title (opens game switcher sheet) -->
+      <button onclick="openGameSwitcherSheet()" id="gameHeaderBtn"
+        class="flex items-center gap-2 flex-1 min-w-0 tap-pop text-left">
+        <svg class="w-5 h-5 text-amber-400 shrink-0" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(-45 12 12)" />
+          <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
+          <line x1="10.5" y1="10.5" x2="11.5" y2="9.5" />
+          <line x1="12.5" y1="12.5" x2="13.5" y2="11.5" />
+          <line x1="12.5" y1="14.5" x2="13.5" y2="13.5" />
+        </svg>
+        <div class="flex flex-col min-w-0">
+          <span id="headerGameName" class="font-black text-sm text-amber-400 truncate leading-tight">No Game</span>
+          <span id="headerGameDate" class="text-[10px] text-slate-400 font-mono-numbers leading-none pt-0.5 truncate">--/--/--</span>
         </div>
-
-        <!-- + New Game Button -->
-        <button onclick="openNewGameModal()"
-          class="min-h-[52px] px-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-black text-xs shadow-md shadow-emerald-950/60 tap-pop flex flex-col items-center justify-center gap-0.5 shrink-0"
-          title="Start New Game">
-          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14" />
-            <path d="M12 5v14" />
-          </svg>
-          <span class="text-[10px] font-bold uppercase tracking-wide">Game</span>
-        </button>
-      </div>
+        <svg class="w-4 h-4 text-slate-500 shrink-0 ml-0.5" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
 
       <!-- Right: Primary Actions -->
       <div class="flex items-center gap-2 shrink-0">
-
         <!-- Master Roster Button -->
         <button onclick="openRosterModal()"
           class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 text-xs font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
@@ -199,27 +178,21 @@
           <span class="text-[10px] font-bold uppercase tracking-wide">Stats</span>
         </button>
 
-        <!-- Settings / Backup -->
+        <!-- Settings -->
         <button onclick="openSettingsModal()"
           class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
-          title="Backup & Offline Tools">
+          title="Settings">
           <svg class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="21" x2="4" y2="14" />
-            <line x1="4" y1="10" x2="4" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="12" />
-            <line x1="12" y1="8" x2="12" y2="3" />
-            <line x1="20" y1="21" x2="20" y2="16" />
-            <line x1="20" y1="12" x2="20" y2="3" />
-            <line x1="1" y1="14" x2="7" y2="14" />
-            <line x1="9" y1="8" x2="15" y2="8" />
-            <line x1="17" y1="16" x2="23" y2="16" />
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+            <circle cx="12" cy="12" r="3" />
           </svg>
-          <span class="text-[10px] font-bold uppercase tracking-wide">More</span>
+          <span class="text-[10px] font-bold uppercase tracking-wide">Settings</span>
         </button>
       </div>
     </div>
   </header>
+
 
   <section id="swapActionStrip" class="bg-slate-900 border-b border-slate-800/80 px-3 py-2 z-20">
     <div class="max-w-4xl mx-auto w-full">
@@ -349,7 +322,30 @@
     </div>
   </footer>
 
+  <!-- MODAL: Game Switcher Sheet -->
+  <div id="gameSwitcherSheet"
+    class="fixed inset-0 bg-black/80 z-50 hidden flex items-end justify-center backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('gameSwitcherSheet')">
+    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] max-h-[70dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
+      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-3 shrink-0"></div>
+      <div class="px-4 pb-2 flex items-center justify-between shrink-0">
+        <h2 class="font-black text-base text-white">Switch Game</h2>
+        <button onclick="openNewGameModal()"
+          class="min-h-[38px] px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl tap-pop shadow-md flex items-center gap-1.5">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="M12 5v14"/>
+          </svg>
+          New Game
+        </button>
+      </div>
+      <div id="gameSwitcherList" class="flex-1 overflow-y-auto px-3 pb-4 space-y-2">
+        <!-- Populated by renderGameSwitcherList() -->
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: Start New Game -->
+
   <div id="newGameModal"
     class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
     <div
@@ -385,17 +381,22 @@
       </div>
 
       <!-- Game Name & Date Header Bar (Inputs with 16px font to prevent iOS zoom) -->
-      <div class="px-3.5 py-2.5 bg-slate-900/95 border-b border-slate-800/80 grid grid-cols-2 gap-2.5 shrink-0">
-        <div>
+      <div class="px-3.5 py-2.5 bg-slate-900/95 border-b border-slate-800/80 grid grid-cols-3 gap-2.5 shrink-0">
+        <div class="col-span-1">
           <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Name</label>
           <input type="text" id="newGameNameInput"
             class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-            placeholder="e.g. Game 1 vs Tigers">
+            placeholder="e.g. vs Tigers">
         </div>
-        <div>
+        <div class="col-span-1">
           <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Date</label>
           <input type="date" id="newGameDateInput"
             class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+        </div>
+        <div class="col-span-1">
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Max on Field</label>
+          <input type="number" id="newGameMaxFieldInput" min="1" max="20" value="6"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-center">
         </div>
       </div>
 
@@ -1068,6 +1069,7 @@
     function confirmCreateNewGame() {
       const name = document.getElementById('newGameNameInput').value.trim() || `Game ${appData.games.length + 1}`;
       const date = document.getElementById('newGameDateInput').value || new Date().toISOString().slice(0, 10);
+      const maxFieldPlayers = parseInt(document.getElementById('newGameMaxFieldInput').value) || 6;
 
       const presentIds = new Set();
       document.querySelectorAll('input[name="gameAttendance"]:checked').forEach(cb => {
@@ -1080,6 +1082,7 @@
         id: 'game_' + Date.now(),
         name: name,
         date: date,
+        maxFieldPlayers: maxFieldPlayers,
         createdAt: new Date().toISOString(),
         currentPlayNumber: 0,
         history: [],
@@ -1301,7 +1304,7 @@
       const player = game.players.find(p => p.id === playerId);
       if (!player || player.status === 'absent') return;
 
-      // If kid is on the bench, tapping immediately puts them back onto the field
+      // Bench → Field
       if (player.status === 'bench') {
         player.status = 'field';
         haptic(30);
@@ -1310,9 +1313,11 @@
         return;
       }
 
-      // If kid is on the field, toggle queued sub-out status
+      // Field: toggle queue. If already queued, move to bench (not back to field).
       if (queuedSubOutIds.has(playerId)) {
         queuedSubOutIds.delete(playerId);
+        player.status = 'bench';
+        saveState();
       } else {
         queuedSubOutIds.add(playerId);
       }
@@ -1352,18 +1357,24 @@
       const game = getActiveGame();
       if (!game || queuedSubOutIds.size === 0) return;
 
-      const benched = game.players.filter(p => p.status === 'bench');
+      const maxField = game.maxFieldPlayers || 6;
 
-      // 1. Move currently benched kids into the field
-      benched.forEach(p => p.status = 'field');
-
-      // 2. Move queued players to the bench
+      // 1. Move queued players to the bench first
       queuedSubOutIds.forEach(id => {
         const p = game.players.find(pl => pl.id === id);
         if (p) p.status = 'bench';
       });
-
       queuedSubOutIds.clear();
+
+      // 2. Count how many spots are open on field
+      const currentOnField = game.players.filter(p => p.status === 'field').length;
+      const spotsOpen = Math.max(0, maxField - currentOnField);
+
+      // 3. Pull in bench players (sorted by fewest plays) up to the open spots
+      const benched = game.players.filter(p => p.status === 'bench')
+        .sort((a, b) => a.playsIn - b.playsIn);
+      benched.slice(0, spotsOpen).forEach(p => p.status = 'field');
+
       haptic([50, 60, 50]);
       saveState();
       renderAll();
@@ -1453,7 +1464,7 @@
         dock.classList.add('hidden');
         swapStrip.classList.add('hidden');
         document.getElementById('playerGrid').innerHTML = '';
-        renderGameSelector();
+        renderHeaderGame();
         return;
       }
 
@@ -1461,37 +1472,54 @@
       dock.classList.remove('hidden');
       swapStrip.classList.remove('hidden');
 
-      renderGameSelector();
+      renderHeaderGame();
       renderSwapStrip(game);
       renderPlayerGrid(game);
       renderDockCounters(game);
       renderLiveAttendanceAdjustList(game);
     }
 
-    function renderGameSelector() {
-      const selector = document.getElementById('gameSelector');
+    function renderHeaderGame() {
+      const nameEl = document.getElementById('headerGameName');
       const dateEl = document.getElementById('headerGameDate');
+      const active = getActiveGame();
+      if (active) {
+        nameEl.innerText = active.name;
+        dateEl.innerText = active.date || '--/--/--';
+      } else {
+        nameEl.innerText = 'No Game';
+        dateEl.innerText = '--/--/--';
+      }
+    }
 
+    function openGameSwitcherSheet() {
+      renderGameSwitcherList();
+      openModal('gameSwitcherSheet');
+    }
+
+    function renderGameSwitcherList() {
+      const list = document.getElementById('gameSwitcherList');
       if (!appData.games || appData.games.length === 0) {
-        selector.innerHTML = '<option value="">No Active Games</option>';
-        dateEl.innerText = '📅 --/--/--';
+        list.innerHTML = '<p class="text-slate-400 text-sm text-center py-6">No games yet.</p>';
         return;
       }
-
-      selector.innerHTML = appData.games.map(g =>
-        `<option value="${g.id}" ${g.id === appData.activeGameId ? 'selected' : ''}>${g.name}</option>`
-      ).join('');
-
-      const active = getActiveGame();
-      if (active && active.date) {
-        dateEl.innerText = `📅 ${active.date}`;
-      }
+      list.innerHTML = appData.games.map(g => `
+        <button onclick="switchGame('${g.id}')"
+          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl tap-pop transition ${g.id === appData.activeGameId ? 'bg-amber-500/15 border-2 border-amber-500/50' : 'bg-slate-800 border border-slate-700'}">
+          <div class="text-left">
+            <div class="font-black text-sm ${g.id === appData.activeGameId ? 'text-amber-400' : 'text-white'}">${g.name}</div>
+            <div class="text-[10px] text-slate-400 font-mono-numbers">${g.date || ''} · ${g.maxFieldPlayers || 6}v${g.maxFieldPlayers || 6}</div>
+          </div>
+          ${g.id === appData.activeGameId ? '<svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : ''}
+        </button>
+      `).join('');
     }
 
     function switchGame(gameId) {
       appData.activeGameId = gameId;
       queuedSubOutIds.clear();
       saveState();
+      closeModal('gameSwitcherSheet');
       renderAll();
     }
 
