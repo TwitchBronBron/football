@@ -715,39 +715,11 @@
         </button>
       </div>
 
-      <!-- Dedicated PWA Install Banner -->
-      <div class="p-3.5 rounded-2xl bg-indigo-950/40 border border-indigo-500/40 space-y-2">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
-                <path d="M12 18h.01" />
-                <path d="m9 10 3 3 3-3" />
-                <path d="M12 6v7" />
-              </svg>
-            </div>
-            <div>
-              <div class="font-black text-xs text-white">Install App to Home Screen</div>
-              <div class="text-[10px] text-indigo-300">Run full screen with zero browser bars</div>
-            </div>
-          </div>
-          <button onclick="promptPwaInstall()"
-            class="min-h-[38px] px-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl tap-pop shadow-md">
-            Install
-          </button>
-        </div>
-        <p class="text-[10px] text-slate-400 leading-tight">
-          Works 100% offline on field sidelines even without cellular service.
-        </p>
-      </div>
 
       <div class="space-y-2">
-        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">JSON Cloud / Phone Transfer</label>
+        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Import / Export</label>
         <p class="text-xs text-slate-400 leading-normal">
-          Downloads your entire roster, all games, past statistics, and retired players in a single file so your data is
-          never lost.
+          Save your entire roster, all games, and stats to a file — or restore from a previous backup.
         </p>
         <div class="grid grid-cols-2 gap-2 pt-1">
           <button onclick="exportData()"
