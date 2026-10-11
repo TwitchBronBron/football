@@ -67,11 +67,6 @@
     </div>
 
     <div class="flex items-center gap-1.5">
-      <!-- Screen Wake Lock Toggle -->
-      <button id="wakeLockBtn" onclick="toggleWakeLock()" class="px-2 py-1.5 rounded-lg text-[10px] font-bold border border-emerald-500/40 bg-emerald-950/60 text-emerald-400 flex items-center gap-1 tap-pop">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="wakeLockText">AWAKE</span>
-      </button>
 
       <!-- Install to Home Screen Prompt Button -->
       <button id="installAppHeaderBtn" onclick="promptPwaInstall()" class="px-2 py-1.5 rounded-lg bg-indigo-950/70 hover:bg-indigo-900 text-indigo-300 border border-indigo-500/40 text-[11px] font-bold flex items-center gap-1 tap-pop" title="Install to Phone Home Screen">
@@ -174,60 +169,57 @@
     </div>
   </footer>
 
-  <div id="newGameModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
-        <div>
-          <h2 class="font-black text-base text-white">⚡ Start New Game</h2>
-          <p class="text-[11px] text-slate-400">Choose who is here today. Absent kids won't count.</p>
+  <div id="newGameModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md h-full sm:h-auto sm:max-h-[90vh] flex flex-col overflow-hidden sm:rounded-2xl shadow-2xl">
+      <!-- Header: Compact & Sleek with live attendance count -->
+      <div class="px-3.5 py-2.5 sm:py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900 shrink-0">
+        <div class="flex items-center gap-2">
+          <h2 class="font-black text-sm sm:text-base text-white">⚡ Start New Game</h2>
+          <span id="attendanceCountSummary" class="text-[11px] font-mono-numbers font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.5 rounded">0/0</span>
         </div>
         <button onclick="closeModal('newGameModal')" class="text-slate-400 hover:text-white p-1 font-bold text-lg leading-none">✕</button>
       </div>
 
-      <div class="p-4 overflow-y-auto space-y-3.5 flex-1">
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Name</label>
-            <input type="text" id="newGameNameInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white font-bold focus:outline-none focus:border-emerald-500" placeholder="e.g. Game 1 vs Tigers">
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Date</label>
-            <input type="date" id="newGameDateInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white font-bold focus:outline-none focus:border-emerald-500">
-          </div>
-        </div>
-
+      <!-- Compact Game Name & Date Header Bar -->
+      <div class="px-3 py-2 bg-slate-900/95 border-b border-slate-800/80 grid grid-cols-2 gap-2 shrink-0">
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Attendance Checklist</label>
-            <div class="space-x-2 text-[11px]">
-              <button type="button" onclick="toggleAllAttendance(true)" class="text-emerald-400 font-bold hover:underline">Select All</button>
-              <span class="text-slate-600">|</span>
-              <button type="button" onclick="toggleAllAttendance(false)" class="text-slate-400 font-bold hover:underline">Clear</button>
-            </div>
-          </div>
-
-          <!-- Pre-game Roster Management Quick Toolbar -->
-          <div class="flex items-center justify-between pb-1.5 mb-1.5 border-b border-slate-800/80">
-            <span class="text-[10px] text-slate-400 font-semibold">Tweak spellings or cues below:</span>
-            <div class="flex items-center gap-1.5">
-              <button type="button" onclick="openAddKidModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-emerald-400 font-bold px-2 py-0.5 rounded border border-slate-700">
-                + Add Kid
-              </button>
-              <button type="button" onclick="openRosterModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-2 py-0.5 rounded border border-slate-700">
-                👥 Manage Roster
-              </button>
-            </div>
-          </div>
-
-          <div id="attendanceCheckboxList" class="space-y-1.5 max-h-[44vh] overflow-y-auto pr-1">
-            <!-- Dynamic Attendance Checkboxes with Inline Edit Pencils -->
-          </div>
+          <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Game Name</label>
+          <input type="text" id="newGameNameInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-emerald-500" placeholder="e.g. Game 1 vs Tigers">
+        </div>
+        <div>
+          <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Game Date</label>
+          <input type="date" id="newGameDateInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-emerald-500">
         </div>
       </div>
 
-      <div class="p-3 border-t border-slate-800 bg-slate-900/90 flex gap-2">
-        <button onclick="confirmCreateNewGame()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-3 rounded-xl text-sm sm:text-base tracking-wide tap-pop shadow-md">
-          START GAME 🚀
+      <!-- Unified Attendance Action Strip (Single row, zero wasted height) -->
+      <div class="px-3 py-1.5 bg-slate-800/50 border-b border-slate-800/70 flex items-center justify-between text-xs shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Attendance:</span>
+          <button type="button" onclick="toggleAllAttendance(true)" class="text-emerald-400 font-bold hover:underline text-[11px]">All</button>
+          <span class="text-slate-600 text-[10px]">|</span>
+          <button type="button" onclick="toggleAllAttendance(false)" class="text-slate-400 font-bold hover:underline text-[11px]">None</button>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button type="button" onclick="openAddKidModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-emerald-400 font-bold px-2 py-0.5 rounded border border-slate-700">
+            + Kid
+          </button>
+          <button type="button" onclick="openRosterModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-2 py-0.5 rounded border border-slate-700">
+            👥 Roster
+          </button>
+        </div>
+      </div>
+
+      <!-- Attendance Checklist: Fills all remaining space, single scroll container -->
+      <div id="attendanceCheckboxList" class="flex-1 overflow-y-auto p-2.5 sm:p-3 space-y-1.5">
+        <!-- Dynamic Attendance Checkboxes with Inline Edit Pencils -->
+      </div>
+
+      <!-- Bottom Dock: Fixed Start Game Button -->
+      <div class="p-2.5 sm:p-3 border-t border-slate-800 bg-slate-900 shrink-0" style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom));">
+        <button onclick="confirmCreateNewGame()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-3 rounded-xl text-sm sm:text-base tracking-wide tap-pop shadow-md flex items-center justify-center gap-2">
+          <span>START GAME</span>
+          <span>🚀</span>
         </button>
       </div>
     </div>
@@ -621,17 +613,26 @@
       openModal('newGameModal');
     }
 
+    function updateAttendanceCounts() {
+      const countEl = document.getElementById('attendanceCountSummary');
+      if (!countEl) return;
+      const total = document.querySelectorAll('input[name="gameAttendance"]').length;
+      const checked = document.querySelectorAll('input[name="gameAttendance"]:checked').length;
+      countEl.innerText = `${checked}/${total}`;
+    }
+
     function renderAttendanceChecklistRows() {
       const activeKids = appData.masterRoster.filter(k => !k.retired);
       const container = document.getElementById('attendanceCheckboxList');
 
       if (activeKids.length === 0) {
         container.innerHTML = '<div class="text-xs text-rose-400 p-3 bg-slate-800 rounded-lg">No active kids on roster! Click "+ Add Kid" above.</div>';
+        updateAttendanceCounts();
         return;
       }
 
       container.innerHTML = activeKids.map(kid => `
-        <div id="attendRow_${kid.id}" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/80 transition">
+        <div id="attendRow_${kid.id}" class="flex items-center justify-between p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 transition">
           <label class="flex items-center gap-2.5 flex-1 cursor-pointer min-w-0">
             <input type="checkbox" name="gameAttendance" value="${kid.id}" checked onchange="handleAttendanceToggle('${kid.id}', this.checked)" class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-400 bg-slate-900 border-slate-600">
             <div class="min-w-0">
@@ -647,6 +648,7 @@
           </div>
         </div>
       `).join('');
+      updateAttendanceCounts();
     }
 
     function handleAttendanceToggle(kidId, isChecked) {
@@ -655,14 +657,15 @@
       if (!row || !badge) return;
 
       if (isChecked) {
-        row.className = 'flex items-center justify-between p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/80 transition';
+        row.className = 'flex items-center justify-between p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 transition';
         badge.innerText = 'PRESENT';
         badge.className = 'text-[10px] font-mono-numbers font-black text-emerald-400';
       } else {
-        row.className = 'flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-rose-900/40 opacity-60 transition';
+        row.className = 'flex items-center justify-between p-2 rounded-xl bg-slate-900/60 border border-rose-900/40 opacity-60 transition';
         badge.innerText = 'ABSENT';
         badge.className = 'text-[10px] font-mono-numbers font-black text-rose-400';
       }
+      updateAttendanceCounts();
     }
 
     function toggleAllAttendance(selectAll) {
@@ -670,6 +673,7 @@
         cb.checked = selectAll;
         handleAttendanceToggle(cb.value, selectAll);
       });
+      updateAttendanceCounts();
     }
 
     function confirmCreateNewGame() {
@@ -1021,43 +1025,26 @@
     async function setupWakeLock() {
       if ('wakeLock' in navigator) {
         try {
-          wakeLock = await navigator.wakeLock.request('screen');
-          updateWakeLockUI(true);
-          wakeLock.addEventListener('release', () => updateWakeLockUI(false));
+          if (!wakeLock) {
+            wakeLock = await navigator.wakeLock.request('screen');
+            wakeLock.addEventListener('release', () => {
+              wakeLock = null;
+            });
+          }
         } catch (err) {
-          updateWakeLockUI(false);
+          // Automatic acquisition will retry on next user interaction or visibility change
         }
-      } else {
-        updateWakeLockUI(false);
-      }
-    }
-
-    async function toggleWakeLock() {
-      if (wakeLock !== null) {
-        await wakeLock.release();
-        wakeLock = null;
-        updateWakeLockUI(false);
-      } else {
-        await setupWakeLock();
-      }
-    }
-
-    function updateWakeLockUI(isActive) {
-      const text = document.getElementById('wakeLockText');
-      const btn = document.getElementById('wakeLockBtn');
-      if (isActive) {
-        text.innerText = 'AWAKE';
-        btn.className = 'px-2 py-1.5 rounded-lg text-[10px] font-bold border border-emerald-500/40 bg-emerald-950/60 text-emerald-400 flex items-center gap-1 tap-pop';
-      } else {
-        text.innerText = 'SLEEP ON';
-        btn.className = 'px-2 py-1.5 rounded-lg text-[10px] font-bold border border-slate-700 bg-slate-800 text-slate-400 flex items-center gap-1 tap-pop';
       }
     }
 
     document.addEventListener('visibilitychange', async () => {
-      if (wakeLock !== null && document.visibilityState === 'visible') {
+      if (document.visibilityState === 'visible') {
         await setupWakeLock();
       }
+    });
+
+    ['touchstart', 'click'].forEach(evt => {
+      document.addEventListener(evt, () => setupWakeLock(), { once: true });
     });
 
     function haptic(pattern = 25) {
