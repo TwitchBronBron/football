@@ -1032,7 +1032,6 @@
 
       if (!appData.games || appData.games.length === 0) {
         renderAll();
-        openNewGameModal();
       } else {
         if (!appData.activeGameId || !appData.games.find(g => g.id === appData.activeGameId)) {
           appData.activeGameId = appData.games[0].id;
