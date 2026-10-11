@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>PlayTime Tracker</title>
 
   <!-- PWA & Mobile Web App Meta Tags -->
@@ -14,18 +16,26 @@
   <meta name="theme-color" content="#0f172a">
 
   <!-- Crisp SVG App Icon (Clipboard + Play Whistle + Stopwatch Timer) -->
-  <link rel="icon" type="image/svg+xml" id="dynamicFavicon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cdefs%3E%3ClinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%230f172a'/%3E%3Cstop%20offset='100%25'%20stop-color='%23020617'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='emeraldG'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%2310b981'/%3E%3Cstop%20offset='100%25'%20stop-color='%23059669'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='amberG'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%23fbbf24'/%3E%3Cstop%20offset='100%25'%20stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='512'%20height='512'%20rx='112'%20fill='url(%23bg)'/%3E%3Crect%20x='88'%20y='90'%20width='336'%20height='366'%20rx='36'%20fill='%231e293b'%20stroke='%23334155'%20stroke-width='12'/%3E%3Crect%20x='186'%20y='54'%20width='140'%20height='64'%20rx='18'%20fill='%23334155'%20stroke='%23475569'%20stroke-width='8'/%3E%3Ccircle%20cx='256'%20y='86'%20r='14'%20fill='%23020617'/%3E%3Crect%20x='136'%20y='170'%20width='150'%20height='24'%20rx='8'%20fill='%2364748b'/%3E%3Crect%20x='136'%20y='214'%20width='240'%20height='18'%20rx='6'%20fill='%23475569'/%3E%3Crect%20x='136'%20y='252'%20width='190'%20height='18'%20rx='6'%20fill='%23475569'/%3E%3Ccircle%20cx='330'%20y='330'%20r='92'%20fill='%230f172a'%20stroke='url(%23amberG)'%20stroke-width='16'/%3E%3Ccircle%20cx='330'%20y='330'%20r='6'%20fill='%23fbbf24'/%3E%3Cpath%20d='M330%20272%20L330%20330%20L368%20352'%20stroke='%23fbbf24'%20stroke-width='12'%20stroke-linecap='round'/%3E%3Cpolygon%20points='180,310%20215,368%20195,372%20220,418%20165,350%20188,345'%20fill='url(%23emeraldG)'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" id="dynamicAppleIcon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cdefs%3E%3ClinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%230f172a'/%3E%3Cstop%20offset='100%25'%20stop-color='%23020617'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='amberG'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%23fbbf24'/%3E%3Cstop%20offset='100%25'%20stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='512'%20height='512'%20rx='112'%20fill='url(%23bg)'/%3E%3Crect%20x='88'%20y='90'%20width='336'%20height='366'%20rx='36'%20fill='%231e293b'%20stroke='%23334155'%20stroke-width='12'/%3E%3Ccircle%20cx='330'%20y='330'%20r='92'%20fill='%230f172a'%20stroke='url(%23amberG)'%20stroke-width='16'/%3E%3Cpath%20d='M330%20272%20L330%20330%20L368%20352'%20stroke='%23fbbf24'%20stroke-width='12'%20stroke-linecap='round'/%3E%3Cpolygon%20points='180,310%20215,368%20195,372%20220,418%20165,350%20188,345'%20fill='%2310b981'/%3E%3C/svg%3E">
-  
+  <link rel="icon" type="image/svg+xml" id="dynamicFavicon"
+    href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cdefs%3E%3ClinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%230f172a'/%3E%3Cstop%20offset='100%25'%20stop-color='%23020617'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='emeraldG'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%2310b981'/%3E%3Cstop%20offset='100%25'%20stop-color='%23059669'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='amberG'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%23fbbf24'/%3E%3Cstop%20offset='100%25'%20stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='512'%20height='512'%20rx='112'%20fill='url(%23bg)'/%3E%3Crect%20x='88'%20y='90'%20width='336'%20height='366'%20rx='36'%20fill='%231e293b'%20stroke='%23334155'%20stroke-width='12'/%3E%3Crect%20x='186'%20y='54'%20width='140'%20height='64'%20rx='18'%20fill='%23334155'%20stroke='%23475569'%20stroke-width='8'/%3E%3Ccircle%20cx='256'%20y='86'%20r='14'%20fill='%23020617'/%3E%3Crect%20x='136'%20y='170'%20width='150'%20height='24'%20rx='8'%20fill='%2364748b'/%3E%3Crect%20x='136'%20y='214'%20width='240'%20height='18'%20rx='6'%20fill='%23475569'/%3E%3Crect%20x='136'%20y='252'%20width='190'%20height='18'%20rx='6'%20fill='%23475569'/%3E%3Ccircle%20cx='330'%20y='330'%20r='92'%20fill='%230f172a'%20stroke='url(%23amberG)'%20stroke-width='16'/%3E%3Ccircle%20cx='330'%20y='330'%20r='6'%20fill='%23fbbf24'/%3E%3Cpath%20d='M330%20272%20L330%20330%20L368%20352'%20stroke='%23fbbf24'%20stroke-width='12'%20stroke-linecap='round'/%3E%3Cpolygon%20points='180,310%20215,368%20195,372%20220,418%20165,350%20188,345'%20fill='url(%23emeraldG)'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" id="dynamicAppleIcon"
+    href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cdefs%3E%3ClinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%230f172a'/%3E%3Cstop%20offset='100%25'%20stop-color='%23020617'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='amberG'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%23fbbf24'/%3E%3Cstop%20offset='100%25'%20stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='512'%20height='512'%20rx='112'%20fill='url(%23bg)'/%3E%3Crect%20x='88'%20y='90'%20width='336'%20height='366'%20rx='36'%20fill='%231e293b'%20stroke='%23334155'%20stroke-width='12'/%3E%3Ccircle%20cx='330'%20y='330'%20r='92'%20fill='%230f172a'%20stroke='url(%23amberG)'%20stroke-width='16'/%3E%3Cpath%20d='M330%20272%20L330%20330%20L368%20352'%20stroke='%23fbbf24'%20stroke-width='12'%20stroke-linecap='round'/%3E%3Cpolygon%20points='180,310%20215,368%20195,372%20220,418%20165,350%20188,345'%20fill='%2310b981'/%3E%3C/svg%3E">
+
   <link rel="manifest" id="dynamicManifestLink">
 
   <!-- Tailwind CSS & High-Legibility Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap"
+    rel="stylesheet">
+
   <style>
+    :root {
+      --app-height: 100dvh;
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       touch-action: manipulation;
@@ -33,89 +43,242 @@
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
       padding-top: env(safe-area-inset-top, 0px);
-      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 9rem);
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8.5rem);
+      min-height: 100vh;
+      min-height: 100dvh;
     }
+
     .font-mono-numbers {
       font-family: 'JetBrains Mono', monospace;
     }
+
+    .tap-pop {
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    }
+
     .tap-pop:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
     }
+
     @keyframes subtle-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.88; transform: scale(1.02); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.90;
+        transform: scale(1.02);
+      }
     }
+
     .pulse-action {
       animation: subtle-pulse 1.8s infinite ease-in-out;
     }
+
+    /* Prevent iOS Safari viewport auto-zoom when tapping inputs */
+    @media (max-width: 639px) {
+
+      input,
+      select,
+      textarea {
+        font-size: 16px !important;
+      }
+    }
+
+    /* Bottom Sheet slide-up animation */
+    @keyframes sheet-slide-up {
+      from {
+        transform: translateY(100%);
+        opacity: 0.6;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .sheet-animate {
+      animation: sheet-slide-up 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Clean custom scrollbar for sideline glance */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.5);
+      border-radius: 9999px;
+    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
 
-  <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 px-3 py-2 sticky top-0 z-30 flex items-center justify-between gap-2 shadow-lg">
-    <div class="flex items-center gap-1.5 flex-1 min-w-0">
-      <div class="flex flex-col min-w-0">
-        <select id="gameSelector" onchange="switchGame(this.value)" class="bg-slate-800 hover:bg-slate-750 text-amber-400 font-extrabold text-xs sm:text-sm px-2.5 py-1.5 rounded-lg border border-slate-700 truncate max-w-[140px] sm:max-w-[200px] focus:outline-none focus:ring-1 focus:ring-amber-400">
-          <!-- Dynamically populated -->
-        </select>
-        <span id="headerGameDate" class="text-[10px] text-slate-400 font-mono-numbers pl-1 leading-none pt-0.5">📅 --/--/--</span>
+<body
+  class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
+
+  <header
+    class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/90 px-3 sm:px-4 py-2.5 sticky top-0 z-30 shadow-lg">
+    <div class="max-w-4xl mx-auto w-full flex items-center justify-between gap-2 sm:gap-3">
+      <!-- Left: Game Switcher & Quick New Game -->
+      <div class="flex items-center gap-2 flex-1 min-w-0">
+        <!-- Game Selector Pill -->
+        <div
+          class="relative flex items-center bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 rounded-2xl px-3 py-1.5 min-h-[52px] shadow-sm focus-within:ring-2 focus-within:ring-amber-400/50 min-w-0 flex-1">
+          <svg class="w-5 h-5 text-amber-400 shrink-0 mr-2" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(-45 12 12)" />
+            <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
+            <line x1="10.5" y1="10.5" x2="11.5" y2="9.5" />
+            <line x1="12.5" y1="12.5" x2="13.5" y2="11.5" />
+            <line x1="12.5" y1="14.5" x2="13.5" y2="13.5" />
+          </svg>
+          <div class="flex flex-col min-w-0 justify-center flex-1">
+            <select id="gameSelector" onchange="switchGame(this.value)"
+              class="bg-transparent text-amber-400 font-extrabold text-sm appearance-none pr-5 focus:outline-none cursor-pointer truncate leading-tight"
+              title="Select Active Game">
+              <!-- Dynamically populated -->
+            </select>
+            <span id="headerGameDate"
+              class="text-[10px] text-slate-400 font-mono-numbers leading-none pt-0.5 truncate">--/--/--</span>
+          </div>
+          <svg class="w-4 h-4 text-slate-400 absolute right-2.5 pointer-events-none" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </div>
+
+        <!-- + New Game Button -->
+        <button onclick="openNewGameModal()"
+          class="min-h-[52px] px-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-black text-xs shadow-md shadow-emerald-950/60 tap-pop flex flex-col items-center justify-center gap-0.5 shrink-0"
+          title="Start New Game">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+          </svg>
+          <span class="text-[10px] font-bold uppercase tracking-wide">Game</span>
+        </button>
       </div>
 
-      <button onclick="openNewGameModal()" class="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white text-[11px] font-extrabold px-2.5 py-2 rounded-lg whitespace-nowrap shadow tap-pop flex items-center gap-1">
-        <span>+</span> Game
-      </button>
-    </div>
+      <!-- Right: Primary Actions -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Install to Home Screen Button (PWA) -->
+        <button id="installAppHeaderBtn" onclick="promptPwaInstall()"
+          class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-indigo-950/70 hover:bg-indigo-900 active:bg-indigo-950 text-indigo-300 border border-indigo-500/40 text-xs font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          title="Install to Phone Home Screen">
+          <svg class="w-6 h-6 text-indigo-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+            <path d="M12 18h.01" />
+            <path d="m9 10 3 3 3-3" />
+            <path d="M12 6v7" />
+          </svg>
+          <span class="text-[10px] font-bold uppercase tracking-wide">Install</span>
+        </button>
 
-    <div class="flex items-center gap-1.5">
+        <!-- Master Roster Button -->
+        <button onclick="openRosterModal()"
+          class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 text-xs font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          title="Manage Team Roster">
+          <svg class="w-6 h-6 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <span class="text-[10px] font-bold uppercase tracking-wide">Roster</span>
+        </button>
 
-      <!-- Install to Home Screen Prompt Button -->
-      <button id="installAppHeaderBtn" onclick="promptPwaInstall()" class="px-2 py-1.5 rounded-lg bg-indigo-950/70 hover:bg-indigo-900 text-indigo-300 border border-indigo-500/40 text-[11px] font-bold flex items-center gap-1 tap-pop" title="Install to Phone Home Screen">
-        <span>📲</span> <span class="hidden sm:inline">Install</span>
-      </button>
+        <!-- Stats Button -->
+        <button onclick="openStatsModal()"
+          class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          title="Game Stats & Playing Time">
+          <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          <span class="text-[10px] font-bold uppercase tracking-wide">Stats</span>
+        </button>
 
-      <!-- Master Roster Button -->
-      <button onclick="openRosterModal()" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-1 tap-pop" title="Manage Team Roster">
-        <span>👥</span> <span class="hidden sm:inline">Roster</span>
-      </button>
-
-      <!-- Stats Button -->
-      <button onclick="openStatsModal()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold tap-pop" title="Game Stats">
-        📊
-      </button>
-
-      <!-- Settings / Backup -->
-      <button onclick="openSettingsModal()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold tap-pop" title="Backup & Offline Tools">
-        ⚙️
-      </button>
+        <!-- Settings / Backup -->
+        <button onclick="openSettingsModal()"
+          class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          title="Backup & Offline Tools">
+          <svg class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14" />
+            <line x1="4" y1="10" x2="4" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12" y2="3" />
+            <line x1="20" y1="21" x2="20" y2="16" />
+            <line x1="20" y1="12" x2="20" y2="3" />
+            <line x1="1" y1="14" x2="7" y2="14" />
+            <line x1="9" y1="8" x2="15" y2="8" />
+            <line x1="17" y1="16" x2="23" y2="16" />
+          </svg>
+          <span class="text-[10px] font-bold uppercase tracking-wide">More</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <section id="swapActionStrip" class="bg-slate-900 border-b border-slate-800 px-3 py-2 z-20">
-    <!-- Default state: Non-intrusive tip + optional suggestion button -->
-    <div id="subAdvisoryDefault" class="flex items-center justify-between gap-2 text-xs">
-      <div class="flex items-center gap-1.5 min-w-0">
-        <span class="text-amber-400 font-bold">💡 Tip:</span>
-        <span id="subTipText" class="text-slate-300 truncate text-[11px]">Tap any 2 playing kids to queue who sits next.</span>
-      </div>
-      <button onclick="autoQueueLongestPlayers()" class="text-[11px] bg-slate-800 hover:bg-slate-750 text-amber-300 font-bold px-2 py-1 rounded border border-slate-700 whitespace-nowrap tap-pop">
-        Suggest 2
-      </button>
-    </div>
-
-    <!-- Active Queue state: Prominent swap confirmation -->
-    <div id="subQueueActive" class="hidden flex items-center justify-between gap-2">
-      <div class="min-w-0">
-        <div class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Queued To Bench:</div>
-        <div id="queuedKidsNames" class="text-xs font-black text-white truncate">WESTON & NOAH</div>
-      </div>
-
-      <div class="flex items-center gap-1.5">
-        <button onclick="clearQueuedSubs()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs px-2.5 py-1.5 rounded-lg font-bold border border-slate-700 tap-pop">
-          Cancel
+  <section id="swapActionStrip" class="bg-slate-900 border-b border-slate-800/80 px-3 py-2 z-20">
+    <div class="max-w-4xl mx-auto w-full">
+      <!-- Default state: Non-intrusive tip + optional suggestion button -->
+      <div id="subAdvisoryDefault" class="flex items-center justify-between gap-2 text-xs">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <svg class="w-4 h-4 text-amber-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+            <path d="M9 18h6" />
+            <path d="M10 22h4" />
+          </svg>
+          <span id="subTipText" class="text-slate-300 truncate text-[11px] sm:text-xs">Tap any 2 playing kids to queue who sits
+            next.</span>
+        </div>
+        <button onclick="autoQueueLongestPlayers()"
+          class="min-h-[36px] px-2.5 text-xs bg-slate-800 hover:bg-slate-750 text-amber-300 font-black rounded-lg border border-slate-700 whitespace-nowrap tap-pop flex items-center gap-1 shadow-sm">
+          <span>Suggest 2</span>
         </button>
-        <button onclick="executeSwap()" class="bg-purple-600 hover:bg-purple-500 active:bg-purple-700 text-white text-xs font-black px-3.5 py-1.5 rounded-lg shadow-lg shadow-purple-950 flex items-center gap-1.5 tap-pop pulse-action">
-          <span>🔄 SWAP PLAYERS NOW</span>
-        </button>
+      </div>
+
+      <!-- Active Queue state: Prominent swap confirmation with generous touch targets -->
+      <div id="subQueueActive" class="hidden flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Queued To Bench:</div>
+          <div id="queuedKidsNames" class="text-xs sm:text-sm font-black text-white truncate">WESTON & NOAH</div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="clearQueuedSubs()"
+            class="min-h-[42px] px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl font-bold border border-slate-700 tap-pop">
+            Cancel
+          </button>
+          <button onclick="executeSwap()"
+            class="min-h-[42px] px-3.5 sm:px-4 bg-purple-600 hover:bg-purple-500 active:bg-purple-700 text-white text-xs font-black rounded-xl shadow-lg shadow-purple-950 flex items-center gap-1.5 tap-pop pulse-action tracking-wide">
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m16 3 4 4-4 4" />
+              <path d="M20 7H4" />
+              <path d="m8 21-4-4 4-4" />
+              <path d="M4 17h16" />
+            </svg>
+            <span>SWAP PLAYERS</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -123,13 +286,20 @@
   <main class="flex-1 p-2 flex flex-col justify-start max-w-4xl mx-auto w-full">
     <!-- Big Splash when no games exist -->
     <div id="emptyStateSplash" class="hidden my-auto text-center py-12 px-4 space-y-4">
-      <div class="text-5xl">🏈</div>
+      <div
+        class="w-16 h-16 mx-auto rounded-3xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-3xl shadow-xl">
+        🏈
+      </div>
       <h2 class="text-2xl font-black text-white tracking-tight">Ready for Kickoff?</h2>
-      <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
+      <p class="text-xs sm:text-sm text-slate-400 max-w-xs mx-auto leading-relaxed">
         Start a new game to pick which kids are present today. All kids remain saved in your persistent team roster.
       </p>
-      <button onclick="openNewGameModal()" class="w-full max-w-xs mx-auto bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-4 px-6 rounded-2xl text-base tracking-wide shadow-xl shadow-emerald-950/80 tap-pop">
-        ⚡ START A NEW GAME
+      <button onclick="openNewGameModal()"
+        class="w-full max-w-xs mx-auto min-h-[52px] bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 active:from-emerald-600 active:to-emerald-500 text-slate-950 font-black px-6 rounded-2xl text-base tracking-wide shadow-xl shadow-emerald-950/80 tap-pop flex items-center justify-center gap-2">
+        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+        <span>START A NEW GAME</span>
       </button>
     </div>
 
@@ -139,109 +309,199 @@
     </div>
   </main>
 
-  <footer id="bottomDock" class="fixed bottom-0 inset-x-0 bg-slate-900/98 backdrop-blur border-t border-slate-800 p-2.5 z-20 shadow-2xl" style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom));">
+  <footer id="bottomDock"
+    class="fixed bottom-0 inset-x-0 bg-slate-900/98 backdrop-blur-md border-t border-slate-800 p-2.5 z-20 shadow-2xl"
+    style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
     <div class="max-w-4xl mx-auto w-full">
-      <!-- Slim Telemetry Row -->
-      <div class="flex items-center justify-between text-[11px] font-mono-numbers px-1 pb-1.5 text-slate-400 border-b border-slate-800/60 mb-1.5">
-        <div class="flex items-center gap-1.5">
-          <span class="text-slate-500 uppercase text-[10px] font-sans">PLAY</span>
+      <!-- High Legibility Telemetry Row -->
+      <div
+        class="flex items-center justify-between text-[11px] font-mono-numbers px-1 pb-2 text-slate-400 border-b border-slate-800/80 mb-2 gap-2">
+        <div class="flex items-center gap-1.5 bg-slate-800/70 border border-slate-700/60 px-2 py-0.5 rounded-lg">
+          <span class="text-slate-400 uppercase text-[9px] font-sans font-bold">PLAY</span>
           <span id="dockPlayCount" class="text-white font-black text-sm">#0</span>
         </div>
-        <div class="flex items-center gap-2">
-          <div>FIELD: <span id="dockFieldCount" class="text-emerald-400 font-bold">0</span></div>
-          <div>BENCH: <span id="dockBenchCount" class="text-amber-400 font-bold">0</span></div>
-          <div>ABSENT: <span id="dockAbsentCount" class="text-slate-500 font-bold">0</span></div>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <div
+            class="bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-lg font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            FIELD: <span id="dockFieldCount">0</span>
+          </div>
+          <div
+            class="bg-amber-950/60 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-lg font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            BENCH: <span id="dockBenchCount">0</span>
+          </div>
+          <div
+            class="bg-slate-800/60 text-slate-400 border border-slate-700/40 px-2 py-0.5 rounded-lg font-bold hidden xs:flex items-center gap-1">
+            ABSENT: <span id="dockAbsentCount">0</span>
+          </div>
         </div>
       </div>
 
-      <!-- Main Action Buttons -->
+      <!-- Main Sideline Action Buttons (Generous Touch Targets) -->
       <div class="flex gap-2 items-stretch">
-        <button onclick="undoLastPlay()" id="undoBtn" disabled class="w-16 bg-slate-800 hover:bg-slate-750 disabled:opacity-30 disabled:pointer-events-none text-slate-300 font-extrabold rounded-xl border border-slate-700 flex flex-col items-center justify-center text-[10px] tap-pop transition">
-          <span class="text-sm">↩</span>
+        <button onclick="undoLastPlay()" id="undoBtn" disabled
+          class="w-20 min-h-[52px] bg-slate-800 hover:bg-slate-750 disabled:opacity-30 disabled:pointer-events-none text-slate-300 font-black rounded-2xl border border-slate-700/80 flex flex-col items-center justify-center text-[10px] tap-pop transition shadow-md shrink-0"
+          title="Undo Last Play Action">
+          <svg class="w-4 h-4 text-slate-300 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7v6h6" />
+            <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+          </svg>
           <span>UNDO</span>
         </button>
 
-        <button onclick="logPlay()" id="logPlayBtn" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-3.5 rounded-xl text-base sm:text-lg tracking-wider tap-pop flex items-center justify-center gap-2 shadow-lg shadow-emerald-950 transition">
-          <span class="text-lg">⚡</span>
+        <button onclick="logPlay()" id="logPlayBtn"
+          class="flex-1 min-h-[52px] bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 active:from-emerald-600 active:to-emerald-500 text-slate-950 font-black py-3 rounded-2xl text-base sm:text-lg tracking-wider tap-pop flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/80 transition">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
           <span id="logPlayBtnText">LOG PLAY #1</span>
         </button>
       </div>
     </div>
   </footer>
 
-  <div id="newGameModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md h-full sm:h-auto sm:max-h-[90vh] flex flex-col overflow-hidden sm:rounded-2xl shadow-2xl">
+  <!-- MODAL: Start New Game -->
+  <div id="newGameModal"
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    <div
+      class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl max-h-[92dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
+      <!-- Mobile Pull Handle -->
+      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+
       <!-- Header: Compact & Sleek with live attendance count -->
-      <div class="px-3.5 py-2.5 sm:py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900 shrink-0">
+      <div
+        class="px-3.5 py-2.5 sm:py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900 shrink-0">
         <div class="flex items-center gap-2">
-          <h2 class="font-black text-sm sm:text-base text-white">⚡ Start New Game</h2>
-          <span id="attendanceCountSummary" class="text-[11px] font-mono-numbers font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.5 rounded">0/0</span>
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-black">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-black text-sm sm:text-base text-white">Start New Game</h2>
+            <div class="text-[10px] text-slate-400">Set roster attendance for today</div>
+          </div>
+          <span id="attendanceCountSummary"
+            class="text-[11px] font-mono-numbers font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-lg ml-1">0/0</span>
         </div>
-        <button onclick="closeModal('newGameModal')" class="text-slate-400 hover:text-white p-1 font-bold text-lg leading-none">✕</button>
+        <button onclick="closeModal('newGameModal')"
+          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+          title="Close">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
       </div>
 
-      <!-- Compact Game Name & Date Header Bar -->
-      <div class="px-3 py-2 bg-slate-900/95 border-b border-slate-800/80 grid grid-cols-2 gap-2 shrink-0">
+      <!-- Game Name & Date Header Bar (Inputs with 16px font to prevent iOS zoom) -->
+      <div class="px-3.5 py-2.5 bg-slate-900/95 border-b border-slate-800/80 grid grid-cols-2 gap-2.5 shrink-0">
         <div>
-          <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Game Name</label>
-          <input type="text" id="newGameNameInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-emerald-500" placeholder="e.g. Game 1 vs Tigers">
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Name</label>
+          <input type="text" id="newGameNameInput"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            placeholder="e.g. Game 1 vs Tigers">
         </div>
         <div>
-          <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Game Date</label>
-          <input type="date" id="newGameDateInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-emerald-500">
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Game Date</label>
+          <input type="date" id="newGameDateInput"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
         </div>
       </div>
 
-      <!-- Unified Attendance Action Strip (Single row, zero wasted height) -->
-      <div class="px-3 py-1.5 bg-slate-800/50 border-b border-slate-800/70 flex items-center justify-between text-xs shrink-0">
+      <!-- Unified Attendance Action Strip (Generous touch targets) -->
+      <div
+        class="px-3.5 py-2 bg-slate-800/50 border-b border-slate-800/70 flex items-center justify-between text-xs shrink-0">
         <div class="flex items-center gap-2">
           <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Attendance:</span>
-          <button type="button" onclick="toggleAllAttendance(true)" class="text-emerald-400 font-bold hover:underline text-[11px]">All</button>
+          <button type="button" onclick="toggleAllAttendance(true)"
+            class="min-h-[32px] px-2 text-emerald-400 font-extrabold hover:underline text-xs flex items-center">All</button>
           <span class="text-slate-600 text-[10px]">|</span>
-          <button type="button" onclick="toggleAllAttendance(false)" class="text-slate-400 font-bold hover:underline text-[11px]">None</button>
+          <button type="button" onclick="toggleAllAttendance(false)"
+            class="min-h-[32px] px-2 text-slate-400 font-extrabold hover:underline text-xs flex items-center">None</button>
         </div>
         <div class="flex items-center gap-1.5">
-          <button type="button" onclick="openAddKidModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-emerald-400 font-bold px-2 py-0.5 rounded border border-slate-700">
-            + Kid
+          <button type="button" onclick="openAddKidModal()"
+            class="min-h-[34px] px-2.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-emerald-400 font-black rounded-lg border border-slate-700 tap-pop flex items-center gap-1">
+            <span>+</span> Kid
           </button>
-          <button type="button" onclick="openRosterModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-2 py-0.5 rounded border border-slate-700">
-            👥 Roster
+          <button type="button" onclick="openRosterModal()"
+            class="min-h-[34px] px-2.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-amber-300 font-black rounded-lg border border-slate-700 tap-pop flex items-center gap-1">
+            <span>👥</span> Roster
           </button>
         </div>
       </div>
 
       <!-- Attendance Checklist: Fills all remaining space, single scroll container -->
-      <div id="attendanceCheckboxList" class="flex-1 overflow-y-auto p-2.5 sm:p-3 space-y-1.5">
+      <div id="attendanceCheckboxList" class="flex-1 overflow-y-auto p-3 space-y-2">
         <!-- Dynamic Attendance Checkboxes with Inline Edit Pencils -->
       </div>
 
       <!-- Bottom Dock: Fixed Start Game Button -->
-      <div class="p-2.5 sm:p-3 border-t border-slate-800 bg-slate-900 shrink-0" style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom));">
-        <button onclick="confirmCreateNewGame()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-3 rounded-xl text-sm sm:text-base tracking-wide tap-pop shadow-md flex items-center justify-center gap-2">
+      <div class="p-3 border-t border-slate-800 bg-slate-900 shrink-0"
+        style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
+        <button onclick="confirmCreateNewGame()"
+          class="w-full min-h-[50px] bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 active:from-emerald-600 active:to-emerald-500 text-slate-950 font-black py-3 rounded-2xl text-base tracking-wide tap-pop shadow-lg shadow-emerald-950/80 flex items-center justify-center gap-2">
           <span>START GAME</span>
-          <span>🚀</span>
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
         </button>
       </div>
     </div>
   </div>
 
-  <div id="rosterModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+  <!-- MODAL: Master Team Roster -->
+  <div id="rosterModal"
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    <div
+      class="bg-slate-900 border border-slate-800 w-full sm:max-w-lg rounded-t-[28px] sm:rounded-2xl max-h-[92dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
+      <!-- Mobile Pull Handle -->
+      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+
       <div class="p-4 border-b border-slate-800 flex items-center justify-between">
-        <div>
-          <h2 class="font-black text-base text-white">👥 Master Team Roster</h2>
-          <p class="text-[11px] text-slate-400">Manage permanent kids and visual cues across games.</p>
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-black text-base text-white">Master Team Roster</h2>
+            <p class="text-[11px] text-slate-400">Manage permanent kids and visual cues across games.</p>
+          </div>
         </div>
-        <button onclick="closeModal('rosterModal')" class="text-slate-400 hover:text-white p-1 font-bold text-lg leading-none">✕</button>
+        <button onclick="closeModal('rosterModal')"
+          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+          title="Close">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
       </div>
 
-      <!-- Filter tabs: Active vs Retired -->
-      <div class="px-4 pt-3 flex gap-2 border-b border-slate-800/60 pb-2">
-        <button id="rosterTabActive" onclick="setRosterTab('active')" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-950/70 text-emerald-400 border border-emerald-500/40">
-          Active Kids (<span id="activeKidsCount">0</span>)
+      <!-- Filter tabs: Active vs Retired (Min 40px touch targets) -->
+      <div class="px-4 pt-3 flex gap-2 border-b border-slate-800/60 pb-3">
+        <button id="rosterTabActive" onclick="setRosterTab('active')"
+          class="min-h-[40px] text-xs font-bold px-3.5 py-2 rounded-xl bg-emerald-950/70 text-emerald-400 border border-emerald-500/40 flex-1 flex items-center justify-center gap-1.5 tap-pop">
+          <span>Active Kids</span>
+          <span class="bg-emerald-900/80 px-1.5 py-0.5 rounded-md font-mono-numbers text-[10px]"
+            id="activeKidsCount">0</span>
         </button>
-        <button id="rosterTabRetired" onclick="setRosterTab('retired')" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
-          Retired Kids (<span id="retiredKidsCount">0</span>)
+        <button id="rosterTabRetired" onclick="setRosterTab('retired')"
+          class="min-h-[40px] text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 flex-1 flex items-center justify-center gap-1.5 tap-pop">
+          <span>Retired Kids</span>
+          <span class="bg-slate-750 px-1.5 py-0.5 rounded-md font-mono-numbers text-[10px]"
+            id="retiredKidsCount">0</span>
         </button>
       </div>
 
@@ -251,19 +511,49 @@
         </div>
       </div>
 
-      <div class="p-3 border-t border-slate-800 bg-slate-900 flex justify-between items-center">
-        <button onclick="openAddKidModal()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl text-xs sm:text-sm tap-pop flex items-center justify-center gap-1.5 shadow-md">
-          <span>➕</span> Add New Kid to Team
+      <div class="p-3.5 border-t border-slate-800 bg-slate-900 flex justify-between items-center"
+        style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
+        <button onclick="openAddKidModal()"
+          class="w-full min-h-[48px] bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-3 rounded-2xl text-xs sm:text-sm tap-pop flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/80">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+          </svg>
+          <span>Add New Kid to Team</span>
         </button>
       </div>
     </div>
   </div>
 
-  <div id="editKidModal" class="fixed inset-0 bg-black/85 z-55 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl flex flex-col overflow-hidden shadow-2xl">
+  <!-- MODAL: Edit Kid Details -->
+  <div id="editKidModal"
+    class="fixed inset-0 bg-black/85 z-55 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    <div
+      class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl flex flex-col overflow-hidden shadow-2xl sheet-animate">
+      <!-- Mobile Pull Handle -->
+      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+
       <div class="p-4 border-b border-slate-800 flex items-center justify-between">
-        <h2 id="editKidModalTitle" class="font-black text-sm text-white">✏️ Edit Kid Details</h2>
-        <button onclick="closeModal('editKidModal')" class="text-slate-400 hover:text-white p-1 font-bold text-lg leading-none">✕</button>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-slate-800 text-amber-400 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+              <path d="m15 5 4 4" />
+            </svg>
+          </div>
+          <h2 id="editKidModalTitle" class="font-black text-sm text-white">Edit Kid Details</h2>
+        </div>
+        <button onclick="closeModal('editKidModal')"
+          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+          title="Close">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
       </div>
 
       <div class="p-4 space-y-3.5">
@@ -271,66 +561,109 @@
 
         <div>
           <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Child's Name</label>
-          <input type="text" id="editKidNameInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-bold focus:outline-none focus:border-emerald-500 uppercase" placeholder="e.g. WESTON">
+          <input type="text" id="editKidNameInput"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-base text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50 uppercase"
+            placeholder="e.g. WESTON">
         </div>
 
         <div>
-          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Visual Cue / Nickname</label>
-          <input type="text" id="editKidNoteInput" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white font-semibold focus:outline-none focus:border-emerald-500 uppercase" placeholder="e.g. BLUE CLEATS, TALLEST, RED HAT">
-          
-          <!-- Quick presets -->
-          <div class="flex flex-wrap gap-1.5 mt-2">
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Visual Cue /
+            Nickname</label>
+          <input type="text" id="editKidNoteInput"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-base text-white font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/50 uppercase"
+            placeholder="e.g. BLUE CLEATS, TALLEST, RED HAT">
+
+          <!-- Quick presets with generous tap targets -->
+          <div class="flex flex-wrap gap-1.5 mt-2.5">
             <span class="text-[10px] text-slate-400 self-center">Quick Cues:</span>
-            <button type="button" onclick="setNotePreset('BLUE CLEATS')" class="text-[10px] bg-slate-800 hover:bg-slate-750 px-2 py-0.5 rounded border border-slate-700 text-slate-300">+ Blue Cleats</button>
-            <button type="button" onclick="setNotePreset('RED SHOES')" class="text-[10px] bg-slate-800 hover:bg-slate-750 px-2 py-0.5 rounded border border-slate-700 text-slate-300">+ Red Shoes</button>
-            <button type="button" onclick="setNotePreset('TALLEST')" class="text-[10px] bg-slate-800 hover:bg-slate-750 px-2 py-0.5 rounded border border-slate-700 text-slate-300">+ Tallest</button>
-            <button type="button" onclick="setNotePreset('SMALLEST')" class="text-[10px] bg-slate-800 hover:bg-slate-750 px-2 py-0.5 rounded border border-slate-700 text-slate-300">+ Smallest</button>
+            <button type="button" onclick="setNotePreset('BLUE CLEATS')"
+              class="min-h-[34px] text-xs bg-slate-800 hover:bg-slate-750 px-2.5 py-1 rounded-lg border border-slate-700 text-slate-300 tap-pop">+
+              Blue Cleats</button>
+            <button type="button" onclick="setNotePreset('RED SHOES')"
+              class="min-h-[34px] text-xs bg-slate-800 hover:bg-slate-750 px-2.5 py-1 rounded-lg border border-slate-700 text-slate-300 tap-pop">+
+              Red Shoes</button>
+            <button type="button" onclick="setNotePreset('TALLEST')"
+              class="min-h-[34px] text-xs bg-slate-800 hover:bg-slate-750 px-2.5 py-1 rounded-lg border border-slate-700 text-slate-300 tap-pop">+
+              Tallest</button>
+            <button type="button" onclick="setNotePreset('SMALLEST')"
+              class="min-h-[34px] text-xs bg-slate-800 hover:bg-slate-750 px-2.5 py-1 rounded-lg border border-slate-700 text-slate-300 tap-pop">+
+              Smallest</button>
           </div>
         </div>
 
-        <div id="retireKidSection" class="pt-2 border-t border-slate-800">
-          <button type="button" id="toggleRetireBtn" onclick="toggleKidRetireFromEdit()" class="text-xs text-rose-400 hover:text-rose-300 font-bold flex items-center gap-1">
+        <div id="retireKidSection" class="pt-2.5 border-t border-slate-800">
+          <button type="button" id="toggleRetireBtn" onclick="toggleKidRetireFromEdit()"
+            class="min-h-[36px] text-xs text-rose-400 hover:text-rose-300 font-bold flex items-center gap-1.5 tap-pop">
             <span>📦</span> <span id="toggleRetireBtnText">Retire Kid from Roster</span>
           </button>
-          <p class="text-[10px] text-slate-500 mt-0.5">Retiring keeps all historical game statistics safe, but hides the kid from future game checklists.</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Retiring keeps all historical game statistics safe, but hides the
+            kid from future game checklists.</p>
         </div>
       </div>
 
-      <div class="p-3 border-t border-slate-800 bg-slate-900/90 flex gap-2">
-        <button onclick="closeModal('editKidModal')" class="bg-slate-800 text-slate-300 font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-700 tap-pop">
+      <div class="p-3.5 border-t border-slate-800 bg-slate-900/90 flex gap-2.5"
+        style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
+        <button onclick="closeModal('editKidModal')"
+          class="min-h-[48px] bg-slate-800 text-slate-300 font-bold text-xs px-5 rounded-2xl border border-slate-700 tap-pop">
           Cancel
         </button>
-        <button onclick="saveKidEdits()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl text-xs sm:text-sm tap-pop">
+        <button onclick="saveKidEdits()"
+          class="flex-1 min-h-[48px] bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black rounded-2xl text-xs sm:text-sm tap-pop">
           Save Changes
         </button>
       </div>
     </div>
   </div>
 
-  <div id="statsModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
+  <!-- MODAL: Playing Time Equality Stats -->
+  <div id="statsModal"
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    <div
+      class="bg-slate-900 border border-slate-800 w-full sm:max-w-lg rounded-t-[28px] sm:rounded-2xl max-h-[90dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
+      <!-- Mobile Pull Handle -->
+      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+
       <div class="p-3.5 border-b border-slate-800 flex items-center justify-between">
-        <div>
-          <h2 class="font-black text-sm text-white">📊 Playing Time Equality Report</h2>
-          <p class="text-[10px] text-slate-400">Review play distributions across players.</p>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-black text-sm text-white">Playing Time Equality</h2>
+            <p class="text-[10px] text-slate-400">Review play distributions across players.</p>
+          </div>
         </div>
         <div class="flex items-center gap-2">
-          <select id="statsScopeSelect" onchange="renderStatsTable()" class="bg-slate-800 text-xs px-2.5 py-1.5 rounded-lg border border-slate-700 text-white font-bold">
+          <select id="statsScopeSelect" onchange="renderStatsTable()"
+            class="min-h-[40px] bg-slate-800 text-xs px-2.5 py-1.5 rounded-xl border border-slate-700 text-white font-bold">
             <option value="this">This Game</option>
             <option value="all">All Games Combined</option>
           </select>
-          <button onclick="closeModal('statsModal')" class="text-slate-400 hover:text-white p-1 font-bold">✕</button>
+          <button onclick="closeModal('statsModal')"
+            class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+            title="Close">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
         </div>
       </div>
 
-      <div class="p-3 overflow-y-auto flex-1">
+      <div class="p-3.5 overflow-y-auto flex-1">
         <table class="w-full text-left text-xs">
           <thead>
             <tr class="text-slate-400 border-b border-slate-800 font-mono-numbers text-[10px]">
-              <th class="py-1.5 font-bold">PLAYER</th>
-              <th class="text-center py-1.5 font-bold">PLAYS IN</th>
-              <th class="text-center py-1.5 font-bold">BENCH</th>
-              <th class="text-right py-1.5 font-bold">SHARE</th>
+              <th class="py-2 font-bold">PLAYER</th>
+              <th class="text-center py-2 font-bold">PLAYS IN</th>
+              <th class="text-center py-2 font-bold">BENCH</th>
+              <th class="text-right py-2 font-bold">SHARE</th>
             </tr>
           </thead>
           <tbody id="statsTableBody" class="divide-y divide-slate-800/60 font-mono-numbers">
@@ -339,35 +672,82 @@
         </table>
       </div>
 
-      <div class="p-3 border-t border-slate-800 bg-slate-900 flex justify-end">
-        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-3.5 py-2 rounded-xl border border-slate-700 flex items-center gap-1.5 tap-pop">
-          🖨️ Print / Save PDF
+      <div class="p-3.5 border-t border-slate-800 bg-slate-900 flex justify-end"
+        style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
+        <button onclick="window.print()"
+          class="min-h-[44px] bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-2xl border border-slate-700 flex items-center gap-2 tap-pop">
+          <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect width="12" height="8" x="6" y="14" />
+          </svg>
+          <span>Print / Save PDF</span>
         </button>
       </div>
     </div>
   </div>
 
-  <div id="settingsModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl max-h-[88vh] flex flex-col overflow-hidden p-4 space-y-4 shadow-2xl">
+  <!-- MODAL: Settings & Offline PWA Tools -->
+  <div id="settingsModal"
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    <div
+      class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl max-h-[90dvh] flex flex-col overflow-hidden p-4 space-y-4 shadow-2xl sheet-animate">
+      <!-- Mobile Pull Handle -->
+      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-1 shrink-0 sm:hidden"></div>
+
       <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
-        <div>
-          <h2 class="font-black text-sm text-white">⚙️ Offline & PWA Settings</h2>
-          <p class="text-[10px] text-slate-400">Indexed LocalStorage, PWA, & JSON Backups</p>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-slate-800 text-slate-300 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14" />
+              <line x1="4" y1="10" x2="4" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12" y2="3" />
+              <line x1="20" y1="21" x2="20" y2="16" />
+              <line x1="20" y1="12" x2="20" y2="3" />
+              <line x1="1" y1="14" x2="7" y2="14" />
+              <line x1="9" y1="8" x2="15" y2="8" />
+              <line x1="17" y1="16" x2="23" y2="16" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-black text-sm text-white">Offline & PWA Tools</h2>
+            <p class="text-[10px] text-slate-400">Indexed LocalStorage, PWA, & JSON Backups</p>
+          </div>
         </div>
-        <button onclick="closeModal('settingsModal')" class="text-slate-400 hover:text-white font-bold p-1">✕</button>
+        <button onclick="closeModal('settingsModal')"
+          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+          title="Close">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
       </div>
 
       <!-- Dedicated PWA Install Banner -->
-      <div class="p-3 rounded-2xl bg-indigo-950/40 border border-indigo-500/40 space-y-2">
+      <div class="p-3.5 rounded-2xl bg-indigo-950/40 border border-indigo-500/40 space-y-2">
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-xl">📲</span>
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+                <path d="M12 18h.01" />
+                <path d="m9 10 3 3 3-3" />
+                <path d="M12 6v7" />
+              </svg>
+            </div>
             <div>
               <div class="font-black text-xs text-white">Install App to Home Screen</div>
               <div class="text-[10px] text-indigo-300">Run full screen with zero browser bars</div>
             </div>
           </div>
-          <button onclick="promptPwaInstall()" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-lg tap-pop">
+          <button onclick="promptPwaInstall()"
+            class="min-h-[38px] px-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl tap-pop shadow-md">
             Install
           </button>
         </div>
@@ -379,22 +759,39 @@
       <div class="space-y-2">
         <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">JSON Cloud / Phone Transfer</label>
         <p class="text-xs text-slate-400 leading-normal">
-          Downloads your entire roster, all games, past statistics, and retired players in a single file so your data is never lost.
+          Downloads your entire roster, all games, past statistics, and retired players in a single file so your data is
+          never lost.
         </p>
         <div class="grid grid-cols-2 gap-2 pt-1">
-          <button onclick="exportData()" class="bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-1 tap-pop">
-            ⬇️ Export Backup
+          <button onclick="exportData()"
+            class="min-h-[46px] bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs rounded-2xl font-bold text-white flex items-center justify-center gap-1.5 tap-pop">
+            <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Export Backup</span>
           </button>
-          <label class="bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs py-2.5 rounded-xl font-bold text-white text-center cursor-pointer flex items-center justify-center gap-1 tap-pop">
-            ⬆️ Import Backup
+          <label
+            class="min-h-[46px] bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs rounded-2xl font-bold text-white text-center cursor-pointer flex items-center justify-center gap-1.5 tap-pop">
+            <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <span>Import Backup</span>
             <input type="file" id="importFileInput" onchange="importData(event)" accept=".json" class="hidden">
           </label>
         </div>
       </div>
 
       <div class="pt-2 border-t border-slate-800 space-y-2">
-        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Game Attendance Adjustment</label>
-        <p class="text-[11px] text-slate-400">If a child arrives late or leaves early, adjust their attendance mid-game:</p>
+        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Game Attendance
+          Adjustment</label>
+        <p class="text-[11px] text-slate-400">If a child arrives late or leaves early, adjust their attendance mid-game:
+        </p>
         <div id="liveAttendanceAdjustList" class="space-y-1.5 max-h-[22vh] overflow-y-auto pr-1">
           <!-- Injected dynamically -->
         </div>
@@ -402,34 +799,64 @@
     </div>
   </div>
 
-  <div id="installGuideModal" class="fixed inset-0 bg-black/85 z-60 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-5 space-y-4 shadow-2xl">
+  <!-- MODAL: iOS / iPad Install Guide -->
+  <div id="installGuideModal"
+    class="fixed inset-0 bg-black/85 z-60 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    <div
+      class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl p-5 space-y-4 shadow-2xl sheet-animate">
+      <!-- Mobile Pull Handle -->
+      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-1 shrink-0 sm:hidden"></div>
+
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
-          <span class="text-2xl">📲</span>
-          <h3 class="font-black text-sm text-white">How to Install on iPhone / iPad</h3>
+          <div class="w-8 h-8 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+              <path d="M12 18h.01" />
+            </svg>
+          </div>
+          <h3 class="font-black text-sm text-white">Install on iPhone / iPad</h3>
         </div>
-        <button onclick="closeModal('installGuideModal')" class="text-slate-400 hover:text-white font-bold p-1">✕</button>
+        <button onclick="closeModal('installGuideModal')"
+          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+          title="Close">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
       </div>
 
       <div class="space-y-3 text-xs text-slate-300">
-        <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
-          <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-xs shrink-0">1</div>
-          <div>Tap the <strong class="text-white">Share</strong> button at the bottom of Safari (the square with an arrow pointing up <span class="text-base leading-none">⎋</span>).</div>
+        <div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-800/80 border border-slate-700/60">
+          <div
+            class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-xs shrink-0">
+            1</div>
+          <div>Tap the <strong class="text-white">Share</strong> button at the bottom of Safari (the square with an
+            arrow pointing up).</div>
         </div>
 
-        <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
-          <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-xs shrink-0">2</div>
-          <div>Scroll down and select <strong class="text-white">Add to Home Screen</strong> (<span class="font-mono text-sm">+</span>).</div>
+        <div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-800/80 border border-slate-700/60">
+          <div
+            class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-xs shrink-0">
+            2</div>
+          <div>Scroll down and select <strong class="text-white">Add to Home Screen</strong> (<span
+              class="font-mono text-sm">+</span>).</div>
         </div>
 
-        <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
-          <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-xs shrink-0">3</div>
-          <div>Tap <strong class="text-emerald-400">Add</strong> in the top-right corner. PlayTime will now open like a native app!</div>
+        <div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-800/80 border border-slate-700/60">
+          <div
+            class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-xs shrink-0">
+            3</div>
+          <div>Tap <strong class="text-emerald-400">Add</strong> in the top-right corner. PlayTime will now open like a
+            native app!</div>
         </div>
       </div>
 
-      <button onclick="closeModal('installGuideModal')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 rounded-xl text-xs uppercase tracking-wider tap-pop">
+      <button onclick="closeModal('installGuideModal')"
+        class="w-full min-h-[48px] bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 rounded-2xl text-xs uppercase tracking-wider tap-pop">
         Got It
       </button>
     </div>
@@ -626,24 +1053,27 @@
       const container = document.getElementById('attendanceCheckboxList');
 
       if (activeKids.length === 0) {
-        container.innerHTML = '<div class="text-xs text-rose-400 p-3 bg-slate-800 rounded-lg">No active kids on roster! Click "+ Add Kid" above.</div>';
+        container.innerHTML = '<div class="text-xs text-rose-400 p-3 bg-slate-800 rounded-xl">No active kids on roster! Click "+ Add Kid" above.</div>';
         updateAttendanceCounts();
         return;
       }
 
       container.innerHTML = activeKids.map(kid => `
-        <div id="attendRow_${kid.id}" class="flex items-center justify-between p-2 rounded-xl bg-slate-800/90 border border-slate-700/80 transition">
-          <label class="flex items-center gap-2.5 flex-1 cursor-pointer min-w-0">
-            <input type="checkbox" name="gameAttendance" value="${kid.id}" checked onchange="handleAttendanceToggle('${kid.id}', this.checked)" class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-400 bg-slate-900 border-slate-600">
+        <div id="attendRow_${kid.id}" class="flex items-center justify-between p-2.5 sm:p-3 rounded-2xl bg-slate-800/90 border border-slate-700/80 transition">
+          <label class="flex items-center gap-3 flex-1 cursor-pointer min-w-0 py-1">
+            <input type="checkbox" name="gameAttendance" value="${kid.id}" checked onchange="handleAttendanceToggle('${kid.id}', this.checked)" class="w-5 h-5 rounded-lg text-emerald-500 focus:ring-emerald-400 bg-slate-900 border-slate-600 cursor-pointer">
             <div class="min-w-0">
-              <span class="font-extrabold text-xs text-white truncate">${kid.name}</span>
-              ${kid.note ? `<span class="text-[10px] text-slate-400 font-bold ml-1 truncate">(${kid.note})</span>` : ''}
+              <span class="font-black text-sm text-white truncate">${kid.name}</span>
+              ${kid.note ? `<span class="text-[11px] text-amber-300 font-bold ml-1 truncate">(${kid.note})</span>` : ''}
             </div>
           </label>
           <div class="flex items-center gap-2">
-            <span id="attendBadge_${kid.id}" class="text-[10px] font-mono-numbers font-black text-emerald-400">PRESENT</span>
-            <button type="button" onclick="openEditKidModal('${kid.id}')" class="p-1 rounded bg-slate-700/60 hover:bg-slate-700 text-slate-300 text-[11px] tap-pop" title="Edit Kid Spelling/Cue">
-              ✏️
+            <span id="attendBadge_${kid.id}" class="text-[10px] font-mono-numbers font-black text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-md border border-emerald-500/30">PRESENT</span>
+            <button type="button" onclick="openEditKidModal('${kid.id}')" class="w-9 h-9 rounded-xl bg-slate-700/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center border border-slate-600/70 tap-pop transition shadow-sm" title="Edit Kid Details">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                <path d="m15 5 4 4"/>
+              </svg>
             </button>
           </div>
         </div>
@@ -1089,7 +1519,7 @@
         return;
       }
 
-      selector.innerHTML = appData.games.map(g => 
+      selector.innerHTML = appData.games.map(g =>
         `<option value="${g.id}" ${g.id === appData.activeGameId ? 'selected' : ''}>${g.name}</option>`
       ).join('');
 
@@ -1345,7 +1775,7 @@
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         try {
           const parsed = JSON.parse(e.target.result);
           if (parsed && Array.isArray(parsed.games) && Array.isArray(parsed.masterRoster)) {
@@ -1364,4 +1794,5 @@
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
+
 </html>
