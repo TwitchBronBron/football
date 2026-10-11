@@ -1588,12 +1588,7 @@
           <div onclick="handleCardTap('${p.id}')" class="relative rounded-2xl p-2.5 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[104px] ${cardClass}">
             <div class="flex justify-between items-start gap-1">
               <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-1">
                   <span class="font-black text-sm text-white truncate">${p.name}</span>
-                  <button onclick="event.stopPropagation(); openEditKidModal('${p.id}')" class="text-slate-400 hover:text-white p-0.5 text-[11px]" title="Edit Nickname">
-                    ✏️
-                  </button>
-                </div>
                 ${p.note ? `<div class="text-[10px] text-amber-300 font-bold truncate leading-none mt-0.5">${p.note}</div>` : ''}
               </div>
 
