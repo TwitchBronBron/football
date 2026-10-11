@@ -1390,8 +1390,15 @@
     }
 
     function deleteKidFromRoster() {
-      const kidId = document.getElementById('editKidId').value;
+      const kidId = document.getElementById('editKidIdInput')?.value || document.getElementById('editKidId')?.value;
       if (!kidId) return;
+
+      const kid = appData.masterRoster.find(k => k.id === kidId);
+      const kidName = kid ? kid.name : 'this kid';
+
+      if (!confirm(`Are you sure you want to remove ${kidName} from the team?`)) {
+        return;
+      }
 
       appData.masterRoster = appData.masterRoster.filter(k => k.id !== kidId);
 
@@ -1664,6 +1671,13 @@
     function deleteGameFromEdit() {
       const gameId = document.getElementById('editGameIdInput').value;
       if (!gameId) return;
+
+      const game = appData.games.find(g => g.id === gameId);
+      const gameName = game ? `"${game.name}"` : 'this game';
+
+      if (!confirm(`Are you sure you want to delete ${gameName}? All plays and history for this game will be permanently removed.`)) {
+        return;
+      }
 
       appData.games = appData.games.filter(g => g.id !== gameId);
 
