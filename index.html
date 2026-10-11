@@ -105,6 +105,15 @@
       animation: sheet-slide-up 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
+    .sheet-handle {
+      touch-action: none;
+      cursor: grab;
+      -webkit-user-select: none;
+      user-select: none;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
     /* Clean custom scrollbar for sideline glance */
     ::-webkit-scrollbar {
       width: 5px;
@@ -206,8 +215,7 @@
             <path d="M9 18h6" />
             <path d="M10 22h4" />
           </svg>
-          <span id="subTipText" class="text-slate-300 truncate text-[11px] sm:text-xs">Tap any 2 playing kids to queue who sits
-            next.</span>
+          <span id="subTipText" class="text-slate-300 truncate text-[11px] sm:text-xs"></span>
         </div>
         <button onclick="autoQueueLongestPlayers()"
           class="min-h-[36px] px-2.5 text-xs bg-slate-800 hover:bg-slate-750 text-amber-300 font-black rounded-lg border border-slate-700 whitespace-nowrap tap-pop flex items-center gap-1 shadow-sm">
@@ -327,7 +335,9 @@
     class="fixed inset-0 bg-black/80 z-50 hidden flex items-end justify-center backdrop-blur-sm"
     onclick="if(event.target===this)closeModal('gameSwitcherSheet')">
     <div class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] max-h-[70dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
-      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-3 shrink-0"></div>
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
       <div class="px-4 pb-2 flex items-center justify-between shrink-0">
         <h2 class="font-black text-base text-white">Switch Game</h2>
         <button onclick="openNewGameModal()"
@@ -345,13 +355,16 @@
   </div>
 
   <!-- MODAL: Start New Game -->
-
   <div id="newGameModal"
-    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('newGameModal')">
     <div
       class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl max-h-[92dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
+
       <!-- Mobile Pull Handle -->
-      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0 sm:hidden">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
 
       <!-- Header: Compact & Sleek with live attendance count -->
       <div
@@ -444,11 +457,14 @@
 
   <!-- MODAL: Master Team Roster -->
   <div id="rosterModal"
-    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('rosterModal')">
     <div
       class="bg-slate-900 border border-slate-800 w-full sm:max-w-lg rounded-t-[28px] sm:rounded-2xl max-h-[92dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
       <!-- Mobile Pull Handle -->
-      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0 sm:hidden">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
 
       <div class="p-4 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
@@ -509,11 +525,14 @@
 
   <!-- MODAL: Edit Kid Details -->
   <div id="editKidModal"
-    class="fixed inset-0 bg-black/85 z-55 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    class="fixed inset-0 bg-black/85 z-[70] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('editKidModal')">
     <div
       class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl flex flex-col overflow-hidden shadow-2xl sheet-animate">
       <!-- Mobile Pull Handle -->
-      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0 sm:hidden">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
 
       <div class="p-4 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2">
@@ -596,11 +615,14 @@
 
   <!-- MODAL: Playing Time Equality Stats -->
   <div id="statsModal"
-    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('statsModal')">
     <div
       class="bg-slate-900 border border-slate-800 w-full sm:max-w-lg rounded-t-[28px] sm:rounded-2xl max-h-[90dvh] flex flex-col overflow-hidden shadow-2xl sheet-animate">
       <!-- Mobile Pull Handle -->
-      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-2.5 shrink-0 sm:hidden"></div>
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0 sm:hidden">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
 
       <div class="p-3.5 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2">
@@ -669,11 +691,14 @@
 
   <!-- MODAL: Settings & Offline PWA Tools -->
   <div id="settingsModal"
-    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    class="fixed inset-0 bg-black/85 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('settingsModal')">
     <div
       class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl max-h-[90dvh] flex flex-col overflow-hidden p-4 space-y-4 shadow-2xl sheet-animate">
       <!-- Mobile Pull Handle -->
-      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-1 shrink-0 sm:hidden"></div>
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0 sm:hidden">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
 
       <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
         <div class="flex items-center gap-2">
@@ -690,7 +715,7 @@
           </div>
         </div>
         <button onclick="closeModal('settingsModal')"
-          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
+          class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-750 active:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center tap-pop transition"
           title="Close">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
             stroke-linecap="round" stroke-linejoin="round">
@@ -735,11 +760,14 @@
 
   <!-- MODAL: iOS / iPad Install Guide -->
   <div id="installGuideModal"
-    class="fixed inset-0 bg-black/85 z-60 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+    class="fixed inset-0 bg-black/85 z-60 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
+    onclick="if(event.target===this)closeModal('installGuideModal')">
     <div
       class="bg-slate-900 border border-slate-800 w-full sm:max-w-md rounded-t-[28px] sm:rounded-2xl p-5 space-y-4 shadow-2xl sheet-animate">
       <!-- Mobile Pull Handle -->
-      <div class="w-10 h-1.5 bg-slate-700/80 rounded-full mx-auto my-1 shrink-0 sm:hidden"></div>
+      <div class="sheet-handle w-full flex justify-center py-2 shrink-0 sm:hidden">
+        <div class="w-10 h-1.5 bg-slate-700/80 rounded-full"></div>
+      </div>
 
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
@@ -922,6 +950,7 @@
       }
 
       setupWakeLock();
+      initSheetDraggables();
 
       if (!appData.games || appData.games.length === 0) {
         renderAll();
@@ -957,12 +986,71 @@
 
     function openModal(id) {
       const el = document.getElementById(id);
-      if (el) el.classList.remove('hidden');
+      if (el) {
+        el.classList.remove('hidden');
+        const sheet = el.querySelector('.sheet-animate, [class*="rounded-t-"]');
+        if (sheet) {
+          sheet.style.transform = '';
+          sheet.style.transition = '';
+        }
+      }
     }
 
     function closeModal(id) {
       const el = document.getElementById(id);
       if (el) el.classList.add('hidden');
+    }
+
+    function initSheetDraggables() {
+      document.querySelectorAll('.sheet-handle').forEach(handle => {
+        let startY = 0;
+        let currentTranslate = 0;
+        let sheet = handle.closest('.sheet-animate') || handle.parentElement;
+        let modal = handle.closest('[id$="Modal"], [id$="Sheet"]');
+
+        const onTouchStart = (e) => {
+          startY = e.touches ? e.touches[0].clientY : e.clientY;
+          currentTranslate = 0;
+          sheet.style.transition = 'none';
+        };
+
+        const onTouchMove = (e) => {
+          const y = e.touches ? e.touches[0].clientY : e.clientY;
+          const diff = y - startY;
+          if (diff > 0) {
+            e.preventDefault();
+            currentTranslate = diff;
+            sheet.style.transform = `translateY(${diff}px)`;
+          }
+        };
+
+        const onTouchEnd = () => {
+          sheet.style.transition = 'transform 0.2s ease-out';
+          if (currentTranslate > 80 && modal) {
+            sheet.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+              closeModal(modal.id);
+              sheet.style.transform = '';
+            }, 180);
+          } else {
+            sheet.style.transform = 'translateY(0)';
+          }
+        };
+
+        handle.addEventListener('touchstart', onTouchStart, { passive: false });
+        handle.addEventListener('touchmove', onTouchMove, { passive: false });
+        handle.addEventListener('touchend', onTouchEnd);
+        handle.addEventListener('mousedown', onTouchStart);
+        window.addEventListener('mousemove', (e) => {
+          if (startY > 0) onTouchMove(e);
+        });
+        window.addEventListener('mouseup', () => {
+          if (startY > 0) {
+            onTouchEnd();
+            startY = 0;
+          }
+        });
+      });
     }
 
     function openNewGameModal() {
@@ -1488,9 +1576,9 @@
         if (onField.length > 0) {
           const sorted = [...onField].sort((a, b) => b.playsIn - a.playsIn);
           const top2 = sorted.slice(0, 2).map(p => p.name).join(' & ');
-          tipText.innerText = `Most plays: ${top2}. Tap any 2 to queue.`;
+          tipText.innerText = `Most plays: ${top2}`;
         } else {
-          tipText.innerText = 'No players currently on field.';
+          tipText.innerText = 'No players on field';
         }
       }
     }
