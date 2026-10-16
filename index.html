@@ -831,6 +831,11 @@
           </label>
         </div>
       </div>
+
+      <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 font-mono-numbers">
+        <span>Published</span>
+        <span id="appBuildDate" class="font-bold text-slate-400">__BUILD_TIMESTAMP__</span>
+      </div>
     </div>
   </div>
 
@@ -941,6 +946,11 @@
             window.location.reload();
           }
         });
+      }
+
+      const buildEl = document.getElementById('appBuildDate');
+      if (buildEl && buildEl.innerText === '__BUILD_TIMESTAMP__') {
+        buildEl.innerText = new Date().toLocaleString();
       }
     }
 
