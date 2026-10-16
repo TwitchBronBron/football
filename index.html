@@ -224,9 +224,9 @@
     </div>
 
     <!-- Active Game Content: Split into On Field and On Bench -->
-    <div id="activeGamePlayerSections" class="flex-1 flex flex-col min-h-0 gap-2.5 overflow-hidden w-full">
+    <div id="activeGamePlayerSections" class="flex-1 flex flex-col min-h-0 gap-2 overflow-y-auto w-full pb-1">
       <!-- Section: On The Field -->
-      <section id="fieldSection" class="flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200">
+      <section id="fieldSection" class="shrink-0 flex flex-col bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden">
         <div class="flex items-center justify-between px-2 py-1 bg-emerald-900/90 border-b border-emerald-500/40 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></span>
@@ -235,13 +235,13 @@
             <span id="fieldSubCountBadge" class="hidden text-[10px] font-mono-numbers font-black bg-rose-950 text-rose-300 border border-rose-500/50 px-1.5 py-0.5 rounded-md animate-pulse"></span>
           </div>
         </div>
-        <div id="fieldGrid" class="grid grid-cols-2 gap-1 overflow-y-auto min-h-0 p-1 content-start">
+        <div id="fieldGrid" class="grid grid-cols-2 gap-1 p-1 content-start">
           <!-- Field cards -->
         </div>
       </section>
 
       <!-- Section: On The Bench -->
-      <section id="benchSection" class="flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200">
+      <section id="benchSection" class="shrink-0 flex flex-col bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden">
         <div class="flex items-center justify-between px-2 py-1 bg-amber-900/90 border-b border-amber-500/40 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400"></span>
@@ -250,11 +250,10 @@
             <span id="benchSubCountBadge" class="hidden text-[10px] font-mono-numbers font-black bg-cyan-950 text-cyan-300 border border-cyan-500/50 px-1.5 py-0.5 rounded-md animate-pulse"></span>
           </div>
         </div>
-        <div id="benchGrid" class="grid grid-cols-2 gap-1 overflow-y-auto min-h-0 p-1 content-start">
+        <div id="benchGrid" class="grid grid-cols-2 gap-1 p-1 content-start">
           <!-- Bench cards -->
         </div>
       </section>
-
     </div>
   </main>
 
@@ -1934,27 +1933,8 @@
       const benchSection = document.getElementById('benchSection');
 
       if (fieldSection && benchSection) {
-        if (fieldPlayers.length === 0) {
-          // No field players: field is compact header, bench gets full remaining space
-          fieldSection.className = 'shrink-0 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
-          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
-        } else if (benchPlayers.length === 0) {
-          // No bench players: bench is compact header, field gets full remaining space
-          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
-          benchSection.className = 'shrink-0 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
-        } else if (benchPlayers.length <= 4) {
-          // Standard case: 1 or 2 rows on bench. Bench MUST hug its cards (shrink-0, no unused space), Field gets full flex
-          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
-          benchSection.className = 'shrink-0 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
-        } else if (fieldPlayers.length <= 4) {
-          // Inverted case: few field players, many bench players
-          fieldSection.className = 'shrink-0 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
-          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
-        } else {
-          // Both large: share equally
-          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
-          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
-        }
+        fieldSection.style.flex = '';
+        benchSection.style.flex = '';
       }
 
       if (fieldGrid) {
