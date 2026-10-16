@@ -1824,7 +1824,7 @@
       // Update Coming Off badge in Field header
       if (fieldSubBadge) {
         if (outCount > 0) {
-          fieldSubBadge.innerText = `-${outCount} OFF`;
+          fieldSubBadge.innerText = `↓ ${outCount} OFF`;
           fieldSubBadge.classList.remove('hidden');
         } else {
           fieldSubBadge.classList.add('hidden');
@@ -1834,7 +1834,7 @@
       // Update Going On badge in Bench header
       if (benchSubBadge) {
         if (inCount > 0) {
-          benchSubBadge.innerText = `+${inCount} ON`;
+          benchSubBadge.innerText = `↑ ${inCount} ON`;
           benchSubBadge.classList.remove('hidden');
         } else {
           benchSubBadge.classList.add('hidden');
@@ -1884,14 +1884,16 @@
 
             ${isComingOff ? `
               <div class="shrink-0">
-                <span class="bg-rose-500 text-white font-black text-sm px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
-                  OFF
+                <span class="inline-flex items-center gap-0.5 bg-rose-500 text-white font-black text-sm px-2 py-0.5 rounded-md shadow-md animate-pulse">
+                  <span>OFF</span>
+                  <span class="text-base leading-none">↓</span>
                 </span>
               </div>
             ` : isGoingOn ? `
               <div class="shrink-0">
-                <span class="bg-cyan-300 text-slate-950 font-black text-sm px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
-                  ON
+                <span class="inline-flex items-center gap-0.5 bg-cyan-300 text-slate-950 font-black text-sm px-2 py-0.5 rounded-md shadow-md animate-pulse">
+                  <span>ON</span>
+                  <span class="text-base leading-none">↑</span>
                 </span>
               </div>
             ` : ''}
