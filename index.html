@@ -1590,28 +1590,17 @@
       const game = getActiveGame();
       if (!game || (queuedSubOutIds.size === 0 && queuedSubInIds.size === 0)) return;
 
-      const maxField = game.maxFieldPlayers || 6;
-
-      // 1. Move explicitly selected sub-out players to bench
+      // 1. Move explicitly selected sub-out players directly to bench
       queuedSubOutIds.forEach(id => {
         const p = game.players.find(pl => pl.id === id);
         if (p) p.status = 'bench';
       });
 
-      // 2. Move explicitly selected sub-in players to field
+      // 2. Move explicitly selected sub-in players directly to field
       queuedSubInIds.forEach(id => {
         const p = game.players.find(pl => pl.id === id);
         if (p) p.status = 'field';
       });
-
-      // 3. If user selected sub-outs without picking equal sub-ins, backfill open spots automatically from bench
-      const currentOnField = game.players.filter(p => p.status === 'field').length;
-      if (currentOnField < maxField) {
-        const spotsNeeded = maxField - currentOnField;
-        const remainingBench = game.players.filter(p => p.status === 'bench')
-          .sort((a, b) => a.playsIn - b.playsIn);
-        remainingBench.slice(0, spotsNeeded).forEach(p => p.status = 'field');
-      }
 
       queuedSubOutIds.clear();
       queuedSubInIds.clear();
