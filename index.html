@@ -226,7 +226,7 @@
     <!-- Active Game Content: Split into On Field and On Bench -->
     <div id="activeGamePlayerSections" class="flex-1 flex flex-col min-h-0 gap-2.5 overflow-hidden w-full">
       <!-- Section: On The Field -->
-      <section id="fieldSection" class="shrink-0 max-h-[80%] flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200">
+      <section id="fieldSection" class="flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200">
         <div class="flex items-center justify-between px-2 py-1 bg-emerald-900/90 border-b border-emerald-500/40 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></span>
@@ -241,7 +241,7 @@
       </section>
 
       <!-- Section: On The Bench -->
-      <section id="benchSection" class="flex-1 max-h-[85%] flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200">
+      <section id="benchSection" class="flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200">
         <div class="flex items-center justify-between px-2 py-1 bg-amber-900/90 border-b border-amber-500/40 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400"></span>
@@ -1940,9 +1940,26 @@
       if (benchCountBadge) benchCountBadge.innerText = benchPlayers.length;
       if (absentCountBadge) absentCountBadge.innerText = absentPlayers.length;
 
+      const fieldSection = document.getElementById('fieldSection');
+      const benchSection = document.getElementById('benchSection');
+
+      if (fieldSection && benchSection) {
+        if (fieldPlayers.length === 0) {
+          fieldSection.className = 'shrink-0 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
+          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
+        } else if (benchPlayers.length === 0) {
+          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
+          benchSection.className = 'shrink-0 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
+        } else {
+          // Both have players: distribute proportionally with flex-1
+          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
+          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
+        }
+      }
+
       if (fieldGrid) {
         if (fieldPlayers.length === 0) {
-          fieldGrid.innerHTML = '<div class="col-span-2 py-1 text-center text-[11px] font-bold text-slate-400 border border-dashed border-slate-700/60 rounded-lg bg-slate-900/30">No kids on field.</div>';
+          fieldGrid.innerHTML = '<div class="col-span-2 py-0.5 text-center text-[10px] font-bold text-slate-400">No kids on field.</div>';
         } else {
           fieldGrid.innerHTML = fieldPlayers.map(p => renderPlayerCard(p, true)).join('');
         }
@@ -1950,7 +1967,7 @@
 
       if (benchGrid) {
         if (benchPlayers.length === 0) {
-          benchGrid.innerHTML = '<div class="col-span-2 py-1 text-center text-[11px] font-bold text-slate-400 border border-dashed border-slate-700/60 rounded-lg bg-slate-900/30">Bench empty.</div>';
+          benchGrid.innerHTML = '<div class="col-span-2 py-0.5 text-center text-[10px] font-bold text-slate-400">Bench empty.</div>';
         } else {
           benchGrid.innerHTML = benchPlayers.map(p => renderPlayerCard(p, false)).join('');
         }
