@@ -43,9 +43,6 @@
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
       padding-top: env(safe-area-inset-top, 0px);
-      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8.5rem);
-      min-height: 100vh;
-      min-height: 100dvh;
     }
 
     .font-mono-numbers {
@@ -203,7 +200,8 @@
   </header>
 
 
-  <main class="flex-1 px-0.5 pt-0.5 pb-14 flex flex-col w-full min-h-0 overflow-hidden">
+  <main class="flex-1 px-0.5 pt-0.5 flex flex-col w-full min-h-0 overflow-hidden"
+    style="padding-bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px));">
     <!-- Big Splash when no games exist -->
     <div id="emptyStateSplash" class="hidden my-auto text-center py-4 px-4 space-y-4 overflow-y-auto">
       <div
@@ -224,9 +222,9 @@
     </div>
 
     <!-- Active Game Content: Split into On Field and On Bench -->
-    <div id="activeGamePlayerSections" class="flex-1 flex flex-col min-h-0 gap-2 overflow-y-auto w-full pb-1">
+    <div id="activeGamePlayerSections" class="flex-1 grid grid-rows-[minmax(2.25rem,auto)_minmax(2.25rem,auto)] min-h-0 gap-2 overflow-hidden w-full pb-1">
       <!-- Section: On The Field -->
-      <section id="fieldSection" class="shrink-0 flex flex-col bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden">
+      <section id="fieldSection" class="min-h-0 flex flex-col bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden">
         <div class="flex items-center justify-between px-2 py-1 bg-emerald-900/90 border-b border-emerald-500/40 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></span>
@@ -235,13 +233,13 @@
             <span id="fieldSubCountBadge" class="hidden text-[10px] font-mono-numbers font-black bg-rose-950 text-rose-300 border border-rose-500/50 px-1.5 py-0.5 rounded-md animate-pulse"></span>
           </div>
         </div>
-        <div id="fieldGrid" class="grid grid-cols-2 gap-1 p-1 content-start">
+        <div id="fieldGrid" class="flex-1 min-h-0 overflow-y-auto grid grid-cols-2 gap-1 p-1 content-start">
           <!-- Field cards -->
         </div>
       </section>
 
       <!-- Section: On The Bench -->
-      <section id="benchSection" class="shrink-0 flex flex-col bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden">
+      <section id="benchSection" class="min-h-0 flex flex-col bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden">
         <div class="flex items-center justify-between px-2 py-1 bg-amber-900/90 border-b border-amber-500/40 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400"></span>
@@ -250,7 +248,7 @@
             <span id="benchSubCountBadge" class="hidden text-[10px] font-mono-numbers font-black bg-cyan-950 text-cyan-300 border border-cyan-500/50 px-1.5 py-0.5 rounded-md animate-pulse"></span>
           </div>
         </div>
-        <div id="benchGrid" class="grid grid-cols-2 gap-1 p-1 content-start">
+        <div id="benchGrid" class="flex-1 min-h-0 overflow-y-auto grid grid-cols-2 gap-1 p-1 content-start">
           <!-- Bench cards -->
         </div>
       </section>
