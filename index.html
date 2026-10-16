@@ -219,18 +219,18 @@
         </div>
         <button onclick="autoQueueLongestPlayers()"
           class="min-h-[36px] px-2.5 text-xs bg-slate-800 hover:bg-slate-750 text-amber-300 font-black rounded-lg border border-slate-700 whitespace-nowrap tap-pop flex items-center gap-1 shadow-sm">
-          <span>Suggest 2</span>
+          <span>Suggest Subs</span>
         </button>
       </div>
 
       <!-- Active Queue state: Prominent swap confirmation with generous touch targets -->
       <div id="subQueueActive" class="hidden flex items-center justify-between gap-2">
-        <div class="min-w-0">
-          <div class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Queued To Bench:</div>
-          <div id="queuedKidsNames" class="text-xs sm:text-sm font-black text-white truncate">WESTON & NOAH</div>
+        <div class="min-w-0 flex-1">
+          <div id="subQueueSummaryTitle" class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Pending Subs:</div>
+          <div id="queuedKidsNames" class="text-xs sm:text-sm font-black text-white truncate">--</div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 shrink-0">
           <button onclick="clearQueuedSubs()"
             class="min-h-[42px] px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl font-bold border border-slate-700 tap-pop">
             Cancel
@@ -244,14 +244,14 @@
               <path d="m8 21-4-4 4-4" />
               <path d="M4 17h16" />
             </svg>
-            <span>SWAP PLAYERS</span>
+            <span id="executeSwapBtnText">SWITCH</span>
           </button>
         </div>
       </div>
     </div>
   </section>
 
-  <main class="flex-1 p-2 flex flex-col justify-start max-w-4xl mx-auto w-full">
+  <main class="flex-1 p-2 flex flex-col justify-start max-w-4xl mx-auto w-full pb-28">
     <!-- Big Splash when no games exist -->
     <div id="emptyStateSplash" class="hidden my-auto text-center py-12 px-4 space-y-4">
       <div
@@ -271,9 +271,48 @@
       </button>
     </div>
 
-    <!-- 2-Column Responsive Card Grid (Zero scrolling required on standard mobile) -->
-    <div id="playerGrid" class="grid grid-cols-2 gap-2">
-      <!-- Player cards injected dynamically -->
+    <!-- Active Game Content: Split into On Field and On Bench -->
+    <div id="activeGamePlayerSections" class="space-y-4">
+      <!-- Section: On The Field -->
+      <section>
+        <div class="flex items-center justify-between mb-1.5 px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
+            <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400">On The Field</h3>
+            <span id="fieldCountBadge" class="text-[10px] font-mono-numbers font-black bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-500/40">0</span>
+          </div>
+          <span class="text-[10px] text-slate-400 font-bold">Tap to pull off</span>
+        </div>
+        <div id="fieldGrid" class="grid grid-cols-2 gap-2">
+          <!-- Field cards -->
+        </div>
+      </section>
+
+      <!-- Section: On The Bench -->
+      <section>
+        <div class="flex items-center justify-between mb-1.5 px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></span>
+            <h3 class="text-xs font-black uppercase tracking-wider text-amber-400">On The Bench</h3>
+            <span id="benchCountBadge" class="text-[10px] font-mono-numbers font-black bg-amber-950 text-amber-300 px-2 py-0.5 rounded-md border border-amber-500/40">0</span>
+          </div>
+          <span class="text-[10px] text-slate-400 font-bold">Tap to send in</span>
+        </div>
+        <div id="benchGrid" class="grid grid-cols-2 gap-2">
+          <!-- Bench cards -->
+        </div>
+      </section>
+
+      <!-- Section: Absent (hidden if empty) -->
+      <section id="absentSection" class="hidden pt-1 border-t border-slate-800/60">
+        <div class="flex items-center justify-between mb-1.5 px-1">
+          <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">Absent</span>
+          <span id="absentCountBadge" class="text-[10px] font-mono-numbers font-bold text-slate-500">0</span>
+        </div>
+        <div id="absentGrid" class="grid grid-cols-2 gap-2 opacity-50">
+          <!-- Absent cards -->
+        </div>
+      </section>
     </div>
   </main>
 
@@ -1049,6 +1088,7 @@
     };
 
     let queuedSubOutIds = new Set();
+    let queuedSubInIds = new Set();
     let currentRosterTab = 'active'; // 'active' | 'retired'
     let wakeLock = null;
 
@@ -1550,22 +1590,20 @@
       const player = game.players.find(p => p.id === playerId);
       if (!player || player.status === 'absent') return;
 
-      // Bench → Field
-      if (player.status === 'bench') {
-        player.status = 'field';
-        haptic(30);
-        saveState();
-        renderAll();
-        return;
-      }
-
-      // Field: toggle queue. If already queued, move to bench (not back to field).
-      if (queuedSubOutIds.has(playerId)) {
-        queuedSubOutIds.delete(playerId);
-        player.status = 'bench';
-        saveState();
-      } else {
-        queuedSubOutIds.add(playerId);
+      if (player.status === 'field') {
+        // Toggle "Coming off the field"
+        if (queuedSubOutIds.has(playerId)) {
+          queuedSubOutIds.delete(playerId);
+        } else {
+          queuedSubOutIds.add(playerId);
+        }
+      } else if (player.status === 'bench') {
+        // Toggle "Going onto the field"
+        if (queuedSubInIds.has(playerId)) {
+          queuedSubInIds.delete(playerId);
+        } else {
+          queuedSubInIds.add(playerId);
+        }
       }
 
       haptic(25);
@@ -1574,6 +1612,7 @@
 
     function clearQueuedSubs() {
       queuedSubOutIds.clear();
+      queuedSubInIds.clear();
       renderAll();
     }
 
@@ -1582,18 +1621,26 @@
       if (!game) return;
 
       const onField = game.players.filter(p => p.status === 'field');
+      const onBench = game.players.filter(p => p.status === 'bench');
       if (onField.length === 0) return;
 
-      // Sort by consecutive plays running, then by total plays
-      const sorted = [...onField].sort((a, b) => {
+      // Sort field players by consecutive plays running, then by total plays
+      const sortedField = [...onField].sort((a, b) => {
         if (b.consecutivePlaysIn !== a.consecutivePlaysIn) {
           return b.consecutivePlaysIn - a.consecutivePlaysIn;
         }
         return b.playsIn - a.playsIn;
       });
 
+      // Sort bench players by fewest plays
+      const sortedBench = [...onBench].sort((a, b) => a.playsIn - b.playsIn);
+
       queuedSubOutIds.clear();
-      sorted.slice(0, 2).forEach(p => queuedSubOutIds.add(p.id));
+      queuedSubInIds.clear();
+
+      const countToSuggest = Math.min(2, sortedField.length);
+      sortedField.slice(0, countToSuggest).forEach(p => queuedSubOutIds.add(p.id));
+      sortedBench.slice(0, countToSuggest).forEach(p => queuedSubInIds.add(p.id));
 
       haptic([30, 40]);
       renderAll();
@@ -1601,25 +1648,33 @@
 
     function executeSwap() {
       const game = getActiveGame();
-      if (!game || queuedSubOutIds.size === 0) return;
+      if (!game || (queuedSubOutIds.size === 0 && queuedSubInIds.size === 0)) return;
 
       const maxField = game.maxFieldPlayers || 6;
 
-      // 1. Move queued players to the bench first
+      // 1. Move explicitly selected sub-out players to bench
       queuedSubOutIds.forEach(id => {
         const p = game.players.find(pl => pl.id === id);
         if (p) p.status = 'bench';
       });
-      queuedSubOutIds.clear();
 
-      // 2. Count how many spots are open on field
+      // 2. Move explicitly selected sub-in players to field
+      queuedSubInIds.forEach(id => {
+        const p = game.players.find(pl => pl.id === id);
+        if (p) p.status = 'field';
+      });
+
+      // 3. If user selected sub-outs without picking equal sub-ins, backfill open spots automatically from bench
       const currentOnField = game.players.filter(p => p.status === 'field').length;
-      const spotsOpen = Math.max(0, maxField - currentOnField);
+      if (currentOnField < maxField) {
+        const spotsNeeded = maxField - currentOnField;
+        const remainingBench = game.players.filter(p => p.status === 'bench')
+          .sort((a, b) => a.playsIn - b.playsIn);
+        remainingBench.slice(0, spotsNeeded).forEach(p => p.status = 'field');
+      }
 
-      // 3. Pull in bench players (sorted by fewest plays) up to the open spots
-      const benched = game.players.filter(p => p.status === 'bench')
-        .sort((a, b) => a.playsIn - b.playsIn);
-      benched.slice(0, spotsOpen).forEach(p => p.status = 'field');
+      queuedSubOutIds.clear();
+      queuedSubInIds.clear();
 
       haptic([50, 60, 50]);
       saveState();
@@ -1705,11 +1760,13 @@
       const dock = document.getElementById('bottomDock');
       const swapStrip = document.getElementById('swapActionStrip');
 
+      const playerSections = document.getElementById('activeGamePlayerSections');
+
       if (!game) {
         emptyState.classList.remove('hidden');
         dock.classList.add('hidden');
         swapStrip.classList.add('hidden');
-        document.getElementById('playerGrid').innerHTML = '';
+        if (playerSections) playerSections.classList.add('hidden');
         renderHeaderGame();
         return;
       }
@@ -1717,6 +1774,7 @@
       emptyState.classList.add('hidden');
       dock.classList.remove('hidden');
       swapStrip.classList.remove('hidden');
+      if (playerSections) playerSections.classList.remove('hidden');
 
       renderHeaderGame();
       renderSwapStrip(game);
@@ -1825,6 +1883,7 @@
     function switchGame(gameId) {
       appData.activeGameId = gameId;
       queuedSubOutIds.clear();
+      queuedSubInIds.clear();
       saveState();
       closeModal('gameSwitcherSheet');
       renderAll();
@@ -1834,17 +1893,35 @@
       const defaultView = document.getElementById('subAdvisoryDefault');
       const activeQueueView = document.getElementById('subQueueActive');
       const tipText = document.getElementById('subTipText');
+      const titleEl = document.getElementById('subQueueSummaryTitle');
+      const namesEl = document.getElementById('queuedKidsNames');
 
-      if (queuedSubOutIds.size > 0) {
+      const hasPending = queuedSubOutIds.size > 0 || queuedSubInIds.size > 0;
+
+      if (hasPending) {
         defaultView.classList.add('hidden');
         activeQueueView.classList.remove('hidden');
 
-        const names = Array.from(queuedSubOutIds).map(id => {
+        const outNames = Array.from(queuedSubOutIds).map(id => {
           const p = game.players.find(pl => pl.id === id);
           return p ? p.name : '';
         }).filter(Boolean);
 
-        document.getElementById('queuedKidsNames').innerText = names.join(' & ');
+        const inNames = Array.from(queuedSubInIds).map(id => {
+          const p = game.players.find(pl => pl.id === id);
+          return p ? p.name : '';
+        }).filter(Boolean);
+
+        const summaryParts = [];
+        if (outNames.length > 0) summaryParts.push(`OFF: ${outNames.join(', ')}`);
+        if (inNames.length > 0) summaryParts.push(`ON: ${inNames.join(', ')}`);
+
+        if (titleEl) {
+          titleEl.innerText = `Pending Subs (${queuedSubOutIds.size} off / ${queuedSubInIds.size} on):`;
+        }
+        if (namesEl) {
+          namesEl.innerText = summaryParts.join('  ➔  ') || 'Ready to switch';
+        }
       } else {
         defaultView.classList.remove('hidden');
         activeQueueView.classList.add('hidden');
@@ -1860,12 +1937,116 @@
       }
     }
 
-    function renderPlayerGrid(game) {
-      const grid = document.getElementById('playerGrid');
+    function renderPlayerCard(p, isField) {
+      const isComingOff = queuedSubOutIds.has(p.id);
+      const isGoingOn = queuedSubInIds.has(p.id);
+      const playerPositions = p.positions || [];
 
-      grid.innerHTML = game.players.map(p => {
-        if (p.status === 'absent') {
-          return `
+      let cardClass = '';
+      if (isComingOff) {
+        cardClass = 'bg-rose-950/70 border-2 border-dashed border-rose-400 ring-2 ring-rose-500/40 shadow-lg';
+      } else if (isGoingOn) {
+        cardClass = 'bg-cyan-950/70 border-2 border-dashed border-cyan-400 ring-2 ring-cyan-500/40 shadow-lg';
+      } else if (isField) {
+        cardClass = 'bg-emerald-950/45 border border-emerald-500/50 shadow-sm';
+      } else {
+        cardClass = 'bg-amber-950/45 border border-amber-500/50 shadow-sm';
+      }
+
+      return `
+        <div onclick="handleCardTap('${p.id}')" class="relative rounded-2xl p-2.5 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[104px] ${cardClass}">
+          <div class="flex justify-between items-start gap-1">
+            <div class="min-w-0 flex-1">
+              <span class="font-black text-sm text-white truncate block">${p.name}</span>
+              ${p.note ? `<div class="text-[10px] text-amber-300 font-bold truncate leading-none mt-0.5">${p.note}</div>` : ''}
+              ${playerPositions.length > 0 ? `
+                <div class="flex items-center gap-1.5 flex-wrap mt-1.5">
+                  ${playerPositions.map(posKey => {
+                    const posDef = POSITIONS.find(pos => pos.key === posKey);
+                    return posDef ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-black border leading-none tracking-tight shadow-sm ${posDef.badgeClass}">${posDef.key}</span>` : '';
+                  }).join('')}
+                </div>
+              ` : ''}
+            </div>
+
+            <div>
+              ${isComingOff ? `
+                <span class="bg-rose-500 text-white font-black text-[9px] px-1.5 py-0.5 rounded tracking-wide animate-pulse">
+                  COMING OFF
+                </span>
+              ` : isGoingOn ? `
+                <span class="bg-cyan-400 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded tracking-wide animate-pulse">
+                  GOING ON
+                </span>
+              ` : isField ? `
+                <span class="bg-emerald-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider">
+                  PLAYING
+                </span>
+              ` : `
+                <span class="bg-amber-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider">
+                  ON BENCH
+                </span>
+              `}
+            </div>
+          </div>
+
+          <div class="flex items-end justify-between mt-2 pt-1 border-t ${isField ? 'border-emerald-500/20' : 'border-amber-500/20'}">
+            <div class="font-mono-numbers text-xs">
+              <span class="text-slate-400 text-[10px]">PLAYS:</span>
+              <span class="font-black text-sm ${isField ? 'text-emerald-400' : 'text-slate-300'}">${p.playsIn}</span>
+            </div>
+
+            <div class="text-[10px] font-mono-numbers text-right">
+              ${isField ? `
+                <span class="${p.consecutivePlaysIn >= 3 ? 'text-amber-300 font-bold' : 'text-slate-400'}">
+                  ${p.consecutivePlaysIn} in row
+                </span>
+              ` : `
+                <span class="text-amber-400 font-bold">Resting</span>
+              `}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPlayerGrid(game) {
+      const fieldGrid = document.getElementById('fieldGrid');
+      const benchGrid = document.getElementById('benchGrid');
+      const absentGrid = document.getElementById('absentGrid');
+      const absentSection = document.getElementById('absentSection');
+      const fieldCountBadge = document.getElementById('fieldCountBadge');
+      const benchCountBadge = document.getElementById('benchCountBadge');
+      const absentCountBadge = document.getElementById('absentCountBadge');
+
+      const fieldPlayers = game.players.filter(p => p.status === 'field');
+      const benchPlayers = game.players.filter(p => p.status === 'bench');
+      const absentPlayers = game.players.filter(p => p.status === 'absent');
+
+      if (fieldCountBadge) fieldCountBadge.innerText = fieldPlayers.length;
+      if (benchCountBadge) benchCountBadge.innerText = benchPlayers.length;
+      if (absentCountBadge) absentCountBadge.innerText = absentPlayers.length;
+
+      if (fieldGrid) {
+        if (fieldPlayers.length === 0) {
+          fieldGrid.innerHTML = '<div class="col-span-2 py-4 text-center text-xs font-bold text-slate-500 border border-dashed border-slate-800 rounded-2xl">No kids currently on field. Tap bench kids below to put them in.</div>';
+        } else {
+          fieldGrid.innerHTML = fieldPlayers.map(p => renderPlayerCard(p, true)).join('');
+        }
+      }
+
+      if (benchGrid) {
+        if (benchPlayers.length === 0) {
+          benchGrid.innerHTML = '<div class="col-span-2 py-4 text-center text-xs font-bold text-slate-500 border border-dashed border-slate-800 rounded-2xl">Bench is empty. All present kids are on the field.</div>';
+        } else {
+          benchGrid.innerHTML = benchPlayers.map(p => renderPlayerCard(p, false)).join('');
+        }
+      }
+
+      if (absentGrid && absentSection) {
+        if (absentPlayers.length > 0) {
+          absentSection.classList.remove('hidden');
+          absentGrid.innerHTML = absentPlayers.map(p => `
             <div class="bg-slate-900/40 border border-slate-800/60 rounded-2xl p-2.5 opacity-40 flex flex-col justify-between min-h-[96px]">
               <div class="flex justify-between items-start">
                 <div>
@@ -1876,74 +2057,12 @@
               </div>
               <div class="text-[9px] text-slate-500 font-mono-numbers">Not at game</div>
             </div>
-          `;
-        }
-
-        const isQueued = queuedSubOutIds.has(p.id);
-        const isField = p.status === 'field';
-        const playerPositions = p.positions || [];
-
-        let cardClass = '';
-        if (isQueued) {
-          cardClass = 'bg-purple-950/70 border-2 border-dashed border-purple-400 ring-2 ring-purple-500/40 shadow-lg';
-        } else if (isField) {
-          cardClass = 'bg-emerald-950/45 border border-emerald-500/50 shadow-sm';
+          `).join('');
         } else {
-          cardClass = 'bg-amber-950/45 border border-amber-500/50 shadow-sm';
+          absentSection.classList.add('hidden');
+          absentGrid.innerHTML = '';
         }
-
-        return `
-          <div onclick="handleCardTap('${p.id}')" class="relative rounded-2xl p-2.5 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[104px] ${cardClass}">
-            <div class="flex justify-between items-start gap-1">
-              <div class="min-w-0 flex-1">
-                <span class="font-black text-sm text-white truncate block">${p.name}</span>
-                ${p.note ? `<div class="text-[10px] text-amber-300 font-bold truncate leading-none mt-0.5">${p.note}</div>` : ''}
-                ${playerPositions.length > 0 ? `
-                  <div class="flex items-center gap-1.5 flex-wrap mt-1.5">
-                    ${playerPositions.map(posKey => {
-                      const posDef = POSITIONS.find(pos => pos.key === posKey);
-                      return posDef ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-black border leading-none tracking-tight shadow-sm ${posDef.badgeClass}">${posDef.key}</span>` : '';
-                    }).join('')}
-                  </div>
-                ` : ''}
-              </div>
-
-              <div>
-                ${isQueued ? `
-                  <span class="bg-purple-500 text-white font-black text-[9px] px-1.5 py-0.5 rounded tracking-wide animate-pulse">
-                    SUB OUT NEXT
-                  </span>
-                ` : isField ? `
-                  <span class="bg-emerald-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider">
-                    PLAYING
-                  </span>
-                ` : `
-                  <span class="bg-amber-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider">
-                    ON BENCH
-                  </span>
-                `}
-              </div>
-            </div>
-
-            <div class="flex items-end justify-between mt-2 pt-1 border-t ${isField ? 'border-emerald-500/20' : 'border-amber-500/20'}">
-              <div class="font-mono-numbers text-xs">
-                <span class="text-slate-400 text-[10px]">PLAYS:</span>
-                <span class="font-black text-sm ${isField ? 'text-emerald-400' : 'text-slate-300'}">${p.playsIn}</span>
-              </div>
-
-              <div class="text-[10px] font-mono-numbers text-right">
-                ${isField ? `
-                  <span class="${p.consecutivePlaysIn >= 3 ? 'text-amber-300 font-bold' : 'text-slate-400'}">
-                    ${p.consecutivePlaysIn} in row
-                  </span>
-                ` : `
-                  <span class="text-amber-400 font-bold">Resting</span>
-                `}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
+      }
     }
 
     function renderDockCounters(game) {
