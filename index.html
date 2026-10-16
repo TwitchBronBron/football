@@ -1002,10 +1002,10 @@
     const STORAGE_KEY = 'kid_playtime_tracker_v1';
 
     const POSITIONS = [
-      { key: 'C', label: 'Center', badgeClass: 'bg-blue-900/80 text-blue-300 border-blue-500/50' },
-      { key: 'QB', label: 'Quarterback', badgeClass: 'bg-amber-900/80 text-amber-300 border-amber-500/50' },
-      { key: 'RB', label: 'Running Back', badgeClass: 'bg-emerald-900/80 text-emerald-300 border-emerald-500/50' },
-      { key: 'WR', label: 'Wide Receiver', badgeClass: 'bg-purple-900/80 text-purple-300 border-purple-500/50' }
+      { key: 'C', label: 'Center', badgeClass: 'bg-blue-600 text-white border-blue-300' },
+      { key: 'QB', label: 'Quarterback', badgeClass: 'bg-amber-400 text-slate-950 border-amber-200' },
+      { key: 'RB', label: 'Running Back', badgeClass: 'bg-emerald-500 text-slate-950 border-emerald-200' },
+      { key: 'WR', label: 'Wide Receiver', badgeClass: 'bg-purple-600 text-white border-purple-300' }
     ];
 
     const DEFAULT_MASTER_ROSTER = [
@@ -1867,47 +1867,53 @@
       }
 
       return `
-        <div onclick="handleCardTap('${p.id}')" class="relative rounded-xl px-2 py-1.5 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[82px] ${cardClass}">
-          <div class="flex justify-between items-start gap-1">
-            <div class="min-w-0 flex-1 flex flex-col">
+        <div onclick="handleCardTap('${p.id}')" class="relative rounded-xl px-2 py-1 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[92px] ${cardClass}">
+          <div class="min-w-0 flex-1 flex flex-col">
+            <!-- Top line: Name and OFF/ON status badge -->
+            <div class="flex items-center justify-between gap-1 min-w-0">
               <span class="font-black text-xl text-white drop-shadow-md truncate leading-tight tracking-tight">${p.name}</span>
-              ${p.note ? `<div class="text-xs text-amber-200 font-black truncate leading-tight mt-0.5">${p.note}</div>` : ''}
-              ${playerPositions.length > 0 ? `
-                <div class="flex items-center gap-1 flex-wrap mt-1">
-                  ${playerPositions.map(posKey => {
-                    const posDef = POSITIONS.find(pos => pos.key === posKey);
-                    return posDef ? `<span class="px-1.5 py-0.5 rounded text-xs font-black border leading-none bg-slate-950/85 text-white border-white/50 shadow-sm">${posDef.key}</span>` : '';
-                  }).join('')}
+              ${isComingOff ? `
+                <div class="shrink-0">
+                  <span class="inline-flex items-center gap-0.5 bg-rose-500 text-white font-black text-xs px-1.5 py-0.5 rounded-md shadow-md animate-pulse">
+                    <span>OFF</span>
+                    <span class="text-sm leading-none">↓</span>
+                  </span>
+                </div>
+              ` : isGoingOn ? `
+                <div class="shrink-0">
+                  <span class="inline-flex items-center gap-0.5 bg-cyan-300 text-slate-950 font-black text-xs px-1.5 py-0.5 rounded-md shadow-md animate-pulse">
+                    <span>ON</span>
+                    <span class="text-sm leading-none">↑</span>
+                  </span>
                 </div>
               ` : ''}
             </div>
 
-            ${isComingOff ? `
-              <div class="shrink-0">
-                <span class="inline-flex items-center gap-0.5 bg-rose-500 text-white font-black text-sm px-2 py-0.5 rounded-md shadow-md animate-pulse">
-                  <span>OFF</span>
-                  <span class="text-base leading-none">↓</span>
-                </span>
-              </div>
-            ` : isGoingOn ? `
-              <div class="shrink-0">
-                <span class="inline-flex items-center gap-0.5 bg-cyan-300 text-slate-950 font-black text-sm px-2 py-0.5 rounded-md shadow-md animate-pulse">
-                  <span>ON</span>
-                  <span class="text-base leading-none">↑</span>
-                </span>
+            <!-- Description / Note row -->
+            <div class="h-3.5 flex items-center">
+              ${p.note ? `<span class="text-xs text-amber-200 font-black truncate leading-none">${p.note}</span>` : ''}
+            </div>
+
+            <!-- Position badges row: spans full card width so all 4 fit on one line -->
+            ${playerPositions.length > 0 ? `
+              <div class="flex items-center gap-1 flex-nowrap overflow-x-hidden mt-0.5">
+                ${playerPositions.map(posKey => {
+                  const posDef = POSITIONS.find(pos => pos.key === posKey);
+                  return posDef ? `<span class="px-1.5 py-0.5 rounded text-[11px] font-black border leading-none shadow-sm shrink-0 ${posDef.badgeClass}">${posDef.key}</span>` : '';
+                }).join('')}
               </div>
             ` : ''}
           </div>
 
-          <div class="flex items-center justify-between mt-1 pt-1 border-t border-white/20 font-mono-numbers">
-            <div class="flex items-baseline gap-1.5">
-              <span class="text-white/85 text-xs font-bold">PLAYS:</span>
-              <span class="font-black text-lg text-white drop-shadow-sm leading-none">${p.playsIn}</span>
+          <div class="flex items-center justify-between mt-1 pt-0.5 border-t border-white/20 font-mono-numbers gap-1 min-w-0">
+            <div class="flex items-baseline gap-1 shrink-0">
+              <span class="text-white/85 text-[11px] font-bold leading-none">PLAYS:</span>
+              <span class="font-black text-base text-white drop-shadow-sm leading-none">${p.playsIn}</span>
             </div>
 
-            <div class="text-xs text-right font-black">
+            <div class="text-[10px] text-right font-black truncate shrink-0">
               ${isField && p.consecutivePlaysIn >= 3 ? `
-                <span class="text-amber-200 bg-black/50 px-2 py-0.5 rounded border border-amber-400/40">
+                <span class="text-amber-200 bg-black/60 px-1.5 py-0.5 rounded border border-amber-400/40 leading-none">
                   ${p.consecutivePlaysIn} in row
                 </span>
               ` : ''}
