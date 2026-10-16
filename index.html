@@ -255,16 +255,6 @@
         </div>
       </section>
 
-      <!-- Section: Absent (hidden if empty) -->
-      <section id="absentSection" class="hidden shrink-0 pt-1 border-t border-slate-800/60 max-h-16 overflow-y-auto">
-        <div class="flex items-center justify-between mb-1 px-1">
-          <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">Absent</span>
-          <span id="absentCountBadge" class="text-[10px] font-mono-numbers font-bold text-slate-500">0</span>
-        </div>
-        <div id="absentGrid" class="grid grid-cols-2 gap-1.5 opacity-50 p-0.5">
-          <!-- Absent cards -->
-        </div>
-      </section>
     </div>
   </main>
 
@@ -624,33 +614,33 @@
           <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Positions</label>
           <div class="grid grid-cols-2 gap-2" id="editKidPositionsContainer">
             <button type="button" onclick="toggleEditPosition('C')" id="posBtn_C"
-              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border flex items-center justify-between bg-slate-800 text-slate-400 border-slate-700">
               <span class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-md bg-blue-900/80 text-blue-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">C</span>
+                <span class="w-5 h-5 rounded-md bg-blue-600 text-white font-mono-numbers font-black text-[10px] flex items-center justify-center">C</span>
                 <span>Center</span>
               </span>
               <span class="pos-check text-xs hidden">✓</span>
             </button>
             <button type="button" onclick="toggleEditPosition('QB')" id="posBtn_QB"
-              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border flex items-center justify-between bg-slate-800 text-slate-400 border-slate-700">
               <span class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-md bg-amber-900/80 text-amber-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">QB</span>
+                <span class="w-5 h-5 rounded-md bg-amber-400 text-slate-950 font-mono-numbers font-black text-[10px] flex items-center justify-center">QB</span>
                 <span>Quarterback</span>
               </span>
               <span class="pos-check text-xs hidden">✓</span>
             </button>
             <button type="button" onclick="toggleEditPosition('RB')" id="posBtn_RB"
-              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border flex items-center justify-between bg-slate-800 text-slate-400 border-slate-700">
               <span class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-md bg-emerald-900/80 text-emerald-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">RB</span>
+                <span class="w-5 h-5 rounded-md bg-emerald-500 text-slate-950 font-mono-numbers font-black text-[10px] flex items-center justify-center">RB</span>
                 <span>Running Back</span>
               </span>
               <span class="pos-check text-xs hidden">✓</span>
             </button>
             <button type="button" onclick="toggleEditPosition('WR')" id="posBtn_WR"
-              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border flex items-center justify-between bg-slate-800 text-slate-400 border-slate-700">
               <span class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-md bg-purple-900/80 text-purple-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">WR</span>
+                <span class="w-5 h-5 rounded-md bg-purple-600 text-white font-mono-numbers font-black text-[10px] flex items-center justify-center">WR</span>
                 <span>Wide Receiver</span>
               </span>
               <span class="pos-check text-xs hidden">✓</span>
@@ -1355,16 +1345,16 @@
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             ${activeGame ? `
-              <div class="flex bg-slate-900/90 rounded-lg p-0.5 border border-slate-700/60">
-                <button onclick="setPlayerLiveStatus('${kid.id}', 'bench')" class="px-2.5 py-1 rounded-md text-[10px] font-bold tap-pop transition ${isPresent ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'}">
+              <div onclick="togglePlayerLiveStatus('${kid.id}')" class="flex bg-slate-900/90 rounded-lg p-0.5 border border-slate-700/60 cursor-pointer tap-pop">
+                <button type="button" class="px-2.5 py-1 rounded-md text-[10px] font-bold pointer-events-none transition ${isPresent ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400'}">
                   Present
                 </button>
-                <button onclick="setPlayerLiveStatus('${kid.id}', 'absent')" class="px-2.5 py-1 rounded-md text-[10px] font-bold tap-pop transition ${!isPresent ? 'bg-rose-700 text-white shadow-sm' : 'text-slate-400 hover:text-white'}">
+                <button type="button" class="px-2.5 py-1 rounded-md text-[10px] font-bold pointer-events-none transition ${!isPresent ? 'bg-rose-700 text-white shadow-sm' : 'text-slate-400'}">
                   Absent
                 </button>
               </div>
             ` : ''}
-            <button onclick="openEditKidModal('${kid.id}')" class="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold rounded-lg tap-pop">
+            <button onclick="openEditKidModal('${kid.id}')" class="px-2.5 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold rounded-lg tap-pop">
               ✏️ Edit
             </button>
           </div>
@@ -1380,10 +1370,10 @@
         if (!btn) return;
         const check = btn.querySelector('.pos-check');
         if (selectedEditPositions.has(p.key)) {
-          btn.className = `min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-emerald-950/70 border-emerald-500 text-emerald-300 ring-1 ring-emerald-500/50 shadow-sm`;
+          btn.className = `min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border flex items-center justify-between bg-emerald-950/70 border-emerald-500 text-emerald-300 ring-1 ring-emerald-500/50 shadow-sm`;
           if (check) check.classList.remove('hidden');
         } else {
-          btn.className = `min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-600`;
+          btn.className = `min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border flex items-center justify-between bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-600`;
           if (check) check.classList.add('hidden');
         }
       });
@@ -1945,23 +1935,25 @@
 
       if (fieldSection && benchSection) {
         if (fieldPlayers.length === 0) {
-          fieldSection.className = 'shrink-0 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
-          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
+          // No field players: field is compact header, bench gets full remaining space
+          fieldSection.className = 'shrink-0 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
+          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
         } else if (benchPlayers.length === 0) {
-          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
-          benchSection.className = 'shrink-0 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
-        } else if (fieldPlayers.length >= 6 && benchPlayers.length <= 4) {
-          // More field players than bench: give field full flex priority so 6 cards fit without scrolling
-          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
-          benchSection.className = 'shrink-0 max-h-[45%] flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
-        } else if (benchPlayers.length >= 6 && fieldPlayers.length <= 4) {
-          // More bench players: give bench full flex priority
-          fieldSection.className = 'shrink-0 max-h-[45%] flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
-          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
+          // No bench players: bench is compact header, field gets full remaining space
+          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
+          benchSection.className = 'shrink-0 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
+        } else if (benchPlayers.length <= 4) {
+          // Standard case: 1 or 2 rows on bench. Bench MUST hug its cards (shrink-0, no unused space), Field gets full flex
+          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
+          benchSection.className = 'shrink-0 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
+        } else if (fieldPlayers.length <= 4) {
+          // Inverted case: few field players, many bench players
+          fieldSection.className = 'shrink-0 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
+          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
         } else {
-          // Both have players: natural flex distribution
-          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all duration-200';
-          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all duration-200';
+          // Both large: share equally
+          fieldSection.className = 'flex-1 flex flex-col min-h-0 bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden';
+          benchSection.className = 'flex-1 flex flex-col min-h-0 bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden';
         }
       }
 
@@ -1978,24 +1970,6 @@
           benchGrid.innerHTML = '<div class="col-span-2 py-0.5 text-center text-[10px] font-bold text-slate-400">Bench empty.</div>';
         } else {
           benchGrid.innerHTML = benchPlayers.map(p => renderPlayerCard(p, false)).join('');
-        }
-      }
-
-      if (absentGrid && absentSection) {
-        if (absentPlayers.length > 0) {
-          absentSection.classList.remove('hidden');
-          absentGrid.innerHTML = absentPlayers.map(p => `
-            <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-2 opacity-50 flex items-center justify-between min-h-[50px]">
-              <div>
-                <span class="font-black text-xs text-slate-400">${p.name}</span>
-                ${p.note ? `<span class="text-[9px] text-slate-500 font-bold ml-1">(${p.note})</span>` : ''}
-              </div>
-              <span class="text-[8px] font-black uppercase tracking-wider bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">ABSENT</span>
-            </div>
-          `).join('');
-        } else {
-          absentSection.classList.add('hidden');
-          absentGrid.innerHTML = '';
         }
       }
     }
@@ -2017,16 +1991,39 @@
       container.innerHTML = game.players.map(p => `
         <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs">
           <span class="font-bold text-white">${p.name}</span>
-          <div class="flex gap-1">
-            <button onclick="setPlayerLiveStatus('${p.id}', 'field')" class="px-2 py-0.5 rounded-lg font-bold text-[10px] ${p.status !== 'absent' ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-slate-400'}">
+          <div onclick="togglePlayerLiveStatus('${p.id}')" class="flex bg-slate-900/90 rounded-lg p-0.5 border border-slate-700/60 cursor-pointer tap-pop">
+            <button type="button" class="px-2 py-0.5 rounded-md font-bold text-[10px] pointer-events-none transition ${p.status !== 'absent' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400'}">
               Present
             </button>
-            <button onclick="setPlayerLiveStatus('${p.id}', 'absent')" class="px-2 py-0.5 rounded-lg font-bold text-[10px] ${p.status === 'absent' ? 'bg-rose-700 text-white' : 'bg-slate-700 text-slate-400'}">
+            <button type="button" class="px-2 py-0.5 rounded-md font-bold text-[10px] pointer-events-none transition ${p.status === 'absent' ? 'bg-rose-700 text-white shadow-sm' : 'text-slate-400'}">
               Absent
             </button>
           </div>
         </div>
       `).join('');
+    }
+
+    function togglePlayerLiveStatus(playerId) {
+      const game = getActiveGame();
+      if (!game) return;
+      const player = game.players.find(p => p.id === playerId);
+      if (!player) return;
+
+      if (player.status === 'absent') {
+        player.status = 'bench';
+      } else {
+        player.status = 'absent';
+        queuedSubOutIds.delete(playerId);
+        queuedSubInIds.delete(playerId);
+      }
+
+      haptic(30);
+      saveState();
+      renderAll();
+      const rosterModal = document.getElementById('rosterModal');
+      if (rosterModal && !rosterModal.classList.contains('hidden')) {
+        renderMasterRosterList();
+      }
     }
 
     function setPlayerLiveStatus(playerId, newStatus) {
@@ -2036,7 +2033,10 @@
       if (!player) return;
 
       player.status = newStatus;
-      if (newStatus === 'absent') queuedSubOutIds.delete(playerId);
+      if (newStatus === 'absent') {
+        queuedSubOutIds.delete(playerId);
+        queuedSubInIds.delete(playerId);
+      }
 
       saveState();
       renderAll();
