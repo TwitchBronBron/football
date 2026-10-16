@@ -132,10 +132,10 @@
 </head>
 
 <body
-  class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
+  class="bg-slate-950 text-slate-100 h-[100dvh] flex flex-col antialiased selection:bg-emerald-500 selection:text-black overflow-hidden">
 
   <header
-    class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/90 px-3 sm:px-4 py-2.5 sticky top-0 z-30 shadow-lg">
+    class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/90 px-3 sm:px-4 py-2 sticky top-0 z-30 shadow-lg shrink-0">
     <div class="max-w-4xl mx-auto w-full flex items-center justify-between gap-2 sm:gap-3">
       <!-- Left: Tappable game title (opens game switcher sheet) -->
       <button onclick="openGameSwitcherSheet()" id="gameHeaderBtn"
@@ -159,53 +159,53 @@
       </button>
 
       <!-- Right: Primary Actions -->
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-1.5 shrink-0">
         <!-- Master Roster Button -->
         <button onclick="openRosterModal()"
-          class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 text-xs font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          class="min-h-[46px] min-w-[46px] px-2 rounded-xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 text-xs font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
           title="Manage Team Roster">
-          <svg class="w-6 h-6 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          <svg class="w-5 h-5 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
             <circle cx="9" cy="7" r="4" />
             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
-          <span class="text-[10px] font-bold uppercase tracking-wide">Roster</span>
+          <span class="text-[9px] font-bold uppercase tracking-wide">Roster</span>
         </button>
 
         <!-- Stats Button -->
         <button onclick="openStatsModal()"
-          class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          class="min-h-[46px] min-w-[46px] px-2 rounded-xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
           title="Game Stats & Playing Time">
-          <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="20" x2="18" y2="10" />
             <line x1="12" y1="20" x2="12" y2="4" />
             <line x1="6" y1="20" x2="6" y2="14" />
           </svg>
-          <span class="text-[10px] font-bold uppercase tracking-wide">Stats</span>
+          <span class="text-[9px] font-bold uppercase tracking-wide">Stats</span>
         </button>
 
         <!-- Settings -->
         <button onclick="openSettingsModal()"
-          class="min-h-[52px] min-w-[52px] px-2 rounded-2xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          class="min-h-[46px] min-w-[46px] px-2 rounded-xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
           title="Settings">
-          <svg class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          <svg class="w-5 h-5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
             <circle cx="12" cy="12" r="3" />
           </svg>
-          <span class="text-[10px] font-bold uppercase tracking-wide">Settings</span>
+          <span class="text-[9px] font-bold uppercase tracking-wide">Settings</span>
         </button>
       </div>
     </div>
   </header>
 
 
-  <main class="flex-1 p-2 flex flex-col justify-start max-w-4xl mx-auto w-full pb-24">
+  <main class="flex-1 p-2 flex flex-col max-w-4xl mx-auto w-full min-h-0 overflow-hidden pb-16">
     <!-- Big Splash when no games exist -->
-    <div id="emptyStateSplash" class="hidden my-auto text-center py-12 px-4 space-y-4">
+    <div id="emptyStateSplash" class="hidden my-auto text-center py-12 px-4 space-y-4 overflow-y-auto">
       <div
         class="w-16 h-16 mx-auto rounded-3xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-3xl shadow-xl">
         🏈
@@ -223,45 +223,47 @@
       </button>
     </div>
 
-    <!-- Active Game Content: Split into On Field and On Bench -->
-    <div id="activeGamePlayerSections" class="space-y-3">
+    <!-- Active Game Content: Split into On Field and On Bench (Full-height split with independent scroll) -->
+    <div id="activeGamePlayerSections" class="flex-1 flex flex-col min-h-0 gap-2 overflow-hidden">
       <!-- Section: On The Field -->
-      <section>
-        <div class="flex items-center justify-between mb-1 px-1">
+      <section id="fieldSection" class="flex flex-col min-h-0 bg-slate-900/50 rounded-2xl p-2 border border-slate-800/80 transition-all duration-300">
+        <div class="flex items-center justify-between mb-1.5 px-0.5 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
             <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400">On The Field</h3>
             <span id="fieldCountBadge" class="text-[10px] font-mono-numbers font-black bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-500/40">0</span>
+            <span id="fieldSubCountBadge" class="hidden text-[10px] font-mono-numbers font-black bg-rose-950 text-rose-300 border border-rose-500/50 px-1.5 py-0.5 rounded-md animate-pulse"></span>
           </div>
-          <span class="text-[10px] text-slate-400 font-bold">Tap to pull off</span>
+          <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Tap to pull off</span>
         </div>
-        <div id="fieldGrid" class="grid grid-cols-2 gap-2">
+        <div id="fieldGrid" class="grid grid-cols-2 gap-1.5 overflow-y-auto flex-1 min-h-0 p-0.5 pb-2 content-start">
           <!-- Field cards -->
         </div>
       </section>
 
       <!-- Section: On The Bench -->
-      <section>
-        <div class="flex items-center justify-between mb-1 px-1">
+      <section id="benchSection" class="flex flex-col min-h-0 bg-slate-900/50 rounded-2xl p-2 border border-slate-800/80 transition-all duration-300">
+        <div class="flex items-center justify-between mb-1.5 px-0.5 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></span>
             <h3 class="text-xs font-black uppercase tracking-wider text-amber-400">On The Bench</h3>
             <span id="benchCountBadge" class="text-[10px] font-mono-numbers font-black bg-amber-950 text-amber-300 px-2 py-0.5 rounded-md border border-amber-500/40">0</span>
+            <span id="benchSubCountBadge" class="hidden text-[10px] font-mono-numbers font-black bg-cyan-950 text-cyan-300 border border-cyan-500/50 px-1.5 py-0.5 rounded-md animate-pulse"></span>
           </div>
-          <span class="text-[10px] text-slate-400 font-bold">Tap to send in</span>
+          <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Tap to send in</span>
         </div>
-        <div id="benchGrid" class="grid grid-cols-2 gap-2">
+        <div id="benchGrid" class="grid grid-cols-2 gap-1.5 overflow-y-auto flex-1 min-h-0 p-0.5 pb-2 content-start">
           <!-- Bench cards -->
         </div>
       </section>
 
       <!-- Section: Absent (hidden if empty) -->
-      <section id="absentSection" class="hidden pt-1 border-t border-slate-800/60">
+      <section id="absentSection" class="hidden shrink-0 pt-1 border-t border-slate-800/60 max-h-24 overflow-y-auto">
         <div class="flex items-center justify-between mb-1 px-1">
           <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">Absent</span>
           <span id="absentCountBadge" class="text-[10px] font-mono-numbers font-bold text-slate-500">0</span>
         </div>
-        <div id="absentGrid" class="grid grid-cols-2 gap-2 opacity-50">
+        <div id="absentGrid" class="grid grid-cols-2 gap-1.5 opacity-50 p-0.5 pb-2">
           <!-- Absent cards -->
         </div>
       </section>
@@ -271,26 +273,11 @@
   <footer id="bottomDock"
     class="fixed bottom-0 inset-x-0 bg-slate-950/70 backdrop-blur-md border-t border-slate-800/60 p-2 z-20 shadow-2xl"
     style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom));">
-    <div class="max-w-4xl mx-auto w-full space-y-1.5">
-      <!-- High Legibility Telemetry Bar -->
-      <div class="flex items-center justify-between text-[11px] font-mono-numbers px-1 text-slate-300">
-        <div class="flex items-center gap-2">
-          <div class="bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-md font-black flex items-center gap-1 text-[10px]">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            FIELD: <span id="dockFieldCount">0</span>
-          </div>
-          <div class="bg-amber-950/80 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-md font-black flex items-center gap-1 text-[10px]">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            BENCH: <span id="dockBenchCount">0</span>
-          </div>
-        </div>
-        <div id="subQueueStatusPill" class="text-[10px] font-bold text-purple-300 truncate max-w-[170px] text-right"></div>
-      </div>
-
-      <!-- Action Buttons Row -->
+    <div class="max-w-4xl mx-auto w-full">
+      <!-- Action Buttons Row (Clean and streamlined) -->
       <div class="flex gap-2 items-stretch">
         <button onclick="undoLastPlay()" id="undoBtn" disabled
-          class="min-h-[46px] px-3 bg-slate-900/90 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 font-black rounded-xl border border-slate-700/80 flex items-center justify-center gap-1 text-xs tap-pop transition shadow-md shrink-0"
+          class="min-h-[46px] px-3.5 bg-slate-900/90 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 font-black rounded-xl border border-slate-700/80 flex items-center justify-center gap-1 text-xs tap-pop transition shadow-md shrink-0"
           title="Undo Last Play">
           <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 7v6h6" />
@@ -1840,21 +1827,38 @@
     function renderSwapStrip(game) {
       const switchBtn = document.getElementById('dockSwitchBtn');
       const switchText = document.getElementById('dockSwitchBtnText');
-      const pill = document.getElementById('subQueueStatusPill');
+      const fieldSubBadge = document.getElementById('fieldSubCountBadge');
+      const benchSubBadge = document.getElementById('benchSubCountBadge');
 
-      const hasPending = queuedSubOutIds.size > 0 || queuedSubInIds.size > 0;
+      const outCount = queuedSubOutIds.size;
+      const inCount = queuedSubInIds.size;
+      const hasPending = outCount > 0 || inCount > 0;
+
+      // Update Coming Off badge in Field header
+      if (fieldSubBadge) {
+        if (outCount > 0) {
+          fieldSubBadge.innerText = `-${outCount} OFF`;
+          fieldSubBadge.classList.remove('hidden');
+        } else {
+          fieldSubBadge.classList.add('hidden');
+        }
+      }
+
+      // Update Going On badge in Bench header
+      if (benchSubBadge) {
+        if (inCount > 0) {
+          benchSubBadge.innerText = `+${inCount} ON`;
+          benchSubBadge.classList.remove('hidden');
+        } else {
+          benchSubBadge.classList.add('hidden');
+        }
+      }
 
       if (hasPending) {
         if (switchBtn) switchBtn.classList.remove('hidden');
-        if (switchText) switchText.innerText = `SWITCH (${queuedSubOutIds.size} off / ${queuedSubInIds.size} on)`;
-        if (pill) {
-          const outCount = queuedSubOutIds.size;
-          const inCount = queuedSubInIds.size;
-          pill.innerText = `${outCount} off, ${inCount} on`;
-        }
+        if (switchText) switchText.innerText = `SWITCH (${outCount} off / ${inCount} on)`;
       } else {
         if (switchBtn) switchBtn.classList.add('hidden');
-        if (pill) pill.innerText = '';
       }
     }
 
@@ -1951,6 +1955,16 @@
       if (benchCountBadge) benchCountBadge.innerText = benchPlayers.length;
       if (absentCountBadge) absentCountBadge.innerText = absentPlayers.length;
 
+      // Dynamic proportioning: scale flex based on player count so neither has wasted blank space
+      const fieldSection = document.getElementById('fieldSection');
+      const benchSection = document.getElementById('benchSection');
+      if (fieldSection && benchSection) {
+        const fieldRows = Math.max(1, Math.ceil(fieldPlayers.length / 2));
+        const benchRows = Math.max(1, Math.ceil(benchPlayers.length / 2));
+        fieldSection.style.flex = `${fieldRows} ${fieldRows} 0%`;
+        benchSection.style.flex = `${benchRows} ${benchRows} 0%`;
+      }
+
       if (fieldGrid) {
         if (fieldPlayers.length === 0) {
           fieldGrid.innerHTML = '<div class="col-span-2 py-3 text-center text-xs font-bold text-slate-400 border border-dashed border-slate-700 rounded-xl bg-slate-900/40">No kids on field. Tap bench kids to assign.</div>';
@@ -1987,11 +2001,6 @@
     }
 
     function renderDockCounters(game) {
-      const fieldCount = document.getElementById('dockFieldCount');
-      const benchCount = document.getElementById('dockBenchCount');
-      if (fieldCount) fieldCount.innerText = game.players.filter(p => p.status === 'field').length;
-      if (benchCount) benchCount.innerText = game.players.filter(p => p.status === 'bench').length;
-
       const logBtnText = document.getElementById('logPlayBtnText');
       if (logBtnText) logBtnText.innerText = 'LOG PLAY';
 
