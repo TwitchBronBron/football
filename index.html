@@ -643,6 +643,43 @@
             class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-base text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50 uppercase"
             placeholder="e.g. WESTON">
         </div>
+        <div>
+          <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Positions</label>
+          <div class="grid grid-cols-2 gap-2" id="editKidPositionsContainer">
+            <button type="button" onclick="toggleEditPosition('C')" id="posBtn_C"
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              <span class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md bg-blue-900/80 text-blue-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">C</span>
+                <span>Center</span>
+              </span>
+              <span class="pos-check text-xs hidden">✓</span>
+            </button>
+            <button type="button" onclick="toggleEditPosition('QB')" id="posBtn_QB"
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              <span class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md bg-amber-900/80 text-amber-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">QB</span>
+                <span>Quarterback</span>
+              </span>
+              <span class="pos-check text-xs hidden">✓</span>
+            </button>
+            <button type="button" onclick="toggleEditPosition('RB')" id="posBtn_RB"
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              <span class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md bg-emerald-900/80 text-emerald-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">RB</span>
+                <span>Running Back</span>
+              </span>
+              <span class="pos-check text-xs hidden">✓</span>
+            </button>
+            <button type="button" onclick="toggleEditPosition('WR')" id="posBtn_WR"
+              class="min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700">
+              <span class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md bg-purple-900/80 text-purple-300 font-mono-numbers font-black text-[10px] flex items-center justify-center">WR</span>
+                <span>Wide Receiver</span>
+              </span>
+              <span class="pos-check text-xs hidden">✓</span>
+            </button>
+          </div>
+        </div>
 
         <div>
           <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Visual Cue /
@@ -987,15 +1024,22 @@
 
     const STORAGE_KEY = 'kid_playtime_tracker_v1';
 
+    const POSITIONS = [
+      { key: 'C', label: 'Center', badgeClass: 'bg-blue-900/80 text-blue-300 border-blue-500/50' },
+      { key: 'QB', label: 'Quarterback', badgeClass: 'bg-amber-900/80 text-amber-300 border-amber-500/50' },
+      { key: 'RB', label: 'Running Back', badgeClass: 'bg-emerald-900/80 text-emerald-300 border-emerald-500/50' },
+      { key: 'WR', label: 'Wide Receiver', badgeClass: 'bg-purple-900/80 text-purple-300 border-purple-500/50' }
+    ];
+
     const DEFAULT_MASTER_ROSTER = [
-      { id: 'kid_1', name: 'WESTON', note: '', retired: false },
-      { id: 'kid_2', name: 'ROENIN', note: 'SMALLEST', retired: false },
-      { id: 'kid_3', name: 'WYATT', note: 'TALLEST', retired: false },
-      { id: 'kid_4', name: 'NOAH', note: '', retired: false },
-      { id: 'kid_5', name: 'JOSE', note: '', retired: false },
-      { id: 'kid_6', name: 'NIKO', note: 'BLUE CLEATS', retired: false },
-      { id: 'kid_7', name: 'ALLEN', note: '', retired: false },
-      { id: 'kid_8', name: 'DAMIAN', note: '', retired: false }
+      { id: 'kid_1', name: 'WESTON', note: '', positions: [], retired: false },
+      { id: 'kid_2', name: 'ROENIN', note: 'SMALLEST', positions: [], retired: false },
+      { id: 'kid_3', name: 'WYATT', note: 'TALLEST', positions: [], retired: false },
+      { id: 'kid_4', name: 'NOAH', note: '', positions: [], retired: false },
+      { id: 'kid_5', name: 'JOSE', note: '', positions: [], retired: false },
+      { id: 'kid_6', name: 'NIKO', note: 'BLUE CLEATS', positions: [], retired: false },
+      { id: 'kid_7', name: 'ALLEN', note: '', positions: [], retired: false },
+      { id: 'kid_8', name: 'DAMIAN', note: '', positions: [], retired: false }
     ];
 
     let appData = {
@@ -1025,7 +1069,42 @@
 
       if (!appData.masterRoster || appData.masterRoster.length === 0) {
         appData.masterRoster = JSON.parse(JSON.stringify(DEFAULT_MASTER_ROSTER));
+      } else {
+        // One-time clear of previous auto-assigned positions so user can assign them manually
+        if (!appData.positionsClearedV2) {
+          appData.masterRoster.forEach(k => {
+            k.positions = [];
+          });
+          if (appData.games) {
+            appData.games.forEach(g => {
+              g.players.forEach(p => {
+                p.positions = [];
+              });
+            });
+          }
+          appData.positionsClearedV2 = true;
+          saveState();
+        } else {
+          appData.masterRoster.forEach(k => {
+            if (!k.positions) k.positions = [];
+          });
+        }
       }
+
+      // Propagate positions to all existing games if missing
+      if (appData.games) {
+        appData.games.forEach(g => {
+          g.players.forEach(p => {
+            const kid = appData.masterRoster.find(k => k.id === p.id);
+            if (kid && (!p.positions || p.positions.length === 0)) {
+              p.positions = [...(kid.positions || [])];
+            } else if (!p.positions) {
+              p.positions = [];
+            }
+          });
+        });
+      }
+      saveState();
 
       setupWakeLock();
       initSheetDraggables();
@@ -1158,13 +1237,21 @@
         return;
       }
 
-      container.innerHTML = kids.map(kid => `
+      container.innerHTML = kids.map(kid => {
+        const kidPositions = kid.positions || [];
+        return `
         <div id="attendRow_${kid.id}" class="flex items-center justify-between p-2.5 sm:p-3 rounded-2xl bg-slate-800/90 border border-slate-700/80 transition">
           <label class="flex items-center gap-3 flex-1 cursor-pointer min-w-0 py-1">
             <input type="checkbox" name="gameAttendance" value="${kid.id}" checked onchange="handleAttendanceToggle('${kid.id}', this.checked)" class="w-5 h-5 rounded-lg text-emerald-500 focus:ring-emerald-400 bg-slate-900 border-slate-600 cursor-pointer">
             <div class="min-w-0">
-              <span class="font-black text-sm text-white truncate">${kid.name}</span>
-              ${kid.note ? `<span class="text-[11px] text-amber-300 font-bold ml-1 truncate">(${kid.note})</span>` : ''}
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-black text-sm text-white truncate">${kid.name}</span>
+                ${kidPositions.map(posKey => {
+                  const posDef = POSITIONS.find(pos => pos.key === posKey);
+                  return posDef ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-black border leading-none ${posDef.badgeClass}">${posDef.key}</span>` : '';
+                }).join('')}
+              </div>
+              ${kid.note ? `<div class="text-[11px] text-amber-300 font-bold truncate">(${kid.note})</div>` : ''}
             </div>
           </label>
           <div class="flex items-center gap-2">
@@ -1177,7 +1264,7 @@
             </button>
           </div>
         </div>
-      `).join('');
+      `}).join('');
       updateAttendanceCounts();
     }
 
@@ -1230,6 +1317,7 @@
           id: k.id,
           name: k.name,
           note: k.note,
+          positions: [...(k.positions || [])],
           status: presentIds.has(k.id) ? 'field' : 'absent',
           playsIn: 0,
           playsOut: 0,
@@ -1273,12 +1361,19 @@
       container.innerHTML = appData.masterRoster.map(kid => {
         let gamePlayer = activeGame ? activeGame.players.find(p => p.id === kid.id) : null;
         let isPresent = gamePlayer && gamePlayer.status !== 'absent';
+        const kidPositions = kid.positions || [];
 
         return `
         <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/70">
           <div class="min-w-0 flex-1 mr-2">
-            <div class="font-black text-xs text-white">${kid.name}</div>
-            <div class="text-[10px] text-slate-400 font-bold truncate">${kid.note || 'No nickname'}</div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="font-black text-xs text-white">${kid.name}</span>
+              ${kidPositions.map(posKey => {
+                const posDef = POSITIONS.find(pos => pos.key === posKey);
+                return posDef ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-black border leading-none ${posDef.badgeClass}">${posDef.key}</span>` : '';
+              }).join('')}
+            </div>
+            <div class="text-[10px] text-slate-400 font-bold truncate mt-0.5">${kid.note || 'No nickname'}</div>
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             ${activeGame ? `
@@ -1299,11 +1394,39 @@
       `}).join('');
     }
 
+    let selectedEditPositions = new Set();
+
+    function updateEditPositionButtonsUI() {
+      POSITIONS.forEach(p => {
+        const btn = document.getElementById(`posBtn_${p.key}`);
+        if (!btn) return;
+        const check = btn.querySelector('.pos-check');
+        if (selectedEditPositions.has(p.key)) {
+          btn.className = `min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-emerald-950/70 border-emerald-500 text-emerald-300 ring-1 ring-emerald-500/50 shadow-sm`;
+          if (check) check.classList.remove('hidden');
+        } else {
+          btn.className = `min-h-[42px] px-3 py-2 rounded-xl text-xs font-bold border transition flex items-center justify-between tap-pop bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-600`;
+          if (check) check.classList.add('hidden');
+        }
+      });
+    }
+
+    function toggleEditPosition(posKey) {
+      if (selectedEditPositions.has(posKey)) {
+        selectedEditPositions.delete(posKey);
+      } else {
+        selectedEditPositions.add(posKey);
+      }
+      updateEditPositionButtonsUI();
+    }
+
     function openAddKidModal() {
       document.getElementById('editKidId').value = '';
       document.getElementById('editKidModalTitle').innerText = '➕ Add New Kid to Team';
       document.getElementById('editKidNameInput').value = '';
       document.getElementById('editKidNoteInput').value = '';
+      selectedEditPositions.clear();
+      updateEditPositionButtonsUI();
       document.getElementById('deleteKidSection').classList.add('hidden');
       openModal('editKidModal');
     }
@@ -1316,6 +1439,9 @@
       document.getElementById('editKidModalTitle').innerText = `✏️ Edit ${kid.name}`;
       document.getElementById('editKidNameInput').value = kid.name;
       document.getElementById('editKidNoteInput').value = kid.note || '';
+
+      selectedEditPositions = new Set(kid.positions || []);
+      updateEditPositionButtonsUI();
 
       const deleteSection = document.getElementById('deleteKidSection');
       deleteSection.classList.remove('hidden');
@@ -1331,6 +1457,7 @@
       const kidId = document.getElementById('editKidId').value;
       const name = document.getElementById('editKidNameInput').value.trim().toUpperCase();
       const note = document.getElementById('editKidNoteInput').value.trim().toUpperCase();
+      const positions = Array.from(selectedEditPositions);
 
       if (!name) return;
 
@@ -1340,6 +1467,7 @@
           id: 'kid_' + Date.now(),
           name: name,
           note: note,
+          positions: positions,
           retired: false
         };
         appData.masterRoster.push(newKid);
@@ -1351,6 +1479,7 @@
             id: newKid.id,
             name: newKid.name,
             note: newKid.note,
+            positions: positions,
             status: 'field',
             playsIn: 0,
             playsOut: 0,
@@ -1364,6 +1493,7 @@
         if (kid) {
           kid.name = name;
           kid.note = note;
+          kid.positions = positions;
         }
 
         // Sync with active games
@@ -1372,6 +1502,7 @@
           if (p) {
             p.name = name;
             p.note = note;
+            p.positions = positions;
           }
         });
       }
@@ -1750,6 +1881,7 @@
 
         const isQueued = queuedSubOutIds.has(p.id);
         const isField = p.status === 'field';
+        const playerPositions = p.positions || [];
 
         let cardClass = '';
         if (isQueued) {
@@ -1764,8 +1896,16 @@
           <div onclick="handleCardTap('${p.id}')" class="relative rounded-2xl p-2.5 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[104px] ${cardClass}">
             <div class="flex justify-between items-start gap-1">
               <div class="min-w-0 flex-1">
-                  <span class="font-black text-sm text-white truncate">${p.name}</span>
+                <span class="font-black text-sm text-white truncate block">${p.name}</span>
                 ${p.note ? `<div class="text-[10px] text-amber-300 font-bold truncate leading-none mt-0.5">${p.note}</div>` : ''}
+                ${playerPositions.length > 0 ? `
+                  <div class="flex items-center gap-1.5 flex-wrap mt-1.5">
+                    ${playerPositions.map(posKey => {
+                      const posDef = POSITIONS.find(pos => pos.key === posKey);
+                      return posDef ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-black border leading-none tracking-tight shadow-sm ${posDef.badgeClass}">${posDef.key}</span>` : '';
+                    }).join('')}
+                  </div>
+                ` : ''}
               </div>
 
               <div>
