@@ -1873,54 +1873,46 @@
           <div class="flex justify-between items-start gap-1">
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="font-black text-sm text-white drop-shadow-sm truncate">${p.name}</span>
+                <span class="font-black text-lg text-white drop-shadow-md truncate leading-tight tracking-tight">${p.name}</span>
                 ${playerPositions.length > 0 ? `
                   <div class="flex items-center gap-1 flex-wrap">
                     ${playerPositions.map(posKey => {
                       const posDef = POSITIONS.find(pos => pos.key === posKey);
-                      return posDef ? `<span class="px-1.5 py-0.2 rounded text-[9px] font-black border leading-none bg-slate-950/80 text-white border-white/40 shadow-sm">${posDef.key}</span>` : '';
+                      return posDef ? `<span class="px-1.5 py-0.5 rounded text-[11px] font-black border leading-none bg-slate-950/85 text-white border-white/50 shadow-sm">${posDef.key}</span>` : '';
                     }).join('')}
                   </div>
                 ` : ''}
               </div>
-              ${p.note ? `<div class="text-[9px] text-amber-200 font-extrabold truncate leading-tight">${p.note}</div>` : ''}
+              ${p.note ? `<div class="text-xs text-amber-200 font-black truncate leading-tight mt-0.5">${p.note}</div>` : ''}
             </div>
 
-            <div class="shrink-0">
-              ${isComingOff ? `
-                <span class="bg-rose-500 text-white font-black text-[9px] px-1.5 py-0.5 rounded shadow-sm animate-pulse">
+            ${isComingOff ? `
+              <div class="shrink-0">
+                <span class="bg-rose-500 text-white font-black text-xs px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
                   OFF
                 </span>
-              ` : isGoingOn ? `
-                <span class="bg-cyan-300 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded shadow-sm animate-pulse">
+              </div>
+            ` : isGoingOn ? `
+              <div class="shrink-0">
+                <span class="bg-cyan-300 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
                   ON
                 </span>
-              ` : isField ? `
-                <span class="bg-emerald-400 text-slate-950 font-black text-[8px] px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
-                  FIELD
-                </span>
-              ` : `
-                <span class="bg-amber-400 text-slate-950 font-black text-[8px] px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
-                  BENCH
-                </span>
-              `}
-            </div>
+              </div>
+            ` : ''}
           </div>
 
-          <div class="flex items-center justify-between mt-1 pt-1 border-t border-white/20 text-[11px] font-mono-numbers">
-            <div>
-              <span class="text-white/80 text-[9px] font-bold">PL:</span>
-              <span class="font-black text-xs text-white">${p.playsIn}</span>
+          <div class="flex items-center justify-between mt-1 pt-1 border-t border-white/20 font-mono-numbers">
+            <div class="flex items-baseline gap-1">
+              <span class="text-white/85 text-[11px] font-bold">PLAYS:</span>
+              <span class="font-black text-base text-white drop-shadow-sm">${p.playsIn}</span>
             </div>
 
-            <div class="text-[10px] text-right font-black">
-              ${isField ? `
-                <span class="${p.consecutivePlaysIn >= 3 ? 'text-amber-200 bg-black/40 px-1 rounded' : 'text-emerald-100'}">
+            <div class="text-xs text-right font-black">
+              ${isField && p.consecutivePlaysIn >= 3 ? `
+                <span class="text-amber-200 bg-black/50 px-2 py-0.5 rounded border border-amber-400/40">
                   ${p.consecutivePlaysIn} in row
                 </span>
-              ` : `
-                <span class="text-amber-100">Resting</span>
-              `}
+              ` : ''}
             </div>
           </div>
         </div>
