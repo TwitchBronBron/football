@@ -203,7 +203,7 @@
   </header>
 
 
-  <main class="flex-1 px-2 pt-1 pb-14 flex flex-col max-w-4xl mx-auto w-full min-h-0 overflow-hidden">
+  <main class="flex-1 px-0.5 pt-0.5 pb-14 flex flex-col w-full min-h-0 overflow-hidden">
     <!-- Big Splash when no games exist -->
     <div id="emptyStateSplash" class="hidden my-auto text-center py-4 px-4 space-y-4 overflow-y-auto">
       <div
@@ -224,9 +224,9 @@
     </div>
 
     <!-- Active Game Content: Split into On Field and On Bench -->
-    <div id="activeGamePlayerSections" class="flex-1 flex flex-col min-h-0 gap-1 overflow-hidden">
+    <div id="activeGamePlayerSections" class="flex-1 flex flex-col min-h-0 gap-1 overflow-hidden w-full">
       <!-- Section: On The Field -->
-      <section id="fieldSection" class="shrink-0 max-h-[80%] flex flex-col min-h-0 bg-slate-900/50 rounded-xl p-1.5 border border-slate-800/80 overflow-hidden transition-all duration-200">
+      <section id="fieldSection" class="shrink-0 max-h-[80%] flex flex-col min-h-0 bg-slate-900/50 rounded-xl p-1 border border-slate-800/80 overflow-hidden transition-all duration-200">
         <div class="flex items-center justify-between mb-0.5 px-1 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
@@ -236,13 +236,13 @@
           </div>
           <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Tap to pull off</span>
         </div>
-        <div id="fieldGrid" class="grid grid-cols-2 gap-1.5 overflow-y-auto min-h-0 px-0.5 content-start">
+        <div id="fieldGrid" class="grid grid-cols-2 gap-1 overflow-y-auto min-h-0 px-0 content-start">
           <!-- Field cards -->
         </div>
       </section>
 
       <!-- Section: On The Bench -->
-      <section id="benchSection" class="flex-1 max-h-[85%] flex flex-col min-h-0 bg-slate-900/50 rounded-xl p-1.5 border border-slate-800/80 overflow-hidden transition-all duration-200">
+      <section id="benchSection" class="flex-1 max-h-[85%] flex flex-col min-h-0 bg-slate-900/50 rounded-xl p-1 border border-slate-800/80 overflow-hidden transition-all duration-200">
         <div class="flex items-center justify-between mb-0.5 px-1 shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></span>
@@ -252,7 +252,7 @@
           </div>
           <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Tap to send in</span>
         </div>
-        <div id="benchGrid" class="grid grid-cols-2 gap-1.5 overflow-y-auto min-h-0 px-0.5 content-start">
+        <div id="benchGrid" class="grid grid-cols-2 gap-1 overflow-y-auto min-h-0 px-0 content-start">
           <!-- Bench cards -->
         </div>
       </section>
@@ -1869,16 +1869,16 @@
       }
 
       return `
-        <div onclick="handleCardTap('${p.id}')" class="relative rounded-xl p-2 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[76px] ${cardClass}">
+        <div onclick="handleCardTap('${p.id}')" class="relative rounded-xl px-2 py-1.5 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[82px] ${cardClass}">
           <div class="flex justify-between items-start gap-1">
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="font-black text-lg text-white drop-shadow-md truncate leading-tight tracking-tight">${p.name}</span>
+                <span class="font-black text-xl text-white drop-shadow-md truncate leading-tight tracking-tight">${p.name}</span>
                 ${playerPositions.length > 0 ? `
                   <div class="flex items-center gap-1 flex-wrap">
                     ${playerPositions.map(posKey => {
                       const posDef = POSITIONS.find(pos => pos.key === posKey);
-                      return posDef ? `<span class="px-1.5 py-0.5 rounded text-[11px] font-black border leading-none bg-slate-950/85 text-white border-white/50 shadow-sm">${posDef.key}</span>` : '';
+                      return posDef ? `<span class="px-1.5 py-0.5 rounded text-xs font-black border leading-none bg-slate-950/85 text-white border-white/50 shadow-sm">${posDef.key}</span>` : '';
                     }).join('')}
                   </div>
                 ` : ''}
@@ -1888,13 +1888,13 @@
 
             ${isComingOff ? `
               <div class="shrink-0">
-                <span class="bg-rose-500 text-white font-black text-xs px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
+                <span class="bg-rose-500 text-white font-black text-sm px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
                   OFF
                 </span>
               </div>
             ` : isGoingOn ? `
               <div class="shrink-0">
-                <span class="bg-cyan-300 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
+                <span class="bg-cyan-300 text-slate-950 font-black text-sm px-2.5 py-0.5 rounded-md shadow-md animate-pulse">
                   ON
                 </span>
               </div>
@@ -1902,9 +1902,9 @@
           </div>
 
           <div class="flex items-center justify-between mt-1 pt-1 border-t border-white/20 font-mono-numbers">
-            <div class="flex items-baseline gap-1">
-              <span class="text-white/85 text-[11px] font-bold">PLAYS:</span>
-              <span class="font-black text-base text-white drop-shadow-sm">${p.playsIn}</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-white/85 text-xs font-bold">PLAYS:</span>
+              <span class="font-black text-lg text-white drop-shadow-sm leading-none">${p.playsIn}</span>
             </div>
 
             <div class="text-xs text-right font-black">
