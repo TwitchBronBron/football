@@ -203,55 +203,7 @@
   </header>
 
 
-  <section id="swapActionStrip" class="bg-slate-900 border-b border-slate-800/80 px-3 py-2 z-20">
-    <div class="max-w-4xl mx-auto w-full">
-      <!-- Default state: Non-intrusive tip + optional suggestion button -->
-      <div id="subAdvisoryDefault" class="flex items-center justify-between gap-2 text-xs">
-        <div class="flex items-center gap-1.5 min-w-0">
-          <svg class="w-4 h-4 text-amber-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path
-              d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
-            <path d="M9 18h6" />
-            <path d="M10 22h4" />
-          </svg>
-          <span id="subTipText" class="text-slate-300 truncate text-[11px] sm:text-xs"></span>
-        </div>
-        <button onclick="autoQueueLongestPlayers()"
-          class="min-h-[36px] px-2.5 text-xs bg-slate-800 hover:bg-slate-750 text-amber-300 font-black rounded-lg border border-slate-700 whitespace-nowrap tap-pop flex items-center gap-1 shadow-sm">
-          <span>Suggest Subs</span>
-        </button>
-      </div>
-
-      <!-- Active Queue state: Prominent swap confirmation with generous touch targets -->
-      <div id="subQueueActive" class="hidden flex items-center justify-between gap-2">
-        <div class="min-w-0 flex-1">
-          <div id="subQueueSummaryTitle" class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Pending Subs:</div>
-          <div id="queuedKidsNames" class="text-xs sm:text-sm font-black text-white truncate">--</div>
-        </div>
-
-        <div class="flex items-center gap-2 shrink-0">
-          <button onclick="clearQueuedSubs()"
-            class="min-h-[42px] px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl font-bold border border-slate-700 tap-pop">
-            Cancel
-          </button>
-          <button onclick="executeSwap()"
-            class="min-h-[42px] px-3.5 sm:px-4 bg-purple-600 hover:bg-purple-500 active:bg-purple-700 text-white text-xs font-black rounded-xl shadow-lg shadow-purple-950 flex items-center gap-1.5 tap-pop pulse-action tracking-wide">
-            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="m16 3 4 4-4 4" />
-              <path d="M20 7H4" />
-              <path d="m8 21-4-4 4-4" />
-              <path d="M4 17h16" />
-            </svg>
-            <span id="executeSwapBtnText">SWITCH</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <main class="flex-1 p-2 flex flex-col justify-start max-w-4xl mx-auto w-full pb-28">
+  <main class="flex-1 p-2 flex flex-col justify-start max-w-4xl mx-auto w-full pb-24">
     <!-- Big Splash when no games exist -->
     <div id="emptyStateSplash" class="hidden my-auto text-center py-12 px-4 space-y-4">
       <div
@@ -272,10 +224,10 @@
     </div>
 
     <!-- Active Game Content: Split into On Field and On Bench -->
-    <div id="activeGamePlayerSections" class="space-y-4">
+    <div id="activeGamePlayerSections" class="space-y-3">
       <!-- Section: On The Field -->
       <section>
-        <div class="flex items-center justify-between mb-1.5 px-1">
+        <div class="flex items-center justify-between mb-1 px-1">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
             <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400">On The Field</h3>
@@ -290,7 +242,7 @@
 
       <!-- Section: On The Bench -->
       <section>
-        <div class="flex items-center justify-between mb-1.5 px-1">
+        <div class="flex items-center justify-between mb-1 px-1">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></span>
             <h3 class="text-xs font-black uppercase tracking-wider text-amber-400">On The Bench</h3>
@@ -305,7 +257,7 @@
 
       <!-- Section: Absent (hidden if empty) -->
       <section id="absentSection" class="hidden pt-1 border-t border-slate-800/60">
-        <div class="flex items-center justify-between mb-1.5 px-1">
+        <div class="flex items-center justify-between mb-1 px-1">
           <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">Absent</span>
           <span id="absentCountBadge" class="text-[10px] font-mono-numbers font-bold text-slate-500">0</span>
         </div>
@@ -317,53 +269,54 @@
   </main>
 
   <footer id="bottomDock"
-    class="fixed bottom-0 inset-x-0 bg-slate-900/98 backdrop-blur-md border-t border-slate-800 p-2.5 z-20 shadow-2xl"
-    style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
-    <div class="max-w-4xl mx-auto w-full">
-      <!-- High Legibility Telemetry Row -->
-      <div
-        class="flex items-center justify-between text-[11px] font-mono-numbers px-1 pb-2 text-slate-400 border-b border-slate-800/80 mb-2 gap-2">
-        <div class="flex items-center gap-1.5 bg-slate-800/70 border border-slate-700/60 px-2 py-0.5 rounded-lg">
-          <span class="text-slate-400 uppercase text-[9px] font-sans font-bold">PLAY</span>
-          <span id="dockPlayCount" class="text-white font-black text-sm">#0</span>
-        </div>
-        <div class="flex items-center gap-1.5 sm:gap-2">
-          <div
-            class="bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-lg font-bold flex items-center gap-1">
+    class="fixed bottom-0 inset-x-0 bg-slate-950/70 backdrop-blur-md border-t border-slate-800/60 p-2 z-20 shadow-2xl"
+    style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom));">
+    <div class="max-w-4xl mx-auto w-full space-y-1.5">
+      <!-- High Legibility Telemetry Bar -->
+      <div class="flex items-center justify-between text-[11px] font-mono-numbers px-1 text-slate-300">
+        <div class="flex items-center gap-2">
+          <div class="bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-md font-black flex items-center gap-1 text-[10px]">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             FIELD: <span id="dockFieldCount">0</span>
           </div>
-          <div
-            class="bg-amber-950/60 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-lg font-bold flex items-center gap-1">
+          <div class="bg-amber-950/80 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-md font-black flex items-center gap-1 text-[10px]">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
             BENCH: <span id="dockBenchCount">0</span>
           </div>
-          <div
-            class="bg-slate-800/60 text-slate-400 border border-slate-700/40 px-2 py-0.5 rounded-lg font-bold hidden xs:flex items-center gap-1">
-            ABSENT: <span id="dockAbsentCount">0</span>
-          </div>
         </div>
+        <div id="subQueueStatusPill" class="text-[10px] font-bold text-purple-300 truncate max-w-[170px] text-right"></div>
       </div>
 
-      <!-- Main Sideline Action Buttons (Generous Touch Targets) -->
+      <!-- Action Buttons Row -->
       <div class="flex gap-2 items-stretch">
         <button onclick="undoLastPlay()" id="undoBtn" disabled
-          class="w-20 min-h-[52px] bg-slate-800 hover:bg-slate-750 disabled:opacity-30 disabled:pointer-events-none text-slate-300 font-black rounded-2xl border border-slate-700/80 flex flex-col items-center justify-center text-[10px] tap-pop transition shadow-md shrink-0"
-          title="Undo Last Play Action">
-          <svg class="w-4 h-4 text-slate-300 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          class="min-h-[46px] px-3 bg-slate-900/90 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 font-black rounded-xl border border-slate-700/80 flex items-center justify-center gap-1 text-xs tap-pop transition shadow-md shrink-0"
+          title="Undo Last Play">
+          <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 7v6h6" />
             <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
           </svg>
           <span>UNDO</span>
         </button>
 
+        <!-- SWITCH button: becomes prominent purple when pending subs exist -->
+        <button onclick="executeSwap()" id="dockSwitchBtn"
+          class="hidden min-h-[46px] px-4 bg-purple-600 hover:bg-purple-500 active:bg-purple-700 text-white font-black rounded-xl shadow-lg shadow-purple-950/80 flex items-center justify-center gap-1.5 tap-pop transition shrink-0 animate-pulse">
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 3 4 4-4 4" />
+            <path d="M20 7H4" />
+            <path d="m8 21-4-4 4-4" />
+            <path d="M4 17h16" />
+          </svg>
+          <span id="dockSwitchBtnText">SWITCH</span>
+        </button>
+
         <button onclick="logPlay()" id="logPlayBtn"
-          class="flex-1 min-h-[52px] bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 active:from-emerald-600 active:to-emerald-500 text-slate-950 font-black py-3 rounded-2xl text-base sm:text-lg tracking-wider tap-pop flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/80 transition">
-          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          class="flex-1 min-h-[46px] bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-2.5 px-3 rounded-xl text-sm sm:text-base tracking-wider tap-pop flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-950/80 transition">
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
           </svg>
-          <span id="logPlayBtnText">LOG PLAY #1</span>
+          <span id="logPlayBtnText">LOG PLAY</span>
         </button>
       </div>
     </div>
@@ -1758,14 +1711,11 @@
       const game = getActiveGame();
       const emptyState = document.getElementById('emptyStateSplash');
       const dock = document.getElementById('bottomDock');
-      const swapStrip = document.getElementById('swapActionStrip');
-
       const playerSections = document.getElementById('activeGamePlayerSections');
 
       if (!game) {
         emptyState.classList.remove('hidden');
         dock.classList.add('hidden');
-        swapStrip.classList.add('hidden');
         if (playerSections) playerSections.classList.add('hidden');
         renderHeaderGame();
         return;
@@ -1773,11 +1723,9 @@
 
       emptyState.classList.add('hidden');
       dock.classList.remove('hidden');
-      swapStrip.classList.remove('hidden');
       if (playerSections) playerSections.classList.remove('hidden');
 
       renderHeaderGame();
-      renderSwapStrip(game);
       renderPlayerGrid(game);
       renderDockCounters(game);
       renderLiveAttendanceAdjustList(game);
@@ -1890,50 +1838,23 @@
     }
 
     function renderSwapStrip(game) {
-      const defaultView = document.getElementById('subAdvisoryDefault');
-      const activeQueueView = document.getElementById('subQueueActive');
-      const tipText = document.getElementById('subTipText');
-      const titleEl = document.getElementById('subQueueSummaryTitle');
-      const namesEl = document.getElementById('queuedKidsNames');
+      const switchBtn = document.getElementById('dockSwitchBtn');
+      const switchText = document.getElementById('dockSwitchBtnText');
+      const pill = document.getElementById('subQueueStatusPill');
 
       const hasPending = queuedSubOutIds.size > 0 || queuedSubInIds.size > 0;
 
       if (hasPending) {
-        defaultView.classList.add('hidden');
-        activeQueueView.classList.remove('hidden');
-
-        const outNames = Array.from(queuedSubOutIds).map(id => {
-          const p = game.players.find(pl => pl.id === id);
-          return p ? p.name : '';
-        }).filter(Boolean);
-
-        const inNames = Array.from(queuedSubInIds).map(id => {
-          const p = game.players.find(pl => pl.id === id);
-          return p ? p.name : '';
-        }).filter(Boolean);
-
-        const summaryParts = [];
-        if (outNames.length > 0) summaryParts.push(`OFF: ${outNames.join(', ')}`);
-        if (inNames.length > 0) summaryParts.push(`ON: ${inNames.join(', ')}`);
-
-        if (titleEl) {
-          titleEl.innerText = `Pending Subs (${queuedSubOutIds.size} off / ${queuedSubInIds.size} on):`;
-        }
-        if (namesEl) {
-          namesEl.innerText = summaryParts.join('  ➔  ') || 'Ready to switch';
+        if (switchBtn) switchBtn.classList.remove('hidden');
+        if (switchText) switchText.innerText = `SWITCH (${queuedSubOutIds.size} off / ${queuedSubInIds.size} on)`;
+        if (pill) {
+          const outCount = queuedSubOutIds.size;
+          const inCount = queuedSubInIds.size;
+          pill.innerText = `${outCount} off, ${inCount} on`;
         }
       } else {
-        defaultView.classList.remove('hidden');
-        activeQueueView.classList.add('hidden');
-
-        const onField = game.players.filter(p => p.status === 'field');
-        if (onField.length > 0) {
-          const sorted = [...onField].sort((a, b) => b.playsIn - a.playsIn);
-          const top2 = sorted.slice(0, 2).map(p => p.name).join(' & ');
-          tipText.innerText = `Most plays: ${top2}`;
-        } else {
-          tipText.innerText = 'No players on field';
-        }
+        if (switchBtn) switchBtn.classList.add('hidden');
+        if (pill) pill.innerText = '';
       }
     }
 
@@ -1942,67 +1863,70 @@
       const isGoingOn = queuedSubInIds.has(p.id);
       const playerPositions = p.positions || [];
 
+      // High-contrast, vibrant saturated cards for bright outdoor sunlight visibility
       let cardClass = '';
       if (isComingOff) {
-        cardClass = 'bg-rose-950/70 border-2 border-dashed border-rose-400 ring-2 ring-rose-500/40 shadow-lg';
+        cardClass = 'bg-rose-900 border-2 border-rose-300 ring-2 ring-rose-400/80 shadow-lg';
       } else if (isGoingOn) {
-        cardClass = 'bg-cyan-950/70 border-2 border-dashed border-cyan-400 ring-2 ring-cyan-500/40 shadow-lg';
+        cardClass = 'bg-cyan-900 border-2 border-cyan-300 ring-2 ring-cyan-400/80 shadow-lg';
       } else if (isField) {
-        cardClass = 'bg-emerald-950/45 border border-emerald-500/50 shadow-sm';
+        cardClass = 'bg-emerald-800 border-2 border-emerald-400 text-white shadow-md';
       } else {
-        cardClass = 'bg-amber-950/45 border border-amber-500/50 shadow-sm';
+        cardClass = 'bg-amber-800 border-2 border-amber-400 text-white shadow-md';
       }
 
       return `
-        <div onclick="handleCardTap('${p.id}')" class="relative rounded-2xl p-2.5 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[104px] ${cardClass}">
+        <div onclick="handleCardTap('${p.id}')" class="relative rounded-xl p-2 transition-all cursor-pointer tap-pop flex flex-col justify-between min-h-[76px] ${cardClass}">
           <div class="flex justify-between items-start gap-1">
             <div class="min-w-0 flex-1">
-              <span class="font-black text-sm text-white truncate block">${p.name}</span>
-              ${p.note ? `<div class="text-[10px] text-amber-300 font-bold truncate leading-none mt-0.5">${p.note}</div>` : ''}
-              ${playerPositions.length > 0 ? `
-                <div class="flex items-center gap-1.5 flex-wrap mt-1.5">
-                  ${playerPositions.map(posKey => {
-                    const posDef = POSITIONS.find(pos => pos.key === posKey);
-                    return posDef ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-black border leading-none tracking-tight shadow-sm ${posDef.badgeClass}">${posDef.key}</span>` : '';
-                  }).join('')}
-                </div>
-              ` : ''}
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-black text-sm text-white drop-shadow-sm truncate">${p.name}</span>
+                ${playerPositions.length > 0 ? `
+                  <div class="flex items-center gap-1 flex-wrap">
+                    ${playerPositions.map(posKey => {
+                      const posDef = POSITIONS.find(pos => pos.key === posKey);
+                      return posDef ? `<span class="px-1.5 py-0.2 rounded text-[9px] font-black border leading-none bg-slate-950/80 text-white border-white/40 shadow-sm">${posDef.key}</span>` : '';
+                    }).join('')}
+                  </div>
+                ` : ''}
+              </div>
+              ${p.note ? `<div class="text-[9px] text-amber-200 font-extrabold truncate leading-tight">${p.note}</div>` : ''}
             </div>
 
-            <div>
+            <div class="shrink-0">
               ${isComingOff ? `
-                <span class="bg-rose-500 text-white font-black text-[9px] px-1.5 py-0.5 rounded tracking-wide animate-pulse">
-                  COMING OFF
+                <span class="bg-rose-500 text-white font-black text-[9px] px-1.5 py-0.5 rounded shadow-sm animate-pulse">
+                  OFF
                 </span>
               ` : isGoingOn ? `
-                <span class="bg-cyan-400 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded tracking-wide animate-pulse">
-                  GOING ON
+                <span class="bg-cyan-300 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded shadow-sm animate-pulse">
+                  ON
                 </span>
               ` : isField ? `
-                <span class="bg-emerald-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider">
-                  PLAYING
+                <span class="bg-emerald-400 text-slate-950 font-black text-[8px] px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
+                  FIELD
                 </span>
               ` : `
-                <span class="bg-amber-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider">
-                  ON BENCH
+                <span class="bg-amber-400 text-slate-950 font-black text-[8px] px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
+                  BENCH
                 </span>
               `}
             </div>
           </div>
 
-          <div class="flex items-end justify-between mt-2 pt-1 border-t ${isField ? 'border-emerald-500/20' : 'border-amber-500/20'}">
-            <div class="font-mono-numbers text-xs">
-              <span class="text-slate-400 text-[10px]">PLAYS:</span>
-              <span class="font-black text-sm ${isField ? 'text-emerald-400' : 'text-slate-300'}">${p.playsIn}</span>
+          <div class="flex items-center justify-between mt-1 pt-1 border-t border-white/20 text-[11px] font-mono-numbers">
+            <div>
+              <span class="text-white/80 text-[9px] font-bold">PL:</span>
+              <span class="font-black text-xs text-white">${p.playsIn}</span>
             </div>
 
-            <div class="text-[10px] font-mono-numbers text-right">
+            <div class="text-[10px] text-right font-black">
               ${isField ? `
-                <span class="${p.consecutivePlaysIn >= 3 ? 'text-amber-300 font-bold' : 'text-slate-400'}">
+                <span class="${p.consecutivePlaysIn >= 3 ? 'text-amber-200 bg-black/40 px-1 rounded' : 'text-emerald-100'}">
                   ${p.consecutivePlaysIn} in row
                 </span>
               ` : `
-                <span class="text-amber-400 font-bold">Resting</span>
+                <span class="text-amber-100">Resting</span>
               `}
             </div>
           </div>
@@ -2029,7 +1953,7 @@
 
       if (fieldGrid) {
         if (fieldPlayers.length === 0) {
-          fieldGrid.innerHTML = '<div class="col-span-2 py-4 text-center text-xs font-bold text-slate-500 border border-dashed border-slate-800 rounded-2xl">No kids currently on field. Tap bench kids below to put them in.</div>';
+          fieldGrid.innerHTML = '<div class="col-span-2 py-3 text-center text-xs font-bold text-slate-400 border border-dashed border-slate-700 rounded-xl bg-slate-900/40">No kids on field. Tap bench kids to assign.</div>';
         } else {
           fieldGrid.innerHTML = fieldPlayers.map(p => renderPlayerCard(p, true)).join('');
         }
@@ -2037,7 +1961,7 @@
 
       if (benchGrid) {
         if (benchPlayers.length === 0) {
-          benchGrid.innerHTML = '<div class="col-span-2 py-4 text-center text-xs font-bold text-slate-500 border border-dashed border-slate-800 rounded-2xl">Bench is empty. All present kids are on the field.</div>';
+          benchGrid.innerHTML = '<div class="col-span-2 py-3 text-center text-xs font-bold text-slate-400 border border-dashed border-slate-700 rounded-xl bg-slate-900/40">Bench empty. All kids playing.</div>';
         } else {
           benchGrid.innerHTML = benchPlayers.map(p => renderPlayerCard(p, false)).join('');
         }
@@ -2047,15 +1971,12 @@
         if (absentPlayers.length > 0) {
           absentSection.classList.remove('hidden');
           absentGrid.innerHTML = absentPlayers.map(p => `
-            <div class="bg-slate-900/40 border border-slate-800/60 rounded-2xl p-2.5 opacity-40 flex flex-col justify-between min-h-[96px]">
-              <div class="flex justify-between items-start">
-                <div>
-                  <div class="font-black text-xs text-slate-400">${p.name}</div>
-                  ${p.note ? `<div class="text-[9px] text-slate-500 font-bold">${p.note}</div>` : ''}
-                </div>
-                <span class="text-[8px] font-black uppercase tracking-wider bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">ABSENT</span>
+            <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-2 opacity-50 flex items-center justify-between min-h-[50px]">
+              <div>
+                <span class="font-black text-xs text-slate-400">${p.name}</span>
+                ${p.note ? `<span class="text-[9px] text-slate-500 font-bold ml-1">(${p.note})</span>` : ''}
               </div>
-              <div class="text-[9px] text-slate-500 font-mono-numbers">Not at game</div>
+              <span class="text-[8px] font-black uppercase tracking-wider bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">ABSENT</span>
             </div>
           `).join('');
         } else {
@@ -2066,13 +1987,18 @@
     }
 
     function renderDockCounters(game) {
-      document.getElementById('dockPlayCount').innerText = `#${game.currentPlayNumber}`;
-      document.getElementById('dockFieldCount').innerText = game.players.filter(p => p.status === 'field').length;
-      document.getElementById('dockBenchCount').innerText = game.players.filter(p => p.status === 'bench').length;
-      document.getElementById('dockAbsentCount').innerText = game.players.filter(p => p.status === 'absent').length;
+      const fieldCount = document.getElementById('dockFieldCount');
+      const benchCount = document.getElementById('dockBenchCount');
+      if (fieldCount) fieldCount.innerText = game.players.filter(p => p.status === 'field').length;
+      if (benchCount) benchCount.innerText = game.players.filter(p => p.status === 'bench').length;
 
-      document.getElementById('logPlayBtnText').innerText = `LOG PLAY #${game.currentPlayNumber + 1}`;
-      document.getElementById('undoBtn').disabled = !game.history || game.history.length === 0;
+      const logBtnText = document.getElementById('logPlayBtnText');
+      if (logBtnText) logBtnText.innerText = 'LOG PLAY';
+
+      const undoBtn = document.getElementById('undoBtn');
+      if (undoBtn) undoBtn.disabled = !game.history || game.history.length === 0;
+
+      renderSwapStrip(game);
     }
 
     function renderLiveAttendanceAdjustList(game) {
