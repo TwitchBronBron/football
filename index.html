@@ -300,17 +300,21 @@
 
       <!-- Section: On The Bench -->
       <section id="benchSection" ondragover="handleDragOver(event)" ondragenter="handleDragEnter(event, 'bench')" ondragleave="handleDragLeave(event, 'bench')" ondrop="handleDrop(event, 'bench')" class="min-h-0 flex flex-col bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all">
-        <div class="flex items-center justify-between px-2 py-1 bg-amber-900/90 border-b border-amber-500/40 shrink-0 pointer-events-none">
-          <div class="flex items-center gap-2">
+        <div class="flex items-center justify-between px-2 py-1 bg-amber-900/90 border-b border-amber-500/40 shrink-0">
+          <div class="flex items-center gap-2 pointer-events-none">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400"></span>
             <h3 class="text-xs font-black uppercase tracking-wider text-amber-200">On The Bench</h3>
             <span id="benchCountBadge" class="text-[11px] font-mono-numbers font-black bg-amber-950 text-amber-300 px-2 py-0.5 rounded-md border border-amber-400/50">0</span>
             <span id="benchSubCountBadge" class="hidden text-[10px] font-mono-numbers font-black bg-cyan-950 text-cyan-300 border border-cyan-500/50 px-1.5 py-0.5 rounded-md"></span>
           </div>
-          <div id="subCountdownContainer" class="flex items-baseline gap-1 font-mono-numbers">
+          <button type="button" id="subCountdownBtn" onclick="resetSubCountdown()" class="flex items-center gap-1.5 font-mono-numbers bg-amber-950/60 hover:bg-amber-950/90 active:bg-amber-950 border border-amber-500/30 px-2 py-0.5 rounded-lg tap-pop transition cursor-pointer select-none" title="Tap to reset sub countdown">
             <span class="text-[10px] font-bold text-amber-300/80 uppercase">Plays until sub:</span>
             <span id="subCountdownBadge" class="text-base font-black text-white drop-shadow-sm leading-none">4</span>
-          </div>
+            <svg class="w-3 h-3 text-amber-400/70 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+          </button>
         </div>
         <div id="benchGrid" class="flex-1 min-h-0 overflow-y-auto grid grid-cols-2 gap-1.5 p-1.5 content-start">
           <!-- Bench cards -->
@@ -2719,6 +2723,15 @@
           subCountdownBadge.className = 'text-base font-black text-white drop-shadow-sm leading-none';
         }
       }
+    }
+
+    function resetSubCountdown() {
+      const game = getActiveGame();
+      if (!game) return;
+      game.lastSubPlay = game.currentPlayNumber || 0;
+      haptic([30, 40]);
+      saveState();
+      renderSwapStrip(game);
     }
 
     function renderPlayerCard(p, isField) {
