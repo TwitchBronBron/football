@@ -2009,13 +2009,57 @@
       let startX = 0;
       let startY = 0;
       let isDragging = false;
+      let isScrolling = false;
+      let holdTimer = null;
       let ghostEl = null;
+
+      const cleanupGhost = () => {
+        if (ghostEl) {
+          ghostEl.remove();
+          ghostEl = null;
+        }
+      };
+
+      const startDragSession = (touchX, touchY) => {
+        if (isDragging || isScrolling) return;
+        isDragging = true;
+        haptic(35);
+        cardEl.classList.add('card-dragging');
+
+        const rect = cardEl.getBoundingClientRect();
+        ghostEl = cardEl.cloneNode(true);
+        ghostEl.id = 'touchDragGhost';
+        ghostEl.classList.remove('card-dragging');
+        ghostEl.style.position = 'fixed';
+        ghostEl.style.width = `${rect.width}px`;
+        ghostEl.style.height = `${rect.height}px`;
+        const moveX = touchX - (rect.width / 2);
+        const moveY = touchY - (rect.height / 2);
+        ghostEl.style.left = `${moveX}px`;
+        ghostEl.style.top = `${moveY}px`;
+        ghostEl.style.zIndex = '9999';
+        ghostEl.style.pointerEvents = 'none';
+        ghostEl.style.opacity = '0.94';
+        ghostEl.style.transform = 'scale(1.06) rotate(1.5deg)';
+        ghostEl.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6)';
+        ghostEl.style.transition = 'none';
+        document.body.appendChild(ghostEl);
+      };
 
       const onTouchStart = (e) => {
         const touch = e.touches[0];
         startX = touch.clientX;
         startY = touch.clientY;
         isDragging = false;
+        isScrolling = false;
+
+        // Long press (220ms) picks up the card for dragging from anywhere
+        clearTimeout(holdTimer);
+        holdTimer = setTimeout(() => {
+          if (!isScrolling && !isDragging) {
+            startDragSession(touch.clientX, touch.clientY);
+          }
+        }, 220);
       };
 
       const onTouchMove = (e) => {
@@ -2023,27 +2067,22 @@
         const deltaX = Math.abs(touch.clientX - startX);
         const deltaY = Math.abs(touch.clientY - startY);
 
-        if (!isDragging && (deltaY > 12 || deltaX > 12)) {
-          isDragging = true;
-          cardEl.classList.add('card-dragging');
+        // If finger moves before hold timer elapses:
+        if (!isDragging && !isScrolling) {
+          if (deltaY > 8 && deltaY > deltaX) {
+            // Dominant vertical motion = user is scrolling the page
+            isScrolling = true;
+            clearTimeout(holdTimer);
+            return;
+          } else if (deltaX > 14 && deltaX > deltaY) {
+            // Distinct horizontal drag motion initiates drag immediately
+            clearTimeout(holdTimer);
+            startDragSession(touch.clientX, touch.clientY);
+          }
+        }
 
-          // Create floating card replica that follows the finger
-          const rect = cardEl.getBoundingClientRect();
-          ghostEl = cardEl.cloneNode(true);
-          ghostEl.id = 'touchDragGhost';
-          ghostEl.classList.remove('card-dragging');
-          ghostEl.style.position = 'fixed';
-          ghostEl.style.top = `${rect.top}px`;
-          ghostEl.style.left = `${rect.left}px`;
-          ghostEl.style.width = `${rect.width}px`;
-          ghostEl.style.height = `${rect.height}px`;
-          ghostEl.style.zIndex = '9999';
-          ghostEl.style.pointerEvents = 'none';
-          ghostEl.style.opacity = '0.94';
-          ghostEl.style.transform = 'scale(1.05) rotate(1.5deg)';
-          ghostEl.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6)';
-          ghostEl.style.transition = 'none';
-          document.body.appendChild(ghostEl);
+        if (isScrolling) {
+          return; // Let native browser scroll proceed unhindered
         }
 
         if (isDragging) {
@@ -2067,13 +2106,15 @@
       };
 
       const onTouchEnd = (e) => {
+        clearTimeout(holdTimer);
+
         if (isDragging) {
           lastDragEndTime = Date.now();
           cardEl.classList.remove('card-dragging');
           document.querySelectorAll('#fieldSection, #benchSection').forEach(el => el.classList.remove('drop-active'));
 
-          const touch = e.changedTouches[0];
-          const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
+          const touch = e.changedTouches ? e.changedTouches[0] : null;
+          const targetEl = touch ? document.elementFromPoint(touch.clientX, touch.clientY) : null;
           const fieldSec = targetEl ? targetEl.closest('#fieldSection') : null;
           const benchSec = targetEl ? targetEl.closest('#benchSection') : null;
 
@@ -2087,9 +2128,8 @@
             // Cancelled: animate back to original card position
             animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`);
           }
-        } else if (ghostEl) {
-          ghostEl.remove();
-          ghostEl = null;
+        } else {
+          cleanupGhost();
         }
       };
 
