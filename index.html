@@ -100,6 +100,32 @@
       animation: switch-glow 1.4s infinite ease-in-out;
     }
 
+    /* Sub countdown reset flash & pop animation */
+    @keyframes countdown-reset-flash {
+      0% {
+        transform: scale(0.92);
+        background-color: rgba(251, 191, 36, 0.9);
+        box-shadow: 0 0 20px 4px rgba(251, 191, 36, 0.8), 0 0 35px 8px rgba(245, 158, 11, 0.5);
+        border-color: rgba(255, 255, 255, 0.9);
+      }
+      40% {
+        transform: scale(1.12);
+        background-color: rgba(245, 158, 11, 0.5);
+        box-shadow: 0 0 16px 2px rgba(251, 191, 36, 0.6);
+        border-color: rgba(251, 191, 36, 0.8);
+      }
+      100% {
+        transform: scale(1);
+        background-color: rgba(69, 26, 3, 0.6);
+        box-shadow: none;
+        border-color: rgba(245, 158, 11, 0.3);
+      }
+    }
+
+    .countdown-flash-active {
+      animation: countdown-reset-flash 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
     /* Prevent iOS Safari viewport auto-zoom when tapping inputs */
     @media (max-width: 639px) {
 
@@ -2301,6 +2327,7 @@
       haptic([50, 60, 50]);
       saveState();
       renderAll();
+      flashSubCountdownAnimation();
 
       // Smoothly slide all remaining cards to their new layout coordinates (FLIP)
       animateAllCardsLayout(allPrevPositions, swappingIdSet);
@@ -2725,6 +2752,18 @@
       }
     }
 
+    function flashSubCountdownAnimation() {
+      const btn = document.getElementById('subCountdownBtn');
+      if (btn) {
+        btn.classList.remove('countdown-flash-active');
+        void btn.offsetWidth;
+        btn.classList.add('countdown-flash-active');
+        setTimeout(() => {
+          btn.classList.remove('countdown-flash-active');
+        }, 600);
+      }
+    }
+
     function resetSubCountdown() {
       const game = getActiveGame();
       if (!game) return;
@@ -2732,6 +2771,7 @@
       haptic([30, 40]);
       saveState();
       renderSwapStrip(game);
+      flashSubCountdownAnimation();
     }
 
     function renderPlayerCard(p, isField) {
