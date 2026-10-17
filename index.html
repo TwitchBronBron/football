@@ -1017,8 +1017,6 @@
       }
     }
 
-    const STORAGE_KEY = 'kid_playtime_tracker_v1';
-
     const POSITIONS = [
       { key: 'C', label: 'Center', badgeClass: 'bg-blue-600 text-white border-blue-300' },
       { key: 'QB', label: 'Quarterback', badgeClass: 'bg-amber-400 text-slate-950 border-amber-200' },
@@ -1048,58 +1046,165 @@
     let currentRosterTab = 'active'; // 'active' | 'retired'
     let wakeLock = null;
 
+    // Primary persistent storage key. Do NOT increment this key.
+    const STORAGE_KEY = 'kid_playtime_tracker_v1';
+    const BACKUP_STORAGE_KEY = 'kid_playtime_tracker_backup';
+
+    // Known historical / legacy keys to check and migrate automatically
+    const LEGACY_STORAGE_KEYS = [
+      'kid_playtime_tracker_v5_pwa',
+      'kid_playtime_tracker_v4',
+      'kid_playtime_tracker_v3',
+      'kid_playtime_tracker_v2',
+      'kid_playtime_tracker',
+      'football_tracker_v1',
+      'football_roster_data'
+    ];
+
+    function validateAndNormalizeAppState(data) {
+      if (!data || typeof data !== 'object') return null;
+
+      // Must have or be capable of having masterRoster or games
+      const masterRoster = Array.isArray(data.masterRoster) ? data.masterRoster : [];
+      const games = Array.isArray(data.games) ? data.games : [];
+
+      // If both are completely absent or not arrays, check if data itself was an array of players or games
+      if (masterRoster.length === 0 && games.length === 0) {
+        if (Array.isArray(data)) {
+          // Legacy format where entire object was an array of kids or games
+          if (data.length > 0 && data[0].players) {
+            return {
+              masterRoster: [],
+              activeGameId: data[0].id || null,
+              games: data
+            };
+          } else if (data.length > 0 && data[0].name) {
+            return {
+              masterRoster: data,
+              activeGameId: null,
+              games: []
+            };
+          }
+        }
+      }
+
+      return {
+        masterRoster: masterRoster,
+        activeGameId: data.activeGameId || (games.length > 0 ? games[0].id : null),
+        games: games
+      };
+    }
+
+    function loadSavedStateWithFallback() {
+      // 1. Try primary storage key
+      try {
+        const primaryRaw = localStorage.getItem(STORAGE_KEY);
+        if (primaryRaw) {
+          const parsed = JSON.parse(primaryRaw);
+          const normalized = validateAndNormalizeAppState(parsed);
+          if (normalized && (normalized.masterRoster.length > 0 || normalized.games.length > 0)) {
+            return normalized;
+          }
+        }
+      } catch (e) {
+        console.warn("Primary storage parse error:", e);
+      }
+
+      // 2. Try safety backup key
+      try {
+        const backupRaw = localStorage.getItem(BACKUP_STORAGE_KEY);
+        if (backupRaw) {
+          const parsed = JSON.parse(backupRaw);
+          const normalized = validateAndNormalizeAppState(parsed);
+          if (normalized && (normalized.masterRoster.length > 0 || normalized.games.length > 0)) {
+            console.log("Restored state from emergency backup key");
+            return normalized;
+          }
+        }
+      } catch (e) {
+        console.warn("Backup key parse error:", e);
+      }
+
+      // 3. Scan all legacy keys in priority order
+      for (const legacyKey of LEGACY_STORAGE_KEYS) {
+        try {
+          const legacyRaw = localStorage.getItem(legacyKey);
+          if (legacyRaw) {
+            const parsed = JSON.parse(legacyRaw);
+            const normalized = validateAndNormalizeAppState(parsed);
+            if (normalized && (normalized.masterRoster.length > 0 || normalized.games.length > 0)) {
+              console.log(`Migrated legacy data successfully from '${legacyKey}' to '${STORAGE_KEY}'`);
+              return normalized;
+            }
+          }
+        } catch (e) {
+          console.warn(`Legacy key '${legacyKey}' read error:`, e);
+        }
+      }
+
+      // 4. Scan all localStorage keys for any containing 'playtime', 'roster', or 'football'
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.includes('playtime') || key.includes('roster') || key.includes('football'))) {
+            const raw = localStorage.getItem(key);
+            if (raw) {
+              try {
+                const parsed = JSON.parse(raw);
+                const normalized = validateAndNormalizeAppState(parsed);
+                if (normalized && (normalized.masterRoster.length > 0 || normalized.games.length > 0)) {
+                  console.log(`Recovered data from scanned key '${key}'`);
+                  return normalized;
+                }
+              } catch (_) {}
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("General storage scan error:", e);
+      }
+
+      return null;
+    }
+
     function init() {
       initializePWA();
 
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          appData = JSON.parse(saved);
-        } catch (e) {
-          console.error("Local storage parse error:", e);
-          createFreshAppState();
-        }
+      const recovered = loadSavedStateWithFallback();
+      if (recovered) {
+        appData = recovered;
       } else {
+        // Only set default master roster if no saved data was ever found anywhere
         createFreshAppState();
       }
 
+      // Ensure master roster exists
       if (!appData.masterRoster || appData.masterRoster.length === 0) {
         appData.masterRoster = JSON.parse(JSON.stringify(DEFAULT_MASTER_ROSTER));
       } else {
-        // One-time clear of previous auto-assigned positions so user can assign them manually
-        if (!appData.positionsClearedV2) {
-          appData.masterRoster.forEach(k => {
-            k.positions = [];
-          });
-          if (appData.games) {
-            appData.games.forEach(g => {
-              g.players.forEach(p => {
-                p.positions = [];
-              });
-            });
-          }
-          appData.positionsClearedV2 = true;
-          saveState();
-        } else {
-          appData.masterRoster.forEach(k => {
-            if (!k.positions) k.positions = [];
-          });
-        }
-      }
-
-      // Propagate positions to all existing games if missing
-      if (appData.games) {
-        appData.games.forEach(g => {
-          g.players.forEach(p => {
-            const kid = appData.masterRoster.find(k => k.id === p.id);
-            if (kid && (!p.positions || p.positions.length === 0)) {
-              p.positions = [...(kid.positions || [])];
-            } else if (!p.positions) {
-              p.positions = [];
-            }
-          });
+        // Ensure all kids have positions array defined without erasing user notes or names
+        appData.masterRoster.forEach(k => {
+          if (!k.positions) k.positions = [];
+          if (k.retired === undefined) k.retired = false;
         });
       }
+
+      // Propagate kid positions to games if missing
+      if (appData.games) {
+        appData.games.forEach(g => {
+          if (Array.isArray(g.players)) {
+            g.players.forEach(p => {
+              const kid = appData.masterRoster.find(k => k.id === p.id);
+              if (kid && (!p.positions || p.positions.length === 0)) {
+                p.positions = [...(kid.positions || [])];
+              } else if (!p.positions) {
+                p.positions = [];
+              }
+            });
+          }
+        });
+      }
+
       saveState();
 
       setupWakeLock();
@@ -1126,7 +1231,11 @@
 
     function saveState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        const serialized = JSON.stringify(appData);
+        // Save to primary key
+        localStorage.setItem(STORAGE_KEY, serialized);
+        // Save to duplicate backup key for disaster recovery
+        localStorage.setItem(BACKUP_STORAGE_KEY, serialized);
       } catch (e) {
         console.warn("Storage quota or write error:", e);
       }
