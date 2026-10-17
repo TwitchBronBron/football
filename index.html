@@ -2134,6 +2134,39 @@
       renderAll();
     }
 
+    // Sorting comparators for player grids:
+    // Field players: Most eligible to come off (sit on bench) at top:
+    // 1. Highest on-field streak (consecutivePlaysIn desc)
+    // 2. Highest total plays (playsIn desc)
+    // 3. Name (alphabetical) for deterministic, non-flopping order
+    function compareFieldEligibility(a, b) {
+      const streakA = a.consecutivePlaysIn || 0;
+      const streakB = b.consecutivePlaysIn || 0;
+      if (streakB !== streakA) return streakB - streakA;
+
+      const playsA = a.playsIn || 0;
+      const playsB = b.playsIn || 0;
+      if (playsB !== playsA) return playsB - playsA;
+
+      return (a.name || '').localeCompare(b.name || '');
+    }
+
+    // Bench players: Most eligible to go onto field at top:
+    // 1. Longest bench streak (consecutivePlaysOut desc)
+    // 2. Fewest total plays (playsIn asc)
+    // 3. Name (alphabetical) for deterministic, non-flopping order
+    function compareBenchEligibility(a, b) {
+      const streakA = a.consecutivePlaysOut || 0;
+      const streakB = b.consecutivePlaysOut || 0;
+      if (streakB !== streakA) return streakB - streakA;
+
+      const playsA = a.playsIn || 0;
+      const playsB = b.playsIn || 0;
+      if (playsA !== playsB) return playsA - playsB;
+
+      return (a.name || '').localeCompare(b.name || '');
+    }
+
     function autoQueueLongestPlayers() {
       const game = getActiveGame();
       if (!game) return;
@@ -2142,29 +2175,11 @@
       const onBench = game.players.filter(p => p.status === 'bench');
       if (onField.length === 0 || onBench.length === 0) return;
 
-      // 1. Kids to come OFF the field:
-      // Priority 1: Highest on-field streak (consecutivePlaysIn)
-      // Priority 2: Highest total plays (playsIn)
-      const sortedField = [...onField].sort((a, b) => {
-        const streakA = a.consecutivePlaysIn || 0;
-        const streakB = b.consecutivePlaysIn || 0;
-        if (streakB !== streakA) {
-          return streakB - streakA;
-        }
-        return (b.playsIn || 0) - (a.playsIn || 0);
-      });
+      // 1. Kids to come OFF the field (most eligible at top)
+      const sortedField = [...onField].sort(compareFieldEligibility);
 
-      // 2. Kids to come ON from the bench:
-      // Priority 1: Longest bench streak (consecutivePlaysOut) — e.g. 8 bench streak gets picked before 4 bench streak
-      // Priority 2: Fewest total plays (playsIn)
-      const sortedBench = [...onBench].sort((a, b) => {
-        const benchStreakA = a.consecutivePlaysOut || 0;
-        const benchStreakB = b.consecutivePlaysOut || 0;
-        if (benchStreakB !== benchStreakA) {
-          return benchStreakB - benchStreakA;
-        }
-        return (a.playsIn || 0) - (b.playsIn || 0);
-      });
+      // 2. Kids to come ON from the bench (most eligible at top)
+      const sortedBench = [...onBench].sort(compareBenchEligibility);
 
       queuedSubOutIds.clear();
       queuedSubInIds.clear();
@@ -2307,6 +2322,8 @@
       const game = getActiveGame();
       if (!game) return;
 
+      const prevPositions = captureAllCardPositions();
+
       const snapshot = JSON.stringify({
         currentPlayNumber: game.currentPlayNumber,
         lastSubPlay: game.lastSubPlay || 0,
@@ -2333,11 +2350,14 @@
       haptic([40, 50, 40]);
       saveState();
       renderAll();
+      animateAllCardsLayout(prevPositions);
     }
 
     function undoLastPlay() {
       const game = getActiveGame();
       if (!game || !game.history || game.history.length === 0) return;
+
+      const prevPositions = captureAllCardPositions();
 
       const previous = JSON.parse(game.history.pop());
       game.currentPlayNumber = previous.currentPlayNumber;
@@ -2347,6 +2367,7 @@
       haptic(60);
       saveState();
       renderAll();
+      animateAllCardsLayout(prevPositions);
     }
 
     let wakeLockVideo = null;
@@ -2751,8 +2772,8 @@
       const benchCountBadge = document.getElementById('benchCountBadge');
       const absentCountBadge = document.getElementById('absentCountBadge');
 
-      const fieldPlayers = game.players.filter(p => p.status === 'field');
-      const benchPlayers = game.players.filter(p => p.status === 'bench');
+      const fieldPlayers = game.players.filter(p => p.status === 'field').sort(compareFieldEligibility);
+      const benchPlayers = game.players.filter(p => p.status === 'bench').sort(compareBenchEligibility);
       const absentPlayers = game.players.filter(p => p.status === 'absent');
 
       if (fieldCountBadge) fieldCountBadge.innerText = fieldPlayers.length;
