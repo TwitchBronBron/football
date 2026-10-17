@@ -211,8 +211,9 @@
 
         <!-- Settings -->
         <button onclick="openSettingsModal()"
-          class="min-h-[42px] min-w-[44px] px-2 rounded-xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
-          title="Settings">
+          class="relative min-h-[42px] min-w-[44px] px-2 rounded-xl bg-slate-800/90 hover:bg-slate-750 active:bg-slate-700 text-slate-200 border border-slate-700/80 font-bold flex flex-col items-center justify-center gap-0.5 tap-pop transition shadow-sm"
+          title="Settings & Wake Lock Status">
+          <span id="wakeLockDot" class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-slate-500 transition-colors" title="Screen Wake Lock: Pending interaction"></span>
           <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
@@ -1667,30 +1668,90 @@
       renderAll();
     }
 
+    let wakeLockVideo = null;
+
     async function setupWakeLock() {
+      // 1. Standard Screen Wake Lock API
       if ('wakeLock' in navigator) {
         try {
-          if (!wakeLock) {
+          if (!wakeLock || wakeLock.released) {
             wakeLock = await navigator.wakeLock.request('screen');
             wakeLock.addEventListener('release', () => {
               wakeLock = null;
+              updateWakeStatusBadge();
             });
+            updateWakeStatusBadge();
           }
         } catch (err) {
-          // Automatic acquisition will retry on next user interaction or visibility change
+          // Will retry on next interaction
+        }
+      }
+
+      // 2. Fallback for iOS Safari / WebKit: low-overhead looping inline video keeps screen awake
+      if (!wakeLock && !wakeLockVideo) {
+        try {
+          wakeLockVideo = document.createElement('video');
+          wakeLockVideo.setAttribute('playsinline', '');
+          wakeLockVideo.setAttribute('muted', '');
+          wakeLockVideo.setAttribute('loop', '');
+          wakeLockVideo.muted = true;
+          wakeLockVideo.style.position = 'fixed';
+          wakeLockVideo.style.opacity = '0.001';
+          wakeLockVideo.style.pointerEvents = 'none';
+          wakeLockVideo.style.width = '1px';
+          wakeLockVideo.style.height = '1px';
+          wakeLockVideo.style.bottom = '0';
+          wakeLockVideo.style.right = '0';
+          // 1 frame blank canvas stream as video srcObject
+          const blankCanvas = document.createElement('canvas');
+          blankCanvas.width = 1;
+          blankCanvas.height = 1;
+          if (blankCanvas.captureStream) {
+            wakeLockVideo.srcObject = blankCanvas.captureStream(1);
+            document.body.appendChild(wakeLockVideo);
+            wakeLockVideo.play().catch(() => {});
+          }
+        } catch (e) {
+          // Ignore fallback errors
         }
       }
     }
 
-    document.addEventListener('visibilitychange', async () => {
+    function updateWakeStatusBadge() {
+      const dot = document.getElementById('wakeLockDot');
+      if (dot) {
+        if (wakeLock && !wakeLock.released) {
+          dot.classList.remove('bg-slate-500');
+          dot.classList.add('bg-emerald-400');
+          dot.setAttribute('title', 'Screen Wake Lock: Active');
+        } else {
+          dot.classList.remove('bg-emerald-400');
+          dot.classList.add('bg-slate-500');
+          dot.setAttribute('title', 'Screen Wake Lock: Inactive');
+        }
+      }
+    }
+
+    // Re-acquire wake lock on visibility, any tap, and regular 15s heartbeat
+    document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
-        await setupWakeLock();
+        setupWakeLock();
       }
     });
 
-    ['touchstart', 'click'].forEach(evt => {
-      document.addEventListener(evt, () => setupWakeLock(), { once: true });
+    ['touchstart', 'touchend', 'click', 'pointerdown'].forEach(evt => {
+      document.addEventListener(evt, () => {
+        if (!wakeLock || wakeLock.released) {
+          setupWakeLock();
+        }
+      }, { passive: true });
     });
+
+    setInterval(() => {
+      if (document.visibilityState === 'visible' && (!wakeLock || wakeLock.released)) {
+        setupWakeLock();
+      }
+    }, 15000);
 
     function haptic(pattern = 25) {
       if ('vibrate' in navigator) {
