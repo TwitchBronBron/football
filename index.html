@@ -1761,25 +1761,40 @@
     let dragHoverTarget = null;
     let touchDraggingCard = null;
     let touchGhostEl = null;
+    let lastDragEndTime = 0;
+    let mouseDragCardInfo = null;
 
     function handleCardDragStart(e, playerId) {
       draggedPlayerId = playerId;
       e.dataTransfer.setData('text/plain', playerId);
       e.dataTransfer.effectAllowed = 'move';
-      if (e.dataTransfer.setDragImage && e.currentTarget) {
-        const rect = e.currentTarget.getBoundingClientRect();
-        e.dataTransfer.setDragImage(e.currentTarget, e.clientX - rect.left, e.clientY - rect.top);
+      
+      const cardEl = e.currentTarget;
+      if (cardEl) {
+        const rect = cardEl.getBoundingClientRect();
+        mouseDragCardInfo = {
+          playerId,
+          rect,
+          offsetX: e.clientX - rect.left,
+          offsetY: e.clientY - rect.top,
+          cardEl
+        };
+        if (e.dataTransfer.setDragImage) {
+          e.dataTransfer.setDragImage(cardEl, e.clientX - rect.left, e.clientY - rect.top);
+        }
       }
-      const el = e.currentTarget;
+
       setTimeout(() => {
-        if (el && draggedPlayerId === playerId) el.classList.add('card-dragging');
+        if (cardEl && draggedPlayerId === playerId) cardEl.classList.add('card-dragging');
       }, 0);
     }
 
     function handleCardDragEnd(e) {
+      lastDragEndTime = Date.now();
       if (e.currentTarget) e.currentTarget.classList.remove('card-dragging');
       document.querySelectorAll('#fieldSection, #benchSection').forEach(el => el.classList.remove('drop-active'));
       draggedPlayerId = null;
+      setTimeout(() => { mouseDragCardInfo = null; }, 50);
     }
 
     function handleDragOver(e) {
@@ -1804,12 +1819,50 @@
 
     function handleDrop(e, targetStatus) {
       e.preventDefault();
+      lastDragEndTime = Date.now();
       document.querySelectorAll('#fieldSection, #benchSection').forEach(el => el.classList.remove('drop-active'));
       const playerId = e.dataTransfer ? e.dataTransfer.getData('text/plain') : draggedPlayerId;
+      
       if (playerId) {
+        const game = getActiveGame();
+        const player = game ? game.players.find(p => p.id === playerId) : null;
+        const currentStatus = player ? player.status : null;
+
+        // If dropping into a different status, create ghost and animate to resting place
+        let ghost = null;
+        if (player && currentStatus && currentStatus !== targetStatus && targetStatus !== 'absent') {
+          const cardEl = mouseDragCardInfo?.cardEl || document.getElementById(`playerCard_${playerId}`);
+          if (cardEl) {
+            ghost = cardEl.cloneNode(true);
+            ghost.id = 'mouseDragGhost';
+            ghost.classList.remove('card-dragging');
+            ghost.style.position = 'fixed';
+            const startW = mouseDragCardInfo?.rect?.width || cardEl.offsetWidth;
+            const startH = mouseDragCardInfo?.rect?.height || cardEl.offsetHeight;
+            const startX = e.clientX - (mouseDragCardInfo?.offsetX || (startW / 2));
+            const startY = e.clientY - (mouseDragCardInfo?.offsetY || (startH / 2));
+            ghost.style.left = `${startX}px`;
+            ghost.style.top = `${startY}px`;
+            ghost.style.width = `${startW}px`;
+            ghost.style.height = `${startH}px`;
+            ghost.style.zIndex = '9999';
+            ghost.style.pointerEvents = 'none';
+            ghost.style.opacity = '0.94';
+            ghost.style.transform = 'scale(1.05) rotate(1.5deg)';
+            ghost.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.6)';
+            ghost.style.transition = 'none';
+            document.body.appendChild(ghost);
+          }
+        }
+
         movePlayerToStatus(playerId, targetStatus);
+
+        if (ghost) {
+          animateCardToRestingPlace(ghost, `playerCard_${playerId}`, null, targetStatus);
+        }
       }
       draggedPlayerId = null;
+      mouseDragCardInfo = null;
     }
 
     function movePlayerToStatus(playerId, targetStatus) {
@@ -1837,6 +1890,7 @@
       haptic([40, 50]);
       saveState();
       renderAll();
+      // Exclude the actively moved player from FLIP translate animation
       animateAllCardsLayout(prevPositions, new Set([playerId]));
     }
 
@@ -1865,14 +1919,17 @@
       const targetRect = targetCard.getBoundingClientRect();
       const isField = targetStatus === 'field' || (!targetStatus && targetCard.closest('#fieldSection') !== null);
 
-      // Establish starting color so transition interpolates cleanly
-      const fromField = !isField; // Card was in the opposite status before move
+      // Cleanly remove any conflicting tailwind bg classes from cloned element
+      ghostEl.classList.remove('bg-emerald-950/80', 'bg-amber-950/75', 'bg-cyan-950/90', 'border-cyan-400', 'ring-cyan-400');
+
+      // Establish initial appearance matching origin
+      const fromField = targetStatus ? (targetStatus !== 'field') : isField;
       ghostEl.style.backgroundColor = fromField ? 'rgba(6, 78, 59, 0.8)' : 'rgba(69, 26, 3, 0.75)';
       ghostEl.style.borderColor = 'rgba(100, 116, 139, 0.8)';
 
       requestAnimationFrame(() => {
-        // Position changes with responsive spring curve, color morph uses ease-in with slight delay so it shifts during mid-to-late flight
-        ghostEl.style.transition = 'left 0.62s cubic-bezier(0.22, 1, 0.36, 1), top 0.62s cubic-bezier(0.22, 1, 0.36, 1), width 0.62s cubic-bezier(0.22, 1, 0.36, 1), height 0.62s cubic-bezier(0.22, 1, 0.36, 1), transform 0.62s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.62s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.52s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, border-color 0.52s cubic-bezier(0.4, 0, 0.2, 1) 0.1s';
+        // Smoothly glide to resting place and morph color seamlessly
+        ghostEl.style.transition = 'left 0.62s cubic-bezier(0.22, 1, 0.36, 1), top 0.62s cubic-bezier(0.22, 1, 0.36, 1), width 0.62s cubic-bezier(0.22, 1, 0.36, 1), height 0.62s cubic-bezier(0.22, 1, 0.36, 1), transform 0.62s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.62s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.50s cubic-bezier(0.4, 0, 0.2, 1) 0.12s, border-color 0.50s cubic-bezier(0.4, 0, 0.2, 1) 0.12s';
         ghostEl.style.left = `${targetRect.left}px`;
         ghostEl.style.top = `${targetRect.top}px`;
         ghostEl.style.width = `${targetRect.width}px`;
@@ -1887,15 +1944,20 @@
       // Fade out any pending badge inside ghost during transit
       const badge = ghostEl.querySelector('.pulse-glow-badge');
       if (badge) {
-        badge.style.transition = 'opacity 0.4s ease';
+        badge.style.transition = 'opacity 0.4s ease 0.08s';
         badge.style.opacity = '0';
       }
 
       setTimeout(() => {
-        // Seamless cross-fade handover: reveal target card underneath, then remove ghost next frame
-        targetCard.style.opacity = '';
+        // Seamless handover: immediately ensure target card is opaque without transition delays, then remove ghost
+        targetCard.style.transition = 'none';
+        targetCard.style.opacity = '1';
         requestAnimationFrame(() => {
           ghostEl.remove();
+          requestAnimationFrame(() => {
+            targetCard.style.transition = '';
+            targetCard.style.opacity = '';
+          });
           if (onComplete) onComplete();
         });
       }, 620);
@@ -2006,6 +2068,7 @@
 
       const onTouchEnd = (e) => {
         if (isDragging) {
+          lastDragEndTime = Date.now();
           cardEl.classList.remove('card-dragging');
           document.querySelectorAll('#fieldSection, #benchSection').forEach(el => el.classList.remove('drop-active'));
 
@@ -2016,10 +2079,10 @@
 
           if (fieldSec) {
             movePlayerToStatus(playerId, 'field');
-            animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`);
+            animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`, null, 'field');
           } else if (benchSec) {
             movePlayerToStatus(playerId, 'bench');
-            animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`);
+            animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`, null, 'bench');
           } else {
             // Cancelled: animate back to original card position
             animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`);
@@ -2037,6 +2100,9 @@
     }
 
     function handleCardTap(playerId) {
+      // Ignore click/tap events triggered immediately after drag drop
+      if (Date.now() - lastDragEndTime < 350) return;
+
       const game = getActiveGame();
       if (!game) return;
       const player = game.players.find(p => p.id === playerId);
@@ -2219,10 +2285,15 @@
             });
 
             setTimeout(() => {
-              // Seamless cross-fade handover: reveal target card underneath first, remove ghost on next frame
-              targetCard.style.opacity = '';
+              // Seamless handover: immediately ensure target card is opaque without transition delays, then remove ghost
+              targetCard.style.transition = 'none';
+              targetCard.style.opacity = '1';
               requestAnimationFrame(() => {
                 el.remove();
+                requestAnimationFrame(() => {
+                  targetCard.style.transition = '';
+                  targetCard.style.opacity = '';
+                });
               });
             }, 620);
           } else {
@@ -2607,7 +2678,7 @@
       }
 
       return `
-        <div id="playerCard_${p.id}" data-player-id="${p.id}" draggable="true" ondragstart="handleCardDragStart(event, '${p.id}')" ondragend="handleCardDragEnd(event)" onclick="handleCardTap('${p.id}')" class="relative rounded-xl px-2 py-1 transition-all cursor-grab active:cursor-grabbing tap-pop flex flex-col justify-between select-none ${cardClass}">
+        <div id="playerCard_${p.id}" data-player-id="${p.id}" draggable="true" ondragstart="handleCardDragStart(event, '${p.id}')" ondragend="handleCardDragEnd(event)" onclick="handleCardTap('${p.id}')" class="relative rounded-xl px-2 py-1 transition-[transform,box-shadow,border-color] duration-150 cursor-grab active:cursor-grabbing tap-pop flex flex-col justify-between select-none ${cardClass}">
           <div class="min-w-0 flex-1 flex flex-col pointer-events-none">
             <!-- Top line: Name and OFF/ON status badge -->
             <div class="flex items-center justify-between gap-1 min-w-0">
