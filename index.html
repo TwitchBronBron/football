@@ -136,6 +136,17 @@
       padding-bottom: 8px;
     }
 
+    .drop-active {
+      outline: 2px dashed rgba(255, 255, 255, 0.7) !important;
+      outline-offset: -2px;
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .card-dragging {
+      opacity: 0.45 !important;
+      transform: scale(0.96) !important;
+    }
+
     /* Clean custom scrollbar for sideline glance */
     ::-webkit-scrollbar {
       width: 5px;
@@ -269,8 +280,8 @@
     <!-- Active Game Content: Split into On Field and On Bench -->
     <div id="activeGamePlayerSections" class="flex-1 grid grid-rows-[minmax(2.25rem,auto)_minmax(2.25rem,auto)] min-h-0 gap-2 overflow-hidden w-full pb-1">
       <!-- Section: On The Field -->
-      <section id="fieldSection" class="min-h-0 flex flex-col bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden">
-        <div class="flex items-center justify-between px-2 py-1 bg-emerald-900/90 border-b border-emerald-500/40 shrink-0">
+      <section id="fieldSection" ondragover="handleDragOver(event)" ondragenter="handleDragEnter(event, 'field')" ondragleave="handleDragLeave(event, 'field')" ondrop="handleDrop(event, 'field')" class="min-h-0 flex flex-col bg-emerald-950/30 rounded-xl border-2 border-emerald-500/40 overflow-hidden transition-all">
+        <div class="flex items-center justify-between px-2 py-1 bg-emerald-900/90 border-b border-emerald-500/40 shrink-0 pointer-events-none">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400"></span>
             <h3 class="text-xs font-black uppercase tracking-wider text-emerald-200">On The Field</h3>
@@ -288,8 +299,8 @@
       </section>
 
       <!-- Section: On The Bench -->
-      <section id="benchSection" class="min-h-0 flex flex-col bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden">
-        <div class="flex items-center justify-between px-2 py-1 bg-amber-900/90 border-b border-amber-500/40 shrink-0">
+      <section id="benchSection" ondragover="handleDragOver(event)" ondragenter="handleDragEnter(event, 'bench')" ondragleave="handleDragLeave(event, 'bench')" ondrop="handleDrop(event, 'bench')" class="min-h-0 flex flex-col bg-amber-950/25 rounded-xl border-2 border-amber-500/40 overflow-hidden transition-all">
+        <div class="flex items-center justify-between px-2 py-1 bg-amber-900/90 border-b border-amber-500/40 shrink-0 pointer-events-none">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400"></span>
             <h3 class="text-xs font-black uppercase tracking-wider text-amber-200">On The Bench</h3>
@@ -1746,6 +1757,219 @@
       renderMasterRosterList();
     }
 
+    let draggedPlayerId = null;
+    let dragHoverTarget = null;
+    let touchDraggingCard = null;
+    let touchGhostEl = null;
+
+    function handleCardDragStart(e, playerId) {
+      draggedPlayerId = playerId;
+      e.dataTransfer.setData('text/plain', playerId);
+      e.dataTransfer.effectAllowed = 'move';
+      if (e.dataTransfer.setDragImage && e.currentTarget) {
+        const rect = e.currentTarget.getBoundingClientRect();
+        e.dataTransfer.setDragImage(e.currentTarget, e.clientX - rect.left, e.clientY - rect.top);
+      }
+      const el = e.currentTarget;
+      setTimeout(() => {
+        if (el && draggedPlayerId === playerId) el.classList.add('card-dragging');
+      }, 0);
+    }
+
+    function handleCardDragEnd(e) {
+      if (e.currentTarget) e.currentTarget.classList.remove('card-dragging');
+      document.querySelectorAll('#fieldSection, #benchSection').forEach(el => el.classList.remove('drop-active'));
+      draggedPlayerId = null;
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragEnter(e, targetSection) {
+      e.preventDefault();
+      const sec = targetSection === 'field' ? document.getElementById('fieldSection') : document.getElementById('benchSection');
+      if (sec) sec.classList.add('drop-active');
+    }
+
+    function handleDragLeave(e, targetSection) {
+      e.preventDefault();
+      // Only remove if leaving the section boundaries
+      const sec = targetSection === 'field' ? document.getElementById('fieldSection') : document.getElementById('benchSection');
+      if (sec && !sec.contains(e.relatedTarget)) {
+        sec.classList.remove('drop-active');
+      }
+    }
+
+    function handleDrop(e, targetStatus) {
+      e.preventDefault();
+      document.querySelectorAll('#fieldSection, #benchSection').forEach(el => el.classList.remove('drop-active'));
+      const playerId = e.dataTransfer ? e.dataTransfer.getData('text/plain') : draggedPlayerId;
+      if (playerId) {
+        movePlayerToStatus(playerId, targetStatus);
+      }
+      draggedPlayerId = null;
+    }
+
+    function movePlayerToStatus(playerId, targetStatus) {
+      const game = getActiveGame();
+      if (!game) return;
+      const player = game.players.find(p => p.id === playerId);
+      if (!player || player.status === targetStatus || player.status === 'absent') return;
+
+      player.status = targetStatus;
+      if (targetStatus === 'bench') {
+        player.consecutivePlaysIn = 0;
+        player.consecutivePlaysOut = 0;
+        player.lastSatPlay = game.currentPlayNumber;
+      } else if (targetStatus === 'field') {
+        player.consecutivePlaysIn = 0;
+        player.consecutivePlaysOut = 0;
+      }
+
+      // Remove from queued selections if dragged directly
+      queuedSubOutIds.delete(playerId);
+      queuedSubInIds.delete(playerId);
+
+      haptic([40, 50]);
+      saveState();
+      renderAll();
+    }
+
+    function animateCardToRestingPlace(ghostEl, targetCardId, onComplete) {
+      const targetCard = document.getElementById(targetCardId);
+      if (!ghostEl) {
+        if (onComplete) onComplete();
+        return;
+      }
+
+      if (!targetCard) {
+        // Fallback fade out if card not found
+        ghostEl.style.transition = 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)';
+        ghostEl.style.opacity = '0';
+        ghostEl.style.transform = 'scale(0.85)';
+        setTimeout(() => {
+          ghostEl.remove();
+          if (onComplete) onComplete();
+        }, 360);
+        return;
+      }
+
+      // Hide target card temporarily while ghost lands on it
+      targetCard.style.opacity = '0';
+
+      const targetRect = targetCard.getBoundingClientRect();
+      ghostEl.style.transition = 'all 0.38s cubic-bezier(0.22, 1, 0.36, 1)';
+      ghostEl.style.left = `${targetRect.left}px`;
+      ghostEl.style.top = `${targetRect.top}px`;
+      ghostEl.style.width = `${targetRect.width}px`;
+      ghostEl.style.height = `${targetRect.height}px`;
+      ghostEl.style.transform = 'scale(1) rotate(0deg)';
+      ghostEl.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.2)';
+
+      setTimeout(() => {
+        targetCard.style.opacity = '';
+        targetCard.classList.add('pulse-glow-badge');
+        setTimeout(() => targetCard.classList.remove('pulse-glow-badge'), 800);
+        ghostEl.remove();
+        if (onComplete) onComplete();
+      }, 390);
+    }
+
+    function initCardTouchDrag(cardEl, playerId) {
+      let startX = 0;
+      let startY = 0;
+      let isDragging = false;
+      let ghostEl = null;
+
+      const onTouchStart = (e) => {
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        isDragging = false;
+      };
+
+      const onTouchMove = (e) => {
+        const touch = e.touches[0];
+        const deltaX = Math.abs(touch.clientX - startX);
+        const deltaY = Math.abs(touch.clientY - startY);
+
+        if (!isDragging && (deltaY > 12 || deltaX > 12)) {
+          isDragging = true;
+          cardEl.classList.add('card-dragging');
+
+          // Create floating card replica that follows the finger
+          const rect = cardEl.getBoundingClientRect();
+          ghostEl = cardEl.cloneNode(true);
+          ghostEl.id = 'touchDragGhost';
+          ghostEl.classList.remove('card-dragging');
+          ghostEl.style.position = 'fixed';
+          ghostEl.style.top = `${rect.top}px`;
+          ghostEl.style.left = `${rect.left}px`;
+          ghostEl.style.width = `${rect.width}px`;
+          ghostEl.style.height = `${rect.height}px`;
+          ghostEl.style.zIndex = '9999';
+          ghostEl.style.pointerEvents = 'none';
+          ghostEl.style.opacity = '0.94';
+          ghostEl.style.transform = 'scale(1.05) rotate(1.5deg)';
+          ghostEl.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6)';
+          ghostEl.style.transition = 'none';
+          document.body.appendChild(ghostEl);
+        }
+
+        if (isDragging) {
+          e.preventDefault();
+
+          if (ghostEl) {
+            const rect = cardEl.getBoundingClientRect();
+            const moveX = touch.clientX - (rect.width / 2);
+            const moveY = touch.clientY - (rect.height / 2);
+            ghostEl.style.left = `${moveX}px`;
+            ghostEl.style.top = `${moveY}px`;
+          }
+
+          const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
+          const fieldSec = targetEl ? targetEl.closest('#fieldSection') : null;
+          const benchSec = targetEl ? targetEl.closest('#benchSection') : null;
+
+          document.getElementById('fieldSection')?.classList.toggle('drop-active', !!fieldSec);
+          document.getElementById('benchSection')?.classList.toggle('drop-active', !!benchSec);
+        }
+      };
+
+      const onTouchEnd = (e) => {
+        if (isDragging) {
+          cardEl.classList.remove('card-dragging');
+          document.querySelectorAll('#fieldSection, #benchSection').forEach(el => el.classList.remove('drop-active'));
+
+          const touch = e.changedTouches[0];
+          const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
+          const fieldSec = targetEl ? targetEl.closest('#fieldSection') : null;
+          const benchSec = targetEl ? targetEl.closest('#benchSection') : null;
+
+          if (fieldSec) {
+            movePlayerToStatus(playerId, 'field');
+            animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`);
+          } else if (benchSec) {
+            movePlayerToStatus(playerId, 'bench');
+            animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`);
+          } else {
+            // Cancelled: animate back to original card position
+            animateCardToRestingPlace(ghostEl, `playerCard_${playerId}`);
+          }
+        } else if (ghostEl) {
+          ghostEl.remove();
+          ghostEl = null;
+        }
+      };
+
+      cardEl.addEventListener('touchstart', onTouchStart, { passive: true });
+      cardEl.addEventListener('touchmove', onTouchMove, { passive: false });
+      cardEl.addEventListener('touchend', onTouchEnd, { passive: true });
+      cardEl.addEventListener('touchcancel', onTouchEnd, { passive: true });
+    }
+
     function handleCardTap(playerId) {
       const game = getActiveGame();
       if (!game) return;
@@ -2234,8 +2458,8 @@
       }
 
       return `
-        <div onclick="handleCardTap('${p.id}')" class="relative rounded-xl px-2 py-1 transition-all cursor-pointer tap-pop flex flex-col justify-between ${cardClass}">
-          <div class="min-w-0 flex-1 flex flex-col">
+        <div id="playerCard_${p.id}" data-player-id="${p.id}" draggable="true" ondragstart="handleCardDragStart(event, '${p.id}')" ondragend="handleCardDragEnd(event)" onclick="handleCardTap('${p.id}')" class="relative rounded-xl px-2 py-1 transition-all cursor-grab active:cursor-grabbing tap-pop flex flex-col justify-between select-none ${cardClass}">
+          <div class="min-w-0 flex-1 flex flex-col pointer-events-none">
             <!-- Top line: Name and OFF/ON status badge -->
             <div class="flex items-center justify-between gap-1 min-w-0">
               <span class="font-black text-xl text-white drop-shadow-md truncate leading-tight tracking-tight">${p.name}</span>
@@ -2341,6 +2565,12 @@
           benchGrid.innerHTML = benchPlayers.map(p => renderPlayerCard(p, false)).join('');
         }
       }
+
+      // Bind touch drag support on mobile devices
+      document.querySelectorAll('[data-player-id]').forEach(cardEl => {
+        const id = cardEl.getAttribute('data-player-id');
+        if (id) initCardTouchDrag(cardEl, id);
+      });
     }
 
     function renderDockCounters(game) {
