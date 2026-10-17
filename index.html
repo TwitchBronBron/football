@@ -1806,6 +1806,11 @@
       const inCount = queuedSubInIds.size;
       const hasPending = outCount > 0 || inCount > 0;
 
+      const maxField = game ? (game.maxFieldPlayers || 6) : 6;
+      const currentFieldCount = game ? game.players.filter(p => p.status === 'field').length : 0;
+      const projectedFieldCount = currentFieldCount - outCount + inCount;
+      const isOverLimit = projectedFieldCount > maxField;
+
       // Update Coming Off badge in Field header
       if (fieldSubBadge) {
         if (outCount > 0) {
@@ -1827,8 +1832,18 @@
       }
 
       if (hasPending) {
-        if (switchBtn) switchBtn.classList.remove('hidden');
-        if (switchText) switchText.innerText = `SWITCH (${outCount} off / ${inCount} on)`;
+        if (switchBtn) {
+          switchBtn.classList.remove('hidden');
+          if (isOverLimit) {
+            // Over limit warning: amber/red banner with force indicator
+            switchBtn.className = 'min-h-[46px] px-3 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 font-black rounded-xl shadow-lg shadow-amber-950/80 flex items-center justify-center gap-1.5 tap-pop transition shrink-0 animate-pulse border-2 border-amber-200';
+            if (switchText) switchText.innerText = `⚠️ OVER LIMIT (${projectedFieldCount}/${maxField}) — FORCE`;
+          } else {
+            // Normal purple switch button
+            switchBtn.className = 'min-h-[46px] px-4 bg-purple-600 hover:bg-purple-500 active:bg-purple-700 text-white font-black rounded-xl shadow-lg shadow-purple-950/80 flex items-center justify-center gap-1.5 tap-pop transition shrink-0 animate-pulse';
+            if (switchText) switchText.innerText = `SWITCH (${outCount} off / ${inCount} on)`;
+          }
+        }
       } else {
         if (switchBtn) switchBtn.classList.add('hidden');
       }
@@ -1954,7 +1969,10 @@
 
     function renderDockCounters(game) {
       const logBtnText = document.getElementById('logPlayBtnText');
-      if (logBtnText) logBtnText.innerText = 'LOG PLAY';
+      if (logBtnText) {
+        const count = game ? (game.currentPlayNumber || 0) : 0;
+        logBtnText.innerText = count > 0 ? `LOG PLAY #${count + 1} (${count} played)` : 'LOG PLAY #1';
+      }
 
       const undoBtn = document.getElementById('undoBtn');
       if (undoBtn) undoBtn.disabled = !game.history || game.history.length === 0;
